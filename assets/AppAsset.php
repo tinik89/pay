@@ -20,12 +20,20 @@ class AppAsset extends AssetBundle
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
-        'css/site.css',
+        'css/jquery-ui.css',
+        'css/main.css',
+        '//fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&amp;subset=cyrillic',
     ];
     public $js = [
+        'js/jquery-ui.js',
+        'js/jquery.formstyler.min.js',
+        'js/jquery.fancybox.min.js',
+        'js/owl.carousel.min.js',
+        'js/jquery.validate.min.js',
+        'js/jquery.slimscroll.js',
+        'js/script.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',
-        'yii\bootstrap\BootstrapAsset',
     ];
 }

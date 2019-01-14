@@ -11,10 +11,14 @@ $config = [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
     ],
+    'language' => 'ru',
+    'layout' => 'pay',
+    'defaultRoute' => 'pay/index',
     'components' => [
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => '2HUwwmZESxGGt0b2S-N97Tgkuy55D-Tm',
+            'baseUrl' => '',
         ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
@@ -43,14 +47,15 @@ $config = [
             ],
         ],
         'db' => $db,
-        /*
+
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                '<action:\w+>'=>'pay/<action>',
             ],
         ],
-        */
+
     ],
     'params' => $params,
 ];

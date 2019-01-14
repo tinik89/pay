@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="12px" height="7px" viewBox="0 0 12 7" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.5 (67469) - http://www.bohemiancoding.com/sketch -->
+    <title>arrow copy</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Главная" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g transform="translate(-472.000000, -1287.000000)" fill="#FF455C" id="Баланс">
+            <g transform="translate(360.000000, 690.000000)">
+                <g id="Расход" transform="translate(30.000000, 588.000000)">
+                    <g id="arrow-copy" transform="translate(82.000000, 9.000000)">
+                        <path d="M10.4593639,0.270524899 C10.8128134,-0.0901749664 11.3840711,-0.0901749664 11.734912,0.270524899 C12.0870572,0.631224764 12.0896657,1.21399731 11.734912,1.57469717 L6.63793663,6.7294751 C6.28579145,7.09017497 5.71583795,7.09017497 5.36108429,6.7294751 L0.264108884,1.57469717 C-0.0880362948,1.2153432 -0.0880362948,0.631224764 0.264108884,0.270524899 C0.617558305,-0.0901749664 1.18881604,-0.0901749664 1.53965698,0.270524899 L6.00146682,4.49798116 L10.4593639,0.270524899 Z" id="Path"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

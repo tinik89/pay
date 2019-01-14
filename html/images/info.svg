@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="22px" height="22px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 52.5 (67469) - http://www.bohemiancoding.com/sketch -->
+    <title>Доп инфа</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Клиенты" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g transform="translate(-1078.000000, -498.000000)" id="1">
+            <g transform="translate(360.000000, 425.000000)">
+                <g id="Доп-инфа" transform="translate(718.000000, 73.000000)">
+                    <circle id="Oval" stroke="#9B9B9B" cx="11" cy="11" r="10.5"></circle>
+                    <text id="i" font-family="Roboto-Bold, Roboto" font-size="16" font-weight="bold" fill="#9B9B9B">
+                        <tspan x="9" y="17">i</tspan>
+                    </text>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
