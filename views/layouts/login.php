@@ -36,27 +36,7 @@ IeAsset::register($this);
     </div>
 
     <?= $content ?>
-    <div class="container">
-        <div class="latest-tr-filter" >
-            <!-- title -->
-            <form style="text-align: center" method="post" action="/">
-                <h1 class="m-title">Авторизация</h1>
-
-                <!-- transactions group -->
-                <div class="tr-filter-group">
-
-                    <div class="field">
-                        <input type="text" name="name" placeholder="Логин">
-                    </div>
-                    <div class="field">
-                        <input type="text" name="work" placeholder="Пароль">
-                    </div>
-
-                    <button class="submit-btn" type="submit">Войти</button>
-                </div>
-            </form>
-        </div>
-    </div>
+    
     <?php $this->endBody() ?>
     </body>
     </html>

@@ -2,6 +2,7 @@
 use app\assets\AppAsset;
 use app\assets\IeAsset;
 use yii\helpers\Html;
+use yii\bootstrap\Nav;
 
 AppAsset::register($this);
 IeAsset::register($this);
@@ -35,10 +36,41 @@ IeAsset::register($this);
                 </div>
             </div>
         </div>
-    </div>
 
-    <?= $content ?>
-    
+        <!-- Container -->
+        <div class="container">
+
+            <!-- Header -->
+            <header class="header">
+
+                <!-- top menu -->
+                <div class="top-menu">
+                    <?php
+                    echo Nav::widget([
+                        'options' => ['class' => ''],
+                        'items' => [
+                            ['label' => 'Обзор', 'url' => ['/pay/index']],
+                            ['label' => 'Транзакции', 'url' => ['/pay/transaction']],
+                            ['label' => 'Клиенты', 'url' => ['/client/all']],
+                            Yii::$app->user->isGuest ?(
+                                ['label' => 'Login', 'url' => ['/site/login']]
+                            ):(
+                                ['label' => 'ВЫХОД', 'url' => ['/pay/logout']]
+                            )
+
+                        ],
+                    ]);
+                    ?>
+                </div>
+
+                <div class="clear"></div>
+            </header>
+
+            <!-- wrapper -->
+
+            <?= $content ?>
+        </div>
+    </div>
     <?php $this->endBody() ?>
     </body>
     </html>
