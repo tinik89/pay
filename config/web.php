@@ -52,10 +52,25 @@ $config = [
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
+            'suffix' => '.html',
             'rules' => [
-                '<action:\w+>'=>'pay/<action>',
+                [
+                    'pattern' => '',
+                    'route' => 'pay/index',
+                    'suffix' => '',
+                ],
+                '<action:\w+>' => 'pay/<action>',
+                'client/<id:\d+>' => 'client/show',
             ],
         ],
+//        'formatter ' => [
+//            'class' => 'yii\i18n\Formatter',
+//            'defaultTimeZone' => 'Europe/Moscow',
+//            'timeZone' => 'GMT+3',
+//            'dateFormat' => 'd MMMM yyyy',
+//            'datetimeFormat' => 'd-M-Y H:i:s',
+//            'timeFormat' => 'H:i:s',
+//        ],
 
     ],
     'params' => $params,

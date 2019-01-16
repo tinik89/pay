@@ -11,6 +11,8 @@ namespace app\controllers;
 use Yii;
 use yii\web\Controller;
 use yii\filters\AccessControl;
+use app\models\forms\ClientForm;
+use app\models\forms\ProjectForm;
 
 class ClientController extends Controller
 {
@@ -36,13 +38,23 @@ class ClientController extends Controller
     {
         $this->view->title = 'КЛИЕНТЫ | Платежка';
         $this->view->registerMetaTag(['name'=>'description', 'content'=>'']);
-        return $this->render('all');
+        
+        $clientForm = new ClientForm();
+        
+        return $this->render('all', [
+            'clientForm'=>$clientForm,
+        ]);
     }
 
     public function actionShow()
     {
         $this->view->title = 'КЛИЕНТ | Платежка';
         $this->view->registerMetaTag(['name'=>'description', 'content'=>'']);
-        return $this->render('show');
+
+        $projectForm = new ProjectForm();
+        
+        return $this->render('show', [
+            'projectForm'=>$projectForm,
+        ]);
     }
 }

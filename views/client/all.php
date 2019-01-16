@@ -1,3 +1,10 @@
+<?php
+use yii\helpers\Html;
+use yii\bootstrap\ActiveForm;
+use yii\helpers\Url;
+?>
+
+
 <!-- wrapper -->
 <div class="wrapper">
 
@@ -6,7 +13,7 @@
 
         <!-- title -->
         <div class="m-title">Клиенты</div>
-
+        <a href="#" class="add-client-btn">Добавить клиента</a>
         <!-- search -->
         <div class="search">
             <input type="text" placeholder="Поиск по проектам" />
@@ -75,7 +82,7 @@
                 <tr>
                     <td>
                         <div class="service">Разработка сайта</div>
-                        <a href="#" class="name">Ваш доктор</a>
+                        <a href="<?= Url::to(['client/show', 'id'=>2])?>" class="name">Ваш доктор</a>
                         <div class="category">Маркетинг</div>
                     </td>
                     <td>
@@ -443,6 +450,8 @@
 <div class="popups_group">
     <div class="overlay"></div>
 
+
+
     <!-- Edit Client Popup -->
     <div class="nonebox" id="edit-client-popup">
         <!-- edit client -->
@@ -527,6 +536,35 @@
             </form>
             <span class="close"></span>
         </div>
+
+    </div>
+<!-- ADD Client Popup -->
+    <div class="nonebox add" id="add-client-popup">
+        <!-- edit client -->
+        <div class="add-tr-form white-box">
+            <?php $form = ActiveForm::begin([
+                'id' => 'new-client-form',
+                'action'=> Url::to(['/ajax/new-client']),
+                'fieldConfig' => [
+                    'template' => "<div class=\"field\">{input}{error}</div>",
+                ],
+            ]); ?>
+            <h2>Создать клиента</h2>
+            <div class="tr-form">
+                <div class="group-col">
+                    <?= $form->field($clientForm, 'name')->textInput(['placeholder' => 'Клиент']) ?>
+                </div>
+
+                <div class="group-col">
+                    <?= Html::submitButton('Добавить', ['class' => 'add-submit-btn', 'name' => 'new-client-button']) ?>
+                </div>
+
+            </div>
+            <div class="clear"></div>
+            <?php ActiveForm::end(); ?>
+            <span class="close"></span>
+        </div>
+
     </div>
 
 </div>

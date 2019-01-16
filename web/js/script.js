@@ -10,6 +10,83 @@ $(window).on("load", function() {
 });
 
 $(function() {
+	/*tin*/
+	// POPUP новый клиент
+	$('.add-client-btn').on('click', function () {
+		$('.overlay').fadeIn(250, function(){
+			$('#add-client-popup').animate({'top': $(window).scrollTop() + 100}, 500);
+		});
+		return false;
+	});
+	$('.overlay, #add-client-popup .close').click(function(){
+		$('#add-client-popup').animate({'top': '-3000px'}, 500, function(){
+			$('.overlay').fadeOut(250);
+		});
+		return false;
+	});
+
+	// POPUP новый проект
+	$('.add-project-btn').on('click', function () {
+		$('.overlay').fadeIn(250, function(){
+			$('#add-project-popup').animate({'top': $(window).scrollTop() + 100}, 500);
+		});
+		return false;
+	});
+	$('.overlay, #add-project-popup .close').click(function(){
+		$('#add-project-popup').animate({'top': '-3000px'}, 500, function(){
+			$('.overlay').fadeOut(250);
+		});
+		return false;
+	});
+
+	//добавление клиента
+	$('#new-client-form .add-submit-btn').on('click', function () {
+		var $yiiform = $(this).parents('form');
+		var dataForm = $yiiform.serializeArray();
+		// отправляем данные на сервер
+		$.ajax({
+			type: $yiiform.attr('method'),
+			url: $yiiform.attr('action'),
+			data: dataForm,
+			success: function(msg){
+				var oMsg = JSON.parse(msg)
+				console.log(msg);
+				console.log(oMsg);
+				if (oMsg.add){
+					$('#new-client-form .help-block-error').addClass('green').html(oMsg.add);
+				}else if (oMsg.error){
+					$('#new-client-form .help-block-error').removeClass('green').html(oMsg.error);
+				}
+			}
+		});
+
+		return false;
+	});
+	
+	//добавление проекта
+	$('#new-project-form .add-submit-btn').on('click', function () {
+		var $yiiform = $(this).parents('form');
+		var dataForm = $yiiform.serializeArray();
+		// отправляем данные на сервер
+		$.ajax({
+			type: $yiiform.attr('method'),
+			url: $yiiform.attr('action'),
+			data: dataForm,
+			success: function(msg){
+				var oMsg = JSON.parse(msg)
+				console.log(msg);
+				console.log(oMsg);
+				if (oMsg.add){
+					$('#new-project-form .help-block-error').addClass('green').html(oMsg.add);
+				}else if (oMsg.error){
+					$('#new-project-form .help-block-error').removeClass('green').html(oMsg.error);
+				}
+			}
+		});
+
+		return false;
+	});
+	/*END tin*/
 	var width = $(window).width();
 	var height = $(window).height();
 	

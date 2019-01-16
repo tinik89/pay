@@ -11,12 +11,15 @@
 #login-form{
     text-align: center;
 }
-#login-form .help-block-error{
+.help-block-error{
     font-size: 12px;
     color: red;
     margin: 0;
     display: block;
     height: 12px;
+}
+.help-block-error.green {
+    color:#7ED321
 }
 .remember{
     margin: 10px 5px;
@@ -26,5 +29,37 @@
 }
 .remember label{
     font-size: 20px;
+}
+a.add-client-btn:hover {
+    text-decoration: none;
+}
+a.add-client-btn, a.add-project-btn {
+    background: #FF455C;
+    color: #fff;
+    line-height: 50px;
+    margin: 0 10px;
+    padding: 10px;
+    border-radius: 2px;
+    font-weight: bold;
+}
+.nonebox.add{
+    width: 380px;
+    margin-left: -190px;
+}
+.nonebox.add .add-tr-form{
+    padding-top: 50px;
+}
+.add-submit-btn{
+    background: #FF455C;
+    color: #fff;
+    padding: 10px;
+    border-radius: 2px;
+    font-weight: bold;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+.nonebox.add .add-tr-form .tr-form .group-col{
+    text-align: center;
 }
 /*ENDtib*/
