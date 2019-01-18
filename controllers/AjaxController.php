@@ -45,16 +45,16 @@ class AjaxController extends Controller
         $projectForm = new ProjectForm();
         if (Yii::$app->request->isAjax && $projectForm->load(Yii::$app->request->post())) {
             if (!empty ($errorForm = ActiveForm::validate($projectForm))) {
-                return json_encode(['error'=>$errorForm["clientform-name"][0]]);
+                return json_encode(['error'=>$errorForm["projectform-name"][0]]);
             } else {
-                if (Client::find()->where(['name' => $projectForm->name])->exists()){
+                if (Project::find()->where(['name' => $projectForm->name])->exists()){
                     return json_encode(['error'=>'Проект с таким названием уже существует']);
                 } else {
                     $project = new Project();
                     $project->name = $projectForm->name;
                     $project->tag = $projectForm->tag;
                     $project->price = $projectForm->price;
-                    $project->date_start = $projectForm->date_start;
+                    $project->date_start = strtotime($projectForm->date_start);
                     $project->client = $projectForm->client;
                     $project->debet = 0;
                     $project->status = 1;

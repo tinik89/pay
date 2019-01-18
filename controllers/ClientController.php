@@ -8,6 +8,7 @@
 
 namespace app\controllers;
 
+use app\models\Tag;
 use Yii;
 use yii\web\Controller;
 use yii\filters\AccessControl;
@@ -55,6 +56,7 @@ class ClientController extends Controller
         
         return $this->render('show', [
             'projectForm'=>$projectForm,
+            'tags' => Tag::find()->all(),
         ]);
     }
 }

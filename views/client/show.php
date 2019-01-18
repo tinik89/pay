@@ -33,24 +33,11 @@ use yii\helpers\Url;
 
         <!-- check items -->
         <div class="checkbox-items">
-            <div class="checkbox-item">
-                <label><input type="checkbox" class="styler" />Маркетинг</label>
-            </div>
-            <div class="checkbox-item">
-                <label><input type="checkbox" class="styler" />Сайты</label>
-            </div>
-            <div class="checkbox-item active">
-                <label><input type="checkbox" class="styler" checked />Контекст</label>
-            </div>
-            <div class="checkbox-item">
-                <label><input type="checkbox" class="styler" />Дизайн</label>
-            </div>
-            <div class="checkbox-item active">
-                <label><input type="checkbox" class="styler" checked />SMM</label>
-            </div>
-            <div class="checkbox-item">
-                <label><input type="checkbox" class="styler" />SEO</label>
-            </div>
+            <?php
+            foreach ($tags as $tag){
+                echo '<div class="checkbox-item"><label><input type="checkbox" class="styler" value="'.$tag->id.'" checked="checked"/>'.$tag->tag.'</label></div>';
+            }
+            ?>
         </div>
 
         <!-- date select -->
@@ -366,18 +353,29 @@ use yii\helpers\Url;
                 ],
             ]); ?>
             <h2>Добавить проект</h2>
+            <div class="message"></div>
             <div class="tr-form">
                 <div class="group-col">
                     <?= $form->field($projectForm, 'name')->textInput(['placeholder' => 'Название проекта']) ?>
                 </div>
                 <div class="group-col">
-                    <?= $form->field($projectForm, 'tag')->textInput(['placeholder' => 'Тег']) ?>
+                    <?php
+                    $list=array();
+                    foreach ($tags as $tag){
+                        $list[$tag->id] = $tag->tag;
+                    }
+                    ?>
+                    <?=$form->field($projectForm, 'tag')->dropDownList($list,
+                        [
+                        'prompt' => 'Выберите категорию',
+                        'class' => 'styler'
+                        ]);?>
                 </div>
                 <div class="group-col">
                     <?= $form->field($projectForm, 'price')->textInput(['placeholder' => 'Цена']) ?>
                 </div>
                 <div class="group-col">
-                    <?= $form->field($projectForm, 'date_start')->textInput(['placeholder' => 'Дата начала']) ?>
+                    <?= $form->field($projectForm, 'date_start')->textInput(['placeholder' => 'Дата начала','class' => 'datepicker']) ?>
                 </div>
                 <div class="group-col">
                     <?= $form->field($projectForm, 'client')->input('hidden',['value' => $request->get('id')]) ?>

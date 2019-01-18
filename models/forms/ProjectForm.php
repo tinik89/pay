@@ -40,7 +40,7 @@ class ProjectForm extends Model
     {
         return [
             [['name', 'tag', 'price', 'date_start', 'client'], 'required'],
-            [['tag', 'date_start', 'client'], 'integer'],
+            [['tag', 'client'], 'integer'],
             [['price'], 'number'],
             [['name'], 'string', 'max' => 255],
         ];
