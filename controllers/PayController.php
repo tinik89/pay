@@ -101,6 +101,15 @@ class PayController extends Controller
 
                 if ($transaction->save(false)) {
                     Yii::$app->session->setFlash('success', 'Транзакция успешно добавлена.');
+                    $project = $transaction->project;
+                    if ( $transaction->type== 'charge' ){//списание
+
+                    } else {//поступление
+                        $project -> debet = $project -> debet + $transaction->price;
+                        $project -> credit = $project -> credit - $transaction->price;
+                    }
+                    $project -> date_update = time();
+                    $project -> save();
                     return $this->refresh();
                 }
             } 

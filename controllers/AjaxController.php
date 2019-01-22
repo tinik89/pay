@@ -32,8 +32,6 @@ class AjaxController extends Controller
                 } else {
                     $client = new Client();
                     $client->name = $clientForm->name;
-                    $client->credit = 0;
-                    $client->date_update = time();
                     $client->save(false);
                     return json_encode(['add' => 'Клиент добавлен']);
                 }
@@ -68,6 +66,7 @@ class AjaxController extends Controller
                     $project->tag = $projectForm->tag;
                     $project->price = $projectForm->price;
                     $project->date_start = strtotime($projectForm->date_start);
+                    $project->date_update = time();
                     $project->client = $projectForm->client;
                     $project->debet = 0;
                     $project->status = 1;

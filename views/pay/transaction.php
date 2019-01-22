@@ -87,7 +87,7 @@ $this->registerJS($js);
                 <div id="datepicker_inline"></div>
             </div>
         <?= $form->field($addForm, 'date')->input('hidden',['value' => time()]) ?>
-        <?= $form->field($addForm, 'manager_id')->input('hidden',['value' => '1']) ?>
+        <?= $form->field($addForm, 'manager_id')->input('hidden',['value' => Yii::$app->user->id]) ?>
             <div class="tr-tabs tabs">
                 <div class="tr-tab-menu tab-menu-form">
                     <ul>
