@@ -41,7 +41,20 @@ class AjaxController extends Controller
         }
         return false;
 
-    } public function actionNewProject () {
+    }
+    
+    public function actionGetProject () {
+        if (Yii::$app->request->isAjax) {
+            $request = Yii::$app->request;
+            $projects = Project::find()->where(['client' => $request->post('client')])->asArray()->all();
+
+            return json_encode($projects);
+        }
+        return false;
+
+    }
+
+    public function actionNewProject () {
         $projectForm = new ProjectForm();
         if (Yii::$app->request->isAjax && $projectForm->load(Yii::$app->request->post())) {
             if (!empty ($errorForm = ActiveForm::validate($projectForm))) {

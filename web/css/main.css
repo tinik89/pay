@@ -11,7 +11,7 @@
 #login-form{
     text-align: center;
 }
-.help-block-error{
+.help-block-error, #tr-form .help-block{
     font-size: 12px;
     color: red;
     margin: 0;
@@ -71,5 +71,20 @@ a.add-client-btn, a.add-project-btn {
 }
 #new-project-form .message.green {
     color:#7ED321;
+}
+#tr-form fieldset{
+    border:none;
+    padding: 0;
+    margin: 0;
+}
+.add-tr-form .tr-form .field.value-price.minus::before {
+    content: '-';
+    color: #FF455C;
+}
+.successAdd{
+    margin-top: 10px;
+    font-weight: bold;
+    text-align: center;
+    color: #7ED321;
 }
 /*ENDtib*/

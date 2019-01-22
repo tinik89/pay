@@ -355,6 +355,7 @@ use yii\helpers\Url;
             <h2>Добавить проект</h2>
             <div class="message"></div>
             <div class="tr-form">
+                <label for="favorite_team">Любимая команда:</label>
                 <div class="group-col">
                     <?= $form->field($projectForm, 'name')->textInput(['placeholder' => 'Название проекта']) ?>
                 </div>
@@ -362,7 +363,7 @@ use yii\helpers\Url;
                     <?php
                     $list=array();
                     foreach ($tags as $tag){
-                        $list[$tag->id] = $tag->tag;
+                        $list[$tag['id']] = $tag['tag'];
                     }
                     ?>
                     <?=$form->field($projectForm, 'tag')->dropDownList($list,

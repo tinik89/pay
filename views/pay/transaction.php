@@ -1,3 +1,41 @@
+<?php
+use yii\grid\GridView;
+use yii\widgets\ActiveForm;
+use yii\helpers\Html;
+use yii\helpers\Url;
+
+?>
+<?php
+$action = Url::to(['/ajax/get-client']);
+$implementersArr = array();
+foreach ($implementers as $implementer){
+    $implementersArr[]=['id' => $implementer['id'],'value' => $implementer['name'],];
+}
+$implementersJson = json_encode($implementersArr);
+$js = <<<js
+        var availableTags = $implementersJson;
+    console.log(availableTags);
+    $( "#transactionform-implementer" ).autocomplete({
+        source: availableTags,
+        // select: function( event, ui){
+        //     console.log(ui);
+        // }, 
+        change: function( event, ui){
+            if (ui.item){
+                console.log(ui.item.id);
+                $('#transactionform-implementer_id').val(ui.item.id);
+            } else {
+                $('#transactionform-implementer_id').val('');
+            }
+            
+        }, 
+    });
+    
+       
+js;
+
+$this->registerJS($js);
+?>
 <!-- wrapper -->
 <div class="wrapper">
 
@@ -5,89 +43,133 @@
     <div class="white-box add-tr-box">
         <div class="add-tr-group">
             Добавить <a href="#" class="one-tr-btn">одну транзакцию</a> или <a href="#" class="multi-tr-btn">несколько транзакций</a>
+            <?php if ( Yii::$app->session->hasFlash('success')){
+                echo '<div class="successAdd">'. Yii::$app->session->getFlash('success').'</div>';
+            }
+            ?>
+
         </div>
     </div>
+    <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
 
+
+    <?= GridView::widget([
+        'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+
+            //'id',
+            //'client_id',
+            'project_id',
+            //'price',
+            'date',
+            'type',
+            'implementer',
+            //'comment',
+            //'update_id',
+            //'manager_id',
+
+            ['class' => 'yii\grid\ActionColumn'],
+        ],
+    ]); ?>
     <!-- add transactions -->
-    <div class="add-tr-form white-box" style="display: none;">
-        <form id="tr-form" method="post">
+    <div class="add-tr-form white-box" <?php if (empty($errorForm)){ echo 'style="display: none;"';}?> >
+
+        <?php $form = ActiveForm::begin([
+            'id' => 'tr-form',
+            'fieldConfig' => [
+                'template' => "{input}{error}",
+            ],
+            'enableClientValidation' => false,
+        ]); ?>
             <div class="calendar">
                 <div id="datepicker_inline"></div>
             </div>
+        <?= $form->field($addForm, 'date')->input('hidden',['value' => time()]) ?>
+        <?= $form->field($addForm, 'manager_id')->input('hidden',['value' => '1']) ?>
             <div class="tr-tabs tabs">
-                <div class="tr-tab-menu tab-menu">
+                <div class="tr-tab-menu tab-menu-form">
                     <ul>
-                        <li class="active"><a href="#tr_tab1">Поступление</a></li>
-                        <li><a href="#tr_tab2">Списание</a></li>
+                        <li class="active"><a href="enrollment">Поступление</a></li>
+                        <li><a href="charge">Списание</a></li>
                     </ul>
                 </div>
                 <div class="tr-tab-item tab-items">
 
-                    <div class="tr-tab-item tab-item" id="tr_tab1" style="display: block;">
+                    <fieldset class="tr-tab-item tab-item" id="tr_tab1" style="display: block;" >
+                        <?= $form->field($addForm, 'type')->input('hidden',['value' => 'enrollment']) ?>
                         <div class="tr-form">
                             <div class="group-col">
                                 <div class="field value-price">
-                                    <input type="text" name="price" value="10000000" />
+                                    <?= $form->field($addForm, 'price')->textInput(['placeholder' => 'Сумма']) ?>
                                 </div>
-                                <div class="field">
-                                    <input type="text" name="name" placeholder="Название проекта" />
-                                </div>
-                                <div class="field">
-                                    <input type="text" name="work" placeholder="Работа проекта" />
-                                </div>
-                                <div class="radio-field">
-                                    <label><input type="radio" class="styler" name="nal" checked />Безнал</label>
-                                    <label><input type="radio" class="styler" name="nal" />Наличными</label>
-                                </div>
-                            </div>
-                            <div class="group-col">
-                                <div class="field">
-                                    <textarea name="message" placeholder="Комментарий"></textarea>
-                                </div>
-                            </div>
-                            <div class="group-bts">
-                                <input type="submit" class="submit-btn" value="Добавить" />
-                                <a href="#" class="cancel-btn">Отмена</a>
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="tr-tab-item tab-item" id="tr_tab2" style="display: none;">
-                        <div class="tr-form">
-                            <div class="group-col">
-                                <div class="field value-price">
-                                    <input type="text" name="price" value="10000000" />
-                                </div>
                                 <div class="field">
-                                    <input type="text" name="name" placeholder="Название проекта" />
+                                    <?php
+                                    $list=array();
+                                    foreach ($clients as $client){
+                                        $list[$client['id']] = $client['name'];
+                                    }
+                                    ?>
+                                    <?=$form->field($addForm, 'client_id')->dropDownList($list,
+                                        [
+                                            'prompt' => 'Выберите клиента',
+                                            'placeholder' => 'Выберите клиента'
+                                        ]);?>
+<!--                                    --><?//= $form->field($addForm, 'client_id')->textInput(['placeholder' => 'Клиент']) ?>
                                 </div>
+
                                 <div class="field">
-                                    <input type="text" name="work" placeholder="Работа проекта" />
+                                    <?=$form->field($addForm, 'project_id')->dropDownList(array(),
+                                        [
+                                            'prompt' => 'Проект',
+                                            'placeholder' => 'Выберите проект'
+                                        ]);?>
+<!--                                    --><?//= $form->field($addForm, 'project_id')->textInput(['placeholder' => 'Название проекта', 'disabeled' => 'disabeled']) ?>
                                 </div>
-                                <div class="field">
-                                    <input type="text" name="emp" placeholder="Сотрудник" />
+
+                                <div class="field implementer" style="display:none;">
+                                    <?= $form->field($addForm, 'implementer')->textInput(['placeholder' => 'Сотрудник']) ?>
+                                    <?= $form->field($addForm, 'implementer_id')->input('hidden',['value' => '']) ?>
                                 </div>
                                 <div class="radio-field">
-                                    <label><input type="radio" class="styler" name="nal" checked />Безнал</label>
-                                    <label><input type="radio" class="styler" name="nal" />Наличными</label>
+                                    <?php
+                                    $addForm->cash = 1;
+                                    ?>
+                                    <?= $form->field($addForm, 'cash')->radioList(
+                                        [
+                                            0 => 'Безнал',
+                                            1 => 'Наличными'
+                                        ],
+                                        [
+                                            'item' => function ($index, $label, $name, $checked, $value) {
+                                                return
+                                                    '<label>' . Html::radio($name, $checked, ['value' => $value, 'class' => 'styler']) . $label . '</label>';
+                                            },
+                                        ]
+                                    )->label();
+                                    ?>
                                 </div>
                             </div>
                             <div class="group-col">
                                 <div class="field">
-                                    <textarea name="message" placeholder="Комментарий"></textarea>
+                                    <?= $form->field($addForm, 'comment')->textarea(['placeholder' => 'Комментарий']) ?>
                                 </div>
                             </div>
                             <div class="group-bts">
-                                <input type="submit" class="submit-btn" value="Добавить" />
+                                <?= Html::submitButton('Добавить', ['class' => 'submit-btn']) ?>
                                 <a href="#" class="cancel-btn">Отмена</a>
                             </div>
                         </div>
-                    </div>
+                    </fieldset>
+
+
 
                 </div>
             </div>
             <div class="clear"></div>
-        </form>
+        <?php ActiveForm::end(); ?>
     </div>
 
     <!-- add multi transactions -->

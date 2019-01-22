@@ -8,10 +8,16 @@
 
 namespace app\controllers;
 
+use app\models\Client;
+use app\models\forms\TransactionForm;
+use app\models\Implementer;
 use Yii;
+use app\models\Transaction;
 use yii\web\Controller;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
+use app\models\TransactionSearch;
+use yii\widgets\ActiveForm;
 
 class PayController extends Controller
 {
@@ -61,9 +67,56 @@ class PayController extends Controller
         return $this->goHome();
     }
 
-    public function actionTransaction(){
+    public function actionTransactions(){
         $this->view->title = 'ТРАНЗАКЦИИ | Платежка';
         $this->view->registerMetaTag(['name'=>'description', 'content'=>'']);
-        return $this->render('transaction');
+
+        $searchModel = new TransactionSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+
+        $addForm = new TransactionForm();
+        if ($addForm->load(Yii::$app->request->post())) {
+            if (empty ($errorForm = ActiveForm::validate($addForm))) {
+
+                $transaction = new Transaction();
+                $transaction->client_id = $addForm->client_id;
+                $transaction->project_id = $addForm->project_id;
+                $transaction->price = $addForm->price;
+                $transaction->cash = $addForm->cash;
+                $transaction->type = $addForm->type;
+                $transaction->date = $addForm->date;
+                $transaction->comment = $addForm->comment;
+                $transaction->manager_id = $addForm->manager_id;
+                $transaction->update_id = $addForm->update_id;
+                if (!empty($addForm->implementer_id) && isset($addForm->implementer_id)){
+                    $transaction->implementer = $addForm->implementer_id;
+                } elseif(!empty($addForm->implementer) && isset($addForm->implementer)) {
+                    $newImplementer = new Implementer();
+                    $newImplementer -> name = $addForm->implementer;
+                    if ($newImplementer->save()){// -------------------------------------------обработать случай если не прошел валидацию новый исполнитель
+                        $transaction->implementer = $newImplementer->id;
+                    } 
+                }
+
+                if ($transaction->save(false)) {
+                    Yii::$app->session->setFlash('success', 'Транзакция успешно добавлена.');
+                    return $this->refresh();
+                }
+            } 
+        }
+
+
+
+        
+        return $this->render('transaction', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+            'addForm' => $addForm,
+            'errorForm' => $errorForm,
+            'clients' => Client::find()->asArray()->all(),
+            'implementers' => Implementer::find()->asArray()->all(),
+        ]);
+        
     }
 }

@@ -50,7 +50,7 @@ IeAsset::register($this);
                         'options' => ['class' => ''],
                         'items' => [
                             ['label' => 'Обзор', 'url' => ['/pay/index']],
-                            ['label' => 'Транзакции', 'url' => ['/pay/transaction']],
+                            ['label' => 'Транзакции', 'url' => ['/pay/transactions']],
                             ['label' => 'Клиенты', 'url' => ['/client/all']],
                             Yii::$app->user->isGuest ?(
                                 ['label' => 'Login', 'url' => ['/site/login']]

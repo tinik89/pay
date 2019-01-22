@@ -56,7 +56,7 @@ class ClientController extends Controller
         
         return $this->render('show', [
             'projectForm'=>$projectForm,
-            'tags' => Tag::find()->all(),
+            'tags' => Tag::find()->asArray()->all(),
         ]);
     }
 }
