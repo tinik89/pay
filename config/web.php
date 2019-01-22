@@ -52,7 +52,7 @@ $config = [
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            'suffix' => '.html',
+           // 'suffix' => '.html',
             'rules' => [
                 [
                     'pattern' => '',
@@ -63,14 +63,14 @@ $config = [
                 'project/<id:\d+>' => 'project/show',
             ],
         ],
-//        'formatter ' => [
-//            'class' => 'yii\i18n\Formatter',
-//            'defaultTimeZone' => 'Europe/Moscow',
-//            'timeZone' => 'GMT+3',
-//            'dateFormat' => 'd MMMM yyyy',
-//            'datetimeFormat' => 'd-M-Y H:i:s',
-//            'timeFormat' => 'H:i:s',
-//        ],
+        'formatter ' => [
+            'class' => 'yii\i18n\Formatter',
+            'defaultTimeZone' => 'Europe/Moscow',
+            'timeZone' => 'GMT+3',
+            'dateFormat' => 'd MMMM yyyy',
+            'datetimeFormat' => 'd-M-Y H:i:s',
+            'timeFormat' => 'H:i:s',
+        ],
 
     ],
     'params' => $params,

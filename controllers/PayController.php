@@ -115,6 +115,8 @@ class PayController extends Controller
             } 
         }
 
+        $transaction = Transaction::find()->with('project', 'client')->orderBy(['date' => SORT_DESC])->all();
+
 
 
         
@@ -125,6 +127,7 @@ class PayController extends Controller
             'errorForm' => $errorForm,
             'clients' => Client::find()->asArray()->all(),
             'implementers' => Implementer::find()->asArray()->all(),
+            'transaction' => $transaction,
         ]);
         
     }

@@ -87,4 +87,7 @@ a.add-client-btn, a.add-project-btn {
     text-align: center;
     color: #7ED321;
 }
+.trans-item table tr td .date span, .trans-items .title span{
+    text-transform: capitalize;
+}
 /*ENDtib*/

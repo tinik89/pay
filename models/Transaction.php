@@ -61,9 +61,9 @@ class Transaction extends \yii\db\ActiveRecord
         ];
     }
     
-//    public function getClient(){
-//        return $this->hasOne(Client::className(), ['id' => 'client_id']);
-//    }
+    public function getClient(){
+        return $this->hasOne(Client::className(), ['id' => 'client_id']);
+    }
     public function getProject(){
         return $this->hasOne(Project::className(), ['id' => 'project_id']);
     }
