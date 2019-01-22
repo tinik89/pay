@@ -60,7 +60,7 @@ $config = [
                     'suffix' => '',
                 ],
                 '<action:\w+>' => 'pay/<action>',
-                'client/<id:\d+>' => 'client/show',
+                'project/<id:\d+>' => 'project/show',
             ],
         ],
 //        'formatter ' => [

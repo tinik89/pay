@@ -51,7 +51,7 @@ IeAsset::register($this);
                         'items' => [
                             ['label' => 'Обзор', 'url' => ['/pay/index']],
                             ['label' => 'Транзакции', 'url' => ['/pay/transactions']],
-                            ['label' => 'Клиенты', 'url' => ['/client/all']],
+                            ['label' => 'Проекты', 'url' => ['/project/index']],
                             Yii::$app->user->isGuest ?(
                                 ['label' => 'Login', 'url' => ['/site/login']]
                             ):(

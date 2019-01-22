@@ -1,8 +1,10 @@
 <?php
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!не используется
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Url;
 ?>
+
 
 <!-- wrapper -->
 <div class="wrapper">
@@ -12,8 +14,7 @@ use yii\helpers\Url;
 
         <!-- title -->
         <div class="m-title">Клиенты</div>
-        <a href="#" class="add-project-btn">Добавить проект</a>
-
+        <a href="#" class="add-client-btn">Добавить клиента</a>
         <!-- search -->
         <div class="search">
             <input type="text" placeholder="Поиск по проектам" />
@@ -33,11 +34,24 @@ use yii\helpers\Url;
 
         <!-- check items -->
         <div class="checkbox-items">
-            <?php
-            foreach ($tags as $tag){
-                echo '<div class="checkbox-item"><label><input type="checkbox" class="styler" value="'.$tag->id.'" checked="checked"/>'.$tag->tag.'</label></div>';
-            }
-            ?>
+            <div class="checkbox-item">
+                <label><input type="checkbox" class="styler" />Маркетинг</label>
+            </div>
+            <div class="checkbox-item">
+                <label><input type="checkbox" class="styler" />Сайты</label>
+            </div>
+            <div class="checkbox-item active">
+                <label><input type="checkbox" class="styler" checked />Контекст</label>
+            </div>
+            <div class="checkbox-item">
+                <label><input type="checkbox" class="styler" />Дизайн</label>
+            </div>
+            <div class="checkbox-item active">
+                <label><input type="checkbox" class="styler" checked />SMM</label>
+            </div>
+            <div class="checkbox-item">
+                <label><input type="checkbox" class="styler" />SEO</label>
+            </div>
         </div>
 
         <!-- date select -->
@@ -66,87 +80,43 @@ use yii\helpers\Url;
                     <th>Расходы</th>
                     <th></th>
                 </tr>
+                <?php foreach ($projects as $project):?>
+
+
                 <tr>
                     <td>
-                        <div class="service">Разработка сайта</div>
-                        <a href="#" class="name">Ваш доктор</a>
-                        <div class="category">Маркетинг</div>
+                        <div class="service"><?=$project->name?></div>
+                        <a href="<?= Url::to(['client/show', 'id' => $project -> client])?>" class="name"><?= $project -> clientinfo -> name ?></a>
+                        <div class="category"><?= $project -> taginfo -> tag ?></div>
                     </td>
                     <td>
-                        <div class="price">5 000 000 ₽</div>
-                        <div class="price minus"><span>Долг:</span> 4 774 000 ₽</div>
-                        <div class="price plus"><span>Текущий баланс:</span> 435 000 ₽ (11%)</div>
+                        <div class="price"> <?= $project -> price ?> </div>
+                        <div class="price minus"><span>Долг:</span> <?= $project -> credit ?> ₽</div>
+                        <div class="price plus"><span>Текущий баланс:</span> <?= $project -> debet ?> ₽ (<?= round($project -> debet / $project -> price *100); ?>%)</div>
                     </td>
+                    <?php
+                    $debetAll = 0;
+                    $debetString = '';
+                    $creditAll = 0;
+                    $creditString = '';
+                    foreach ($project -> transactions as $transaction):
+                        if ($transaction->type == 'enrollment'){
+                            $debetAll += $transaction->price;
+                            $debetString .= '<div class="price-detail-item"><span class="value">+'. $transaction->price .' ₽</span> <span class="date">'.date('d.m.Y', $transaction->date).'</span><span class="info" transactionid="' . $transaction->id . '"><span class="icon"></span><span class="content">' . $transaction->comment . '</span></span></div>';
+                        } else {
+                            $creditAll += $transaction->price;
+                            $creditString .= '<div class="price-detail-item"><span class="value">-'. $transaction->price .' ₽</span> <span class="date">'.date('d.m.Y', $transaction->date).'</span><span class="info" transactionid="' . $transaction->id . '"><span class="icon"></span><span class="content">' . $transaction->comment . '</span></span></div>';
+                        }
+                    endforeach;
+                    ?>
                     <td>
-                        <div class="price plus">100 500 ₽</div>
-                        <div class="price-detail-items">
-                            <div class="price-detail-item">
-                                <span class="value">+700 000 ₽</span>
-                                <span class="date">07.06.2019</span>
-											<span class="info">
-												<span class="icon"></span>
-												<span class="content">
-													Часть оплаты. Еще должны будут в следующем месяце доплатить 19 500 рублей
-												</span>
-											</span>
-                            </div>
-                            <div class="price-detail-item">
-                                <span class="value">+55 500 ₽</span>
-                                <span class="date">07.06.2019</span>
-											<span class="info">
-												<span class="icon"></span>
-												<span class="content">
-													Часть оплаты. Еще должны будут в следующем месяце доплатить 19 500 рублей
-												</span>
-											</span>
-                            </div>
-                            <div class="price-detail-item">
-                                <span class="value">+55 500 ₽</span>
-                                <span class="date">07.06.2019</span>
-											<span class="info">
-												<span class="icon"></span>
-												<span class="content">
-													Часть оплаты. Еще должны будут в следующем месяце доплатить 19 500 рублей
-												</span>
-											</span>
-                            </div>
-                        </div>
+                        <div class="price plus"><?= $debetAll ?> ₽</div>
+                        <div class="price-detail-items"> <?= $debetString ?></div>
                         <a href="#" class="add-price-btn plus">+ Поступление</a>
                     </td>
                     <td>
-                        <div class="price minus">77 000 ₽</div>
-                        <div class="price-detail-items">
-                            <div class="price-detail-item">
-                                <span class="value">+700 000 ₽</span>
-                                <span class="date">07.06.2019</span>
-											<span class="info">
-												<span class="icon"></span>
-												<span class="content">
-													Часть оплаты. Еще должны будут в следующем месяце доплатить 19 500 рублей
-												</span>
-											</span>
-                            </div>
-                            <div class="price-detail-item">
-                                <span class="value">+55 500 ₽</span>
-                                <span class="date">07.06.2019</span>
-											<span class="info">
-												<span class="icon"></span>
-												<span class="content">
-													Часть оплаты. Еще должны будут в следующем месяце доплатить 19 500 рублей
-												</span>
-											</span>
-                            </div>
-                            <div class="price-detail-item">
-                                <span class="value">+55 500 ₽</span>
-                                <span class="date">07.06.2019</span>
-											<span class="info">
-												<span class="icon"></span>
-												<span class="content">
-													Часть оплаты. Еще должны будут в следующем месяце доплатить 19 500 рублей
-												</span>
-											</span>
-                            </div>
-                        </div>
+                        <div class="price minus"><?= $creditAll ?> ₽</div>
+                        <div class="price-detail-items"><?= $creditString ?></div>
                         <a href="#" class="add-price-btn minus">- Расход</a>
                     </td>
                     <td>
@@ -157,6 +127,8 @@ use yii\helpers\Url;
                         </div>
                     </td>
                 </tr>
+                <?php endforeach; ?>
+
             </table>
         </div>
 
@@ -202,42 +174,7 @@ use yii\helpers\Url;
                     </div>
                 </div>
 
-                <div class="projects-col">
-                    <div class="projects-item">
-                        <div class="title">Династия</div>
-                        <div class="count">125 <span>(7 долгов)</span></div>
-                        <div class="all-price minus"><span>Общий долг:</span> - 700 000 ₽</div>
-                        <div class="all-price plus"><span>Общий баланс:</span> + 7 000 000 ₽</div>
-                        <div class="list">
-                            <ul>
-                                <li>
-                                    <strong>Маркетинг:</strong>
-                                    <span class="value">1 000 000 ₽ <span class="percent">(100%)</span></span>
-                                </li>
-                                <li>
-                                    <strong>Контекст:</strong>
-                                    <span class="value">500 000 ₽ <span class="percent">(100%)</span></span>
-                                </li>
-                                <li>
-                                    <strong>Дизайн:</strong>
-                                    <span class="value">1 000 ₽ <span class="percent">(100%)</span></span>
-                                </li>
-                                <li>
-                                    <strong>Сайт:</strong>
-                                    <span class="value">1 000 000 ₽ <span class="percent">(100%)</span></span>
-                                </li>
-                                <li>
-                                    <strong>SMM:</strong>
-                                    <span class="value">1 000 000 ₽ <span class="percent">(100%)</span></span>
-                                </li>
-                                <li>
-                                    <strong>SEO:</strong>
-                                    <span class="value">1 000 ₽ <span class="percent">(100%)</span></span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+                
 
             </div>
         </div>
@@ -254,6 +191,8 @@ use yii\helpers\Url;
 <!-- Popups -->
 <div class="popups_group">
     <div class="overlay"></div>
+
+
 
     <!-- Edit Client Popup -->
     <div class="nonebox" id="edit-client-popup">
@@ -339,51 +278,27 @@ use yii\helpers\Url;
             </form>
             <span class="close"></span>
         </div>
+
     </div>
-    <!-- ADD Project Popup -->
-    <div class="nonebox add" id="add-project-popup">
+<!-- ADD Client Popup -->
+    <div class="nonebox add" id="add-client-popup">
         <!-- edit client -->
         <div class="add-tr-form white-box">
-            <?$request = Yii::$app->request;?>
             <?php $form = ActiveForm::begin([
-                'id' => 'new-project-form',
-                'action'=> Url::to(['/ajax/new-project']),
+                'id' => 'new-client-form',
+                'action'=> Url::to(['/ajax/new-client']),
                 'fieldConfig' => [
                     'template' => "<div class=\"field\">{input}{error}</div>",
                 ],
             ]); ?>
-            <h2>Добавить проект</h2>
-            <div class="message"></div>
+            <h2>Создать клиента</h2>
             <div class="tr-form">
-                <label for="favorite_team">Любимая команда:</label>
                 <div class="group-col">
-                    <?= $form->field($projectForm, 'name')->textInput(['placeholder' => 'Название проекта']) ?>
-                </div>
-                <div class="group-col">
-                    <?php
-                    $list=array();
-                    foreach ($tags as $tag){
-                        $list[$tag['id']] = $tag['tag'];
-                    }
-                    ?>
-                    <?=$form->field($projectForm, 'tag')->dropDownList($list,
-                        [
-                        'prompt' => 'Выберите категорию',
-                        'class' => 'styler'
-                        ]);?>
-                </div>
-                <div class="group-col">
-                    <?= $form->field($projectForm, 'price')->textInput(['placeholder' => 'Цена']) ?>
-                </div>
-                <div class="group-col">
-                    <?= $form->field($projectForm, 'date_start')->textInput(['placeholder' => 'Дата начала','class' => 'datepicker']) ?>
-                </div>
-                <div class="group-col">
-                    <?= $form->field($projectForm, 'client')->input('hidden',['value' => $request->get('id')]) ?>
+                    <?= $form->field($clientForm, 'name')->textInput(['placeholder' => 'Клиент']) ?>
                 </div>
 
                 <div class="group-col">
-                    <?= Html::submitButton('Добавить', ['class' => 'add-submit-btn', 'name' => 'new-project-button']) ?>
+                    <?= Html::submitButton('Добавить', ['class' => 'add-submit-btn', 'name' => 'new-client-button']) ?>
                 </div>
 
             </div>
@@ -393,4 +308,5 @@ use yii\helpers\Url;
         </div>
 
     </div>
+
 </div>

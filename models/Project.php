@@ -62,7 +62,11 @@ class Project extends \yii\db\ActiveRecord
         return $this->hasMany(Transaction::className(), ['project_id' => 'id']);
     }
     
-    public function getClient(){
-        return $this->hasOne(Client::className(),['id' => 'client_id']);
+    public function getClientinfo(){
+        return $this->hasOne(Client::className(),['id' => 'client']);
+    }
+
+    public function getTaginfo(){
+        return $this->hasOne(Tag::className(),['id' => 'tag']);
     }
 }
