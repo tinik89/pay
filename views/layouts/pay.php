@@ -3,6 +3,7 @@ use app\assets\AppAsset;
 use app\assets\IeAsset;
 use yii\helpers\Html;
 use yii\bootstrap\Nav;
+use yii\widgets\Menu;
 
 AppAsset::register($this);
 IeAsset::register($this);
@@ -47,11 +48,13 @@ IeAsset::register($this);
                 <div class="top-menu">
                     <?php
                     echo Nav::widget([
+                        'activateParents' => true,
                         'options' => ['class' => ''],
                         'items' => [
                             ['label' => 'Обзор', 'url' => ['/pay/index']],
                             ['label' => 'Транзакции', 'url' => ['/pay/transactions']],
-                            ['label' => 'Проекты', 'url' => ['/project/index']],
+                            ['label' => 'Клиенты', 'url' => ['/client/index']],
+                            ['label' => 'Проекты', 'url' => ['/project/index'], 'active' => ($this->context->route == 'project/show' || $this->context->route == 'project/index')],
                             Yii::$app->user->isGuest ?(
                                 ['label' => 'Login', 'url' => ['/login/index']]
                             ):(
@@ -60,6 +63,7 @@ IeAsset::register($this);
 
                         ],
                     ]);
+
                     ?>
                 </div>
 

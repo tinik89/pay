@@ -8,6 +8,7 @@
 
 namespace app\controllers;
 
+use app\models\Client;
 use app\models\Project;
 use app\models\Tag;
 use Yii;
@@ -70,15 +71,19 @@ class ProjectController extends Controller
 
     public function actionShow()
     {
-        $this->view->title = 'ПРОЕКТЫ | Платежка';
+        $clientID = Yii::$app->request->get('id');
+        $client = Client::findOne($clientID);
+        $clientName = $client->name;
+        $this->view->title = 'ПРОЕКТЫ '.$clientName.' | Платежка';
         $this->view->registerMetaTag(['name'=>'description', 'content'=>'']);
 
         $projectForm = new ProjectForm();
 
-        $projects = Project::find()->with('transactions', 'clientinfo', 'taginfo')->where('client='.Yii::$app->request->get('id'))->all();
+        $projects = Project::find()->with('transactions', 'clientinfo', 'taginfo')->where('client='.$clientID)->all();
         
         return $this->render('show', [
             'projectForm'=>$projectForm,
+            'clientName' => $clientName,
             'projects' => $projects,
             'tags' => Tag::find()->asArray()->all(),
         ]);

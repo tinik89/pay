@@ -12,8 +12,7 @@ use yii\helpers\Url;
     <div class="clients-titles">
 
         <!-- title -->
-        <div class="m-title">Клиенты</div>
-        <a href="#" class="add-client-btn">Добавить клиента</a>
+        <div class="m-title">Проекты</div>
         <!-- search -->
         <div class="search">
             <input type="text" placeholder="Поиск по проектам" />
@@ -266,33 +265,6 @@ use yii\helpers\Url;
         </div>
 
     </div>
-<!-- ADD Client Popup -->
-    <div class="nonebox add" id="add-client-popup">
-        <!-- edit client -->
-        <div class="add-tr-form white-box">
-            <?php $form = ActiveForm::begin([
-                'id' => 'new-client-form',
-                'action'=> Url::to(['/ajax/new-client']),
-                'fieldConfig' => [
-                    'template' => "<div class=\"field\">{input}{error}</div>",
-                ],
-            ]); ?>
-            <h2>Создать клиента</h2>
-            <div class="tr-form">
-                <div class="group-col">
-                    <?= $form->field($clientForm, 'name')->textInput(['placeholder' => 'Клиент']) ?>
-                </div>
 
-                <div class="group-col">
-                    <?= Html::submitButton('Добавить', ['class' => 'add-submit-btn', 'name' => 'new-client-button']) ?>
-                </div>
-
-            </div>
-            <div class="clear"></div>
-            <?php ActiveForm::end(); ?>
-            <span class="close"></span>
-        </div>
-
-    </div>
 
 </div>

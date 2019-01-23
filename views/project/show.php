@@ -11,7 +11,7 @@ use yii\helpers\Url;
     <div class="clients-titles">
 
         <!-- title -->
-        <div class="m-title">Клиенты</div>
+        <div class="m-title">Проекты <?= $clientName ?></div>
         <a href="#" class="add-project-btn">Добавить проект</a>
 
         <!-- search -->
@@ -21,7 +21,7 @@ use yii\helpers\Url;
         </div>
 
     </div>
-
+<?php if (!empty($projects)){?>
     <!-- clients filter -->
     <div class="clients-filter">
 
@@ -166,6 +166,11 @@ use yii\helpers\Url;
         </div>
 
     </div>
+<?php
+} else {
+    echo '<h2>Нет проектов.</h2>';
+}
+?>
 
 </div>
 

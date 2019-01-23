@@ -29,7 +29,7 @@ class Client extends ActiveRecord
         ];
     }
 
-//    public function getTransactions(){
-//        return $this -> hasMany(Transaction::className(), ['client_id' => 'id']);
-//    }
+    public function getProjects(){
+        return $this -> hasMany(Project::className(), ['client' => 'id']);
+    }
 }

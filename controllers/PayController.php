@@ -74,7 +74,7 @@ class PayController extends Controller
         $searchModel = new TransactionSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-
+        $errorForm = '';
         $addForm = new TransactionForm();
         if ($addForm->load(Yii::$app->request->post())) {
             if (empty ($errorForm = ActiveForm::validate($addForm))) {
