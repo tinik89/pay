@@ -294,11 +294,10 @@ $(function () {
             console.log(ui.item.value);
             $.ajax({
                 type: 'POST',
-                url: '/ajax/get-project.html',
+                url: '/ajax/get-project',
                 data: 'client='+ui.item.value,
                 success: function (msg) {
                     var projectsArr = JSON.parse(msg);
-                    console.log(projectsArr);
                     $("#transactionform-project_id").html('');
                     $("#transactionform-project_id").val('');
                     $("#transactionform-project_id").combobox("destroy");

@@ -115,7 +115,7 @@ class PayController extends Controller
             } 
         }
 
-        $transaction = Transaction::find()->with('project', 'client')->orderBy(['date' => SORT_DESC])->all();
+        $transaction = Transaction::find()->with('project', 'client', 'implementerinfo')->orderBy(['date' => SORT_DESC])->all();
 
 
 

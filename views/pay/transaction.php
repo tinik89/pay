@@ -397,12 +397,11 @@ $this->registerJS($js);
                     <div class="category"><?= $transaction->project->name ?></div>
                 </td>
                 <td>
-                    <div class="price"><?php if ($transaction->type == 'enrollment') {
-                            echo '+';
+                    <?php if ($transaction->type == 'enrollment') {
+                            echo '<div class="price">+'.$transaction->price .'₽ </div>';
                         } else {
-                            echo '-';
-                        } ?> <?= $transaction->price ?> ₽
-                    </div>
+                            echo '<div class="price minus">-'.$transaction->price .'₽ <p>'.$transaction->implementerinfo->name.'</p></div>';
+                        } ?>
                 </td>
                 <td>
                     <div class="method"><?php if ($transaction->cash == 1) {
@@ -412,7 +411,13 @@ $this->registerJS($js);
                         } ?></div>
                 </td>
                 <td>
-                    <div class="info"><?= $transaction->comment ?></div>
+                    <div class="info"><?php
+                        if (!empty($transaction->comment)){
+                            echo $transaction->comment;
+                        } else {
+                            echo '*Комментарий отсутствует';
+                        }?>
+                    </div>
                 </td>
             </tr>
         <?php endforeach; ?>

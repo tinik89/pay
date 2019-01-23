@@ -22,6 +22,7 @@ class AjaxController extends Controller
     public $layout = 'ajax';
 
     public function actionNewClient () {
+        die('||');
         $clientForm = new ClientForm();
         if (Yii::$app->request->isAjax && $clientForm->load(Yii::$app->request->post())) {
             if (!empty ($errorForm = ActiveForm::validate($clientForm))) {
