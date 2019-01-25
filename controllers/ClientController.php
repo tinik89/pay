@@ -10,6 +10,7 @@ namespace app\controllers;
 
 
 use app\models\Client;
+use app\models\forms\DeleteForm;
 use yii\base\Controller;
 use yii\filters\AccessControl;
 use app\models\forms\ClientForm;
@@ -39,11 +40,13 @@ class ClientController extends Controller
         $this->view->registerMetaTag(['name'=>'description', 'content'=>'']);
 
         $clientForm = new ClientForm();
+        $deleteForm = new DeleteForm();
 
         $clients = Client::find()->with('projects')->orderBy('name', SORT_ASC)->all();
 
         return $this->render('index', [
             'clientForm' => $clientForm,
+            'deleteForm' => $deleteForm,
             'clients' => $clients,
         ]);
     }

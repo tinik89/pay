@@ -9,6 +9,7 @@
 namespace app\controllers;
 
 use app\models\Client;
+use app\models\forms\DeleteForm;
 use app\models\forms\TransactionForm;
 use app\models\Implementer;
 use Yii;
@@ -116,9 +117,16 @@ class PayController extends Controller
             } 
         }
 
+//        Yii::$app->db->createCommand()->batchInsert('client', ['name'], [
+//            ['Tom'],
+//            ['Jane'],
+//            ['Linda'],
+//        ])->execute();
+
+
         $transaction = Transaction::find()->with('project', 'client', 'implementerinfo')->orderBy(['date' => SORT_DESC])->all();
 
-
+        $deleteForm = new DeleteForm();
 
         
         return $this->render('transaction', [
@@ -129,6 +137,7 @@ class PayController extends Controller
             'clients' => Client::find()->asArray()->all(),
             'implementers' => Implementer::find()->asArray()->all(),
             'transaction' => $transaction,
+            'deleteForm' => $deleteForm,
         ]);
         
     }

@@ -50,6 +50,44 @@ $(window).on("load", function () {
 
 $(function () {
     /*tin*/
+    // POPUP удалить запись
+    $('.clients-btn.delete').on('click', function () {
+        $('#del-form input#id-del-object').val($(this).closest('tr').find('.del-name').attr('object-id'));
+        $('#del-form h2 span').text($(this).closest('tr').find('.del-name').text());
+        $('.overlay').fadeIn(250, function () {
+            $('#del-client-popup').animate({'top': $(window).scrollTop() + 100}, 500);
+        });
+        return false;
+    });
+    $('.overlay, #del-client-popup .close, #del-client-popup .cancel-submit-btn').click(function () {
+        $('#del-client-popup').animate({'top': '-3000px'}, 500, function () {
+            $('.overlay').fadeOut(250);
+        });
+        return false;
+    });
+    //delet ajax
+    $('#del-form .add-submit-btn').on('click', function(){
+        var $yiiform = $(this).parents('form');
+        var dataForm = $yiiform.serializeArray();
+        // отправляем данные на сервер
+        $.ajax({
+            type: $yiiform.attr('method'),
+            url: $yiiform.attr('action'),
+            data: dataForm,
+            success: function (msg) {
+                if (msg){
+                    var trId = '#tr-id-' + $yiiform.find('#id-del-object').val();
+                    $(trId).remove();
+                    $('#del-client-popup .close').trigger('click');
+                } else {
+                    alert('Ошибка!!!');
+                }
+            }
+        });
+
+        return false;
+    });
+
     // POPUP новый клиент
     $('.add-client-btn').on('click', function () {
         $('.overlay').fadeIn(250, function () {
@@ -92,7 +130,8 @@ $(function () {
                 console.log(msg);
                 console.log(oMsg);
                 if (oMsg.add) {
-                    $('#new-client-form .help-block-error').addClass('green').html(oMsg.add);
+                   // $('#new-client-form .help-block-error').addClass('green').html(oMsg.add);
+                    window.location.href = '/project/'+oMsg.add;
                 } else if (oMsg.error) {
                     $('#new-client-form .help-block-error').removeClass('green').html(oMsg.error);
                 }
@@ -115,6 +154,12 @@ $(function () {
                 var oMsg = JSON.parse(msg)
                 if (oMsg.add) {
                     $('#new-project-form .message').addClass('green').html(oMsg.add);
+                    setTimeout(function() {
+                        //var curUrlArr = window.location.href.split('#');
+                        //window.location.href = curUrlArr[0] + '#tr-id-' + oMsg.id;
+                        //window.location.reload(true);
+                        window.location.reload();
+                    }, 1000);
                 } else if (oMsg.error) {
                     $('#new-project-form .message').removeClass('green').html(oMsg.error);
                 }
@@ -202,39 +247,6 @@ $(function () {
             });
         },
 
-        // _createShowAllButton: function () {
-        //     var input = this.input,
-        //         wasOpen = false;
-        //
-        //     $("<a>")
-        //         .attr("tabIndex", -1)
-        //         .attr("title", "Показать все")
-        //         .tooltip()
-        //         .appendTo(this.wrapper)
-        //         .button({
-        //             icons: {
-        //                 primary: "ui-icon-triangle-1-s"
-        //             },
-        //             text: false
-        //         })
-        //         .removeClass("ui-corner-all")
-        //         .addClass("custom-combobox-toggle ui-corner-right")
-        //         .on("mousedown", function () {
-        //             wasOpen = input.autocomplete("widget").is(":visible");
-        //         })
-        //         .on("click", function () {
-        //             input.trigger("focus");
-        //
-        //             // Close if already visible
-        //             if (wasOpen) {
-        //                 return;
-        //             }
-        //
-        //             // Pass empty string as value to search for, displaying all results
-        //             input.autocomplete("search", "");
-        //         });
-        // },
-
         _source: function (request, response) {
             var matcher = new RegExp($.ui.autocomplete.escapeRegex(request.term), "i");
             response(this.element.children("option").map(function () {
@@ -310,6 +322,27 @@ $(function () {
                 }
             });
         },
+    });
+
+    // окно транзакций на странице проекта
+    /* Edit Client Popup */
+    $('.add-price-btn').click(function () {
+        if ($(this).hasClass('plus')){
+            $('#tr-form .tab-menu li:first a').trigger('click');
+        } else {
+            $('#tr-form .tab-menu li:last a').trigger('click');
+        }
+        $('.overlay').fadeIn(250, function () {
+            $('#edit-client-popup').animate({'top': $(window).scrollTop() + 100}, 500);
+        });
+        return false;
+    });
+
+    $('.overlay, #edit-client-popup .cancel-btn, #edit-client-popup .close').click(function () {
+        $('#edit-client-popup').animate({'top': '-3000px'}, 500, function () {
+            $('.overlay').fadeOut(250);
+        });
+        return false;
     });
     /*END tin*/
     var width = $(window).width();
@@ -423,19 +456,7 @@ $(function () {
         return false;
     });
 
-    /* Edit Client Popup */
-    $('.clients-btn.edit').click(function () {
-        $('.overlay').fadeIn(250, function () {
-            $('#edit-client-popup').animate({'top': $(window).scrollTop() + 100}, 500);
-        });
-        return false;
-    });
-    $('.overlay, #edit-client-popup .cancel-btn, #edit-client-popup .close').click(function () {
-        $('#edit-client-popup').animate({'top': '-3000px'}, 500, function () {
-            $('.overlay').fadeOut(250);
-        });
-        return false;
-    });
+
 
     /* Validation Forms */
 

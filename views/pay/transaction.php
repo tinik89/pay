@@ -78,7 +78,7 @@ $this->registerJS($js);
             'fieldConfig' => [
                 'template' => "{input}{error}",
             ],
-            'enableClientValidation' => false,
+            //'enableClientValidation' => false,
         ]); ?>
         <div class="calendar">
             <div id="datepicker_inline"></div>
@@ -98,6 +98,9 @@ $this->registerJS($js);
                     <?= $form->field($addForm, 'type')->input('hidden', ['value' => 'enrollment']) ?>
                     <div class="tr-form">
                         <div class="group-col">
+                            <div class="field value-price">
+                                <?= $form->field($addForm, 'price')->textInput(['placeholder' => 'Сумма']) ?>
+                            </div>
                             <div class="field value-price">
                                 <?= $form->field($addForm, 'price')->textInput(['placeholder' => 'Сумма']) ?>
                             </div>
@@ -387,7 +390,7 @@ $this->registerJS($js);
 
             <?= $beginTable ?>
 
-            <tr>
+            <tr id="tr-id-<?=$transaction -> id?>">
                 <td>
                     <div class="date"><?= $curDate ?><span><?= $curDay ?></span></div>
                 </td>
@@ -398,9 +401,9 @@ $this->registerJS($js);
                 </td>
                 <td>
                     <?php if ($transaction->type == 'enrollment') {
-                            echo '<div class="price">+'.$transaction->price .'₽ </div>';
+                            echo '<div class="price del-name" object-id="' . $transaction->id . '">+'.$transaction->price .'₽ </div>';
                         } else {
-                            echo '<div class="price minus">-'.$transaction->price .'₽ <p>'.$transaction->implementerinfo->name.'</p></div>';
+                            echo '<div class="price minus del-name" object-id="' . $transaction->id . '">-'.$transaction->price .'₽ <p>'.$transaction->implementerinfo->name.'</p></div>';
                         } ?>
                 </td>
                 <td>
@@ -419,6 +422,8 @@ $this->registerJS($js);
                         }?>
                     </div>
                 </td>
+
+                <td><a href="#" class="clients-btn delete">Удалить</a></td>
             </tr>
         <?php endforeach; ?>
         <?php $endTable = '</table></div> </div>'; ?>
@@ -522,6 +527,35 @@ $this->registerJS($js);
             </form>
             <span class="close"></span>
         </div>
+    </div>
+
+    <!-- Delete alert Popup -->
+    <div class="nonebox add" id="del-client-popup">
+        <!-- edit client -->
+        <div class="add-tr-form white-box">
+            <?php $form = ActiveForm::begin([
+                'id' => 'del-form',
+                'action' => Url::to(['/ajax/remove-form']),
+                'fieldConfig' => [
+                    'template' => "<div class=\"field\">{input}{error}</div>",
+                ],
+            ]); ?>
+            <h2>Удалить транзакцию <span></span>?</h2>
+            <div class="tr-form">
+                <?= $form->field($deleteForm, 'object')->input('hidden', ['value' => 'transaction']) ?>
+                <?= $form->field($deleteForm, 'id')->input('hidden', ['id' => 'id-del-object']) ?>
+
+                <div class="group-col">
+                    <?= Html::submitButton('Удалить', ['class' => 'add-submit-btn', 'name' => 'del-client-button']) ?>
+                    <?= Html::button('Отмена', ['class' => 'cancel-submit-btn', 'name' => 'cancel-client-button']) ?>
+                </div>
+
+            </div>
+            <div class="clear"></div>
+            <?php ActiveForm::end(); ?>
+            <span class="close"></span>
+        </div>
+
     </div>
 
 </div>

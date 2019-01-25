@@ -90,4 +90,18 @@ a.add-client-btn, a.add-project-btn {
 .trans-item table tr td .date span, .trans-items .title span{
     text-transform: capitalize;
 }
+#del-form h2 span {
+    color: #FF455C;
+}
+.cancel-submit-btn {
+    background: #fff;
+    color: #FF455C;
+    padding: 9px;
+    border-radius: 2px;
+    font-weight: bold;
+    border: 1px solid #FF455C;
+    font-size: 20px;
+    cursor: pointer;
+    margin-left: 10px;
+}
 /*ENDtib*/

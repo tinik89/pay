@@ -8,6 +8,8 @@
 
 namespace app\controllers;
 
+use app\models\forms\DeleteForm;
+use app\models\Transaction;
 use Yii;
 use yii\base\Controller;
 use app\models\Client;
@@ -33,7 +35,7 @@ class AjaxController extends Controller
                     $client = new Client();
                     $client->name = $clientForm->name;
                     $client->save(false);
-                    return json_encode(['add' => 'Клиент добавлен']);
+                    return json_encode(['add' => $client -> id]);
                 }
             }
         }
@@ -72,10 +74,53 @@ class AjaxController extends Controller
                     $project->status = 1;
                     $project->credit = $projectForm->price;
                     $project->save(false);
-                    return json_encode(['add' => 'Проект добавлен']);
+                    return json_encode(['add' => 'Проект добавлен', 'id' =>  $project->id]);
                 }
             }
         }
         return false;
+    }
+
+    public function actionRemoveForm () {
+        $deleteForm = new DeleteForm();
+        if (Yii::$app->request->isAjax && $deleteForm->load(Yii::$app->request->post())) {
+            if (empty ($errorForm = ActiveForm::validate($deleteForm))) {
+                switch ($deleteForm->object){
+                    case 'client':
+                        $modelDel = Client::findOne($deleteForm->id);
+                        break;
+                    case 'project':
+                        $modelDel = Project::findOne($deleteForm->id);
+                        break;
+                    case 'transaction':
+                        $modelDel = Transaction::findOne($deleteForm->id);
+                        break;
+                }
+                
+                if ($modelDel){
+                    $modelDel->delete();
+                    return true;
+                }
+                
+            }
+        }
+        return false;
+
+    }
+
+    public function actionRemoveProject () {
+        $deleteForm = new DeleteForm();
+        if (Yii::$app->request->isAjax && $deleteForm->load(Yii::$app->request->post())) {
+            if (empty ($errorForm = ActiveForm::validate($deleteForm))) {
+                $project = Project::findOne($deleteForm->id);
+                if ($project){
+                    $project->delete();
+                    return true;
+                }
+
+            }
+        }
+        return false;
+
     }
 }

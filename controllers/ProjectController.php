@@ -9,6 +9,7 @@
 namespace app\controllers;
 
 use app\models\Client;
+use app\models\forms\DeleteForm;
 use app\models\Project;
 use app\models\Tag;
 use Yii;
@@ -61,11 +62,14 @@ class ProjectController extends Controller
         $clientForm = new ClientForm();
 
         $projects = Project::find()->with('transactions', 'clientinfo', 'taginfo')->all();
+
+        $deleteForm = new DeleteForm();
         
         return $this->render('index', [
             'clientForm' => $clientForm,
             'projects' => $projects,
             'tags' => Tag::find()->asArray()->all(),
+            'deleteForm' => $deleteForm,
         ]);
     }
 
@@ -81,11 +85,14 @@ class ProjectController extends Controller
 
         $projects = Project::find()->with('transactions', 'clientinfo', 'taginfo')->where('client='.$clientID)->all();
         
+        $deleteForm = new DeleteForm();
+        
         return $this->render('show', [
             'projectForm'=>$projectForm,
             'clientName' => $clientName,
             'projects' => $projects,
             'tags' => Tag::find()->asArray()->all(),
+            'deleteForm' => $deleteForm,
         ]);
     }
 }
