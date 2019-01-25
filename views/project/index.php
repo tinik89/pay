@@ -77,7 +77,7 @@ use yii\helpers\Url;
                     <td>
                         <div class="price"> <?= $project -> price ?> </div>
                         <div class="price minus"><span>Долг:</span> <?= $project -> credit ?> ₽</div>
-                        <div class="price plus"><span>Текущий баланс:</span> <?= $project -> debet ?> ₽ (<?= round($project -> debet / $project -> price *100); ?>%)</div>
+                        <div class="price plus"><span>Текущий баланс:</span> <?= $project -> debet ?> ₽ (<?= round($project -> debet / $project -> price *100, 1); ?>%)</div>
                     </td>
                     <?php
                     $debetAll = 0;
