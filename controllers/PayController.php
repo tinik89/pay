@@ -77,6 +77,7 @@ class PayController extends Controller
 
         $errorForm = '';
         $addForm = new TransactionForm();
+        $addForms = [new TransactionForm()];
         if ($addForm->load(Yii::$app->request->post())) {
             if (empty ($errorForm = ActiveForm::validate($addForm))) {
 
@@ -133,6 +134,7 @@ class PayController extends Controller
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
             'addForm' => $addForm,
+            'addForms' => $addForms,
             'errorForm' => $errorForm,
             'clients' => Client::find()->asArray()->all(),
             'implementers' => Implementer::find()->asArray()->all(),
