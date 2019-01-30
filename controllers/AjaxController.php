@@ -9,6 +9,7 @@
 namespace app\controllers;
 
 use app\models\forms\DeleteForm;
+use app\models\Implementer;
 use app\models\Transaction;
 use Yii;
 use yii\base\Controller;
@@ -17,6 +18,7 @@ use app\models\forms\ClientForm;
 use app\models\Project;
 use app\models\forms\ProjectForm;
 use yii\widgets\ActiveForm;
+use app\models\forms\TransactionForm;
 
 
 class AjaxController extends Controller
@@ -94,6 +96,16 @@ class AjaxController extends Controller
                         break;
                     case 'transaction':
                         $modelDel = Transaction::findOne($deleteForm->id);
+                        $project = Project::findOne($modelDel->project_id);
+                        if ($modelDel->type == 'charge') {//списание
+                            $project->debet = $project->debet + $modelDel->price;
+                            $project->credit = $project->credit - $modelDel->price;
+                        } else {//поступление
+                            $project->debet = $project->debet - $modelDel->price;
+                            $project->credit = $project->credit + $modelDel->price;
+                        }
+                        $project->date_update = time();
+                        $project->save();
                         break;
                 }
                 
@@ -108,19 +120,70 @@ class AjaxController extends Controller
 
     }
 
-    public function actionRemoveProject () {
-        $deleteForm = new DeleteForm();
-        if (Yii::$app->request->isAjax && $deleteForm->load(Yii::$app->request->post())) {
-            if (empty ($errorForm = ActiveForm::validate($deleteForm))) {
-                $project = Project::findOne($deleteForm->id);
-                if ($project){
-                    $project->delete();
-                    return true;
-                }
 
+
+    public function actionAddTransaction () {
+
+        $addForm = new TransactionForm();
+        if (Yii::$app->request->isAjax && $addForm->load(Yii::$app->request->post())) {
+            if (empty ($errorForm = ActiveForm::validate($addForm))) {
+
+                    $transaction = new Transaction();
+                    $transaction->client_id = $addForm->client_id;
+                    $transaction->project_id = $addForm->project_id;
+                    $transaction->price = $addForm->price;
+                    $transaction->cash = $addForm->cash;
+                    $transaction->type = $addForm->type;
+                    $transaction->date = $addForm->date;
+                    $transaction->comment = $addForm->comment;
+                    $transaction->manager_id = $addForm->manager_id;
+                    $transaction->update_id = $addForm->update_id;
+                    if (!empty($addForm->implementer_id) && isset($addForm->implementer_id)) {
+                        $transaction->implementer = $addForm->implementer_id;
+                    } elseif (!empty($addForm->implementer) && isset($addForm->implementer)) {
+                        $newImplementer = new Implementer();
+                        $newImplementer->name = $addForm->implementer;
+                        if ($newImplementer->save()) {// -------------------------------------------обработать случай если не прошел валидацию новый исполнитель
+                            $transaction->implementer = $newImplementer->id;
+                        }
+                    }
+
+                    if ($transaction->save(false)) {
+                        $project = $transaction->project;
+                        if ($transaction->type == 'charge') {//списание
+                            $project->debet = $project->debet - $transaction->price;
+                            $project->credit = $project->credit + $transaction->price;
+                        } else {//поступление
+                            $project->debet = $project->debet + $transaction->price;
+                            $project->credit = $project->credit - $transaction->price;
+                        }
+                        $project->date_update = time();
+                        $project->save();
+                        return json_encode(['add' => 'Транзакция добавлена']);
+                    }
+
+
+            } else {
+                return json_encode($errorForm);
             }
         }
         return false;
 
     }
+
+//    public function actionRemoveProject () {
+//        $deleteForm = new DeleteForm();
+//        if (Yii::$app->request->isAjax && $deleteForm->load(Yii::$app->request->post())) {
+//            if (empty ($errorForm = ActiveForm::validate($deleteForm))) {
+//                $project = Project::findOne($deleteForm->id);
+//                if ($project){
+//                    $project->delete();
+//                    return true;
+//                }
+//
+//            }
+//        }
+//        return false;
+//
+//    }
 }

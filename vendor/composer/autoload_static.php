@@ -28,6 +28,12 @@ class ComposerStaticInitf3f0fd02a86dfe45cd6033ef12dc6168
             'yii\\bootstrap\\' => 14,
             'yii\\' => 4,
         ),
+        'u' => 
+        array (
+            'unclead\\multipleinput\\tests\\' => 28,
+            'unclead\\multipleinput\\examples\\' => 31,
+            'unclead\\multipleinput\\' => 22,
+        ),
         'p' => 
         array (
             'phpDocumentor\\Reflection\\' => 25,
@@ -107,6 +113,18 @@ class ComposerStaticInitf3f0fd02a86dfe45cd6033ef12dc6168
         'yii\\' => 
         array (
             0 => __DIR__ . '/..' . '/yiisoft/yii2',
+        ),
+        'unclead\\multipleinput\\tests\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/unclead/yii2-multiple-input/tests',
+        ),
+        'unclead\\multipleinput\\examples\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/unclead/yii2-multiple-input/examples',
+        ),
+        'unclead\\multipleinput\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/unclead/yii2-multiple-input/src',
         ),
         'phpDocumentor\\Reflection\\' => 
         array (

@@ -37,6 +37,35 @@
 
 }) );
 
+function multiDataPicker(){
+    $('.datepicker').datepicker({
+        dateFormat: "dd/mm/yy",
+        onSelect: function (date, inst) {
+            var dateArr = date.split('/');
+            var selDate = new Date(dateArr[2]+'-'+dateArr[1]+'-'+dateArr[0]);
+            $(this).parent().prev('input[type=hidden]').val(selDate.getTime() / 1000);
+        }
+    });
+}
+
+function getProjectCombobox(client, projectInput){
+    $.ajax({
+        type: 'POST',
+        url: '/ajax/get-project',
+        data: 'client='+client,
+        success: function (msg) {
+            var projectsArr = JSON.parse(msg);
+            projectInput.html('');
+            projectInput.val('');
+            projectInput.combobox("destroy");
+            projectInput.append('<option value=""></option>');
+            $.each(projectsArr, function(){
+                projectInput.append('<option value="'+$(this)[0].id+'">'+$(this)[0].name+'</option>');
+            });
+            projectInput.combobox();
+        }
+    });
+}
 /* Preloader */
 $(window).on("load", function () {
 
@@ -170,7 +199,7 @@ $(function () {
     });
 
     /* Tabs form*/
-    $('.tab-menu-form a').click(function () {
+    $('.tab-menu-form.one a').click(function () {
         //var tab_bl = $(this).attr('href');
 
         $(this).closest('.tabs').find('.tab-menu-form li').removeClass('active');
@@ -191,6 +220,34 @@ $(function () {
 
         return false;
     });
+
+    $('.tab-menu-form.multi a').click(function () {
+        //var tab_bl = $(this).attr('href');
+
+        $(this).closest('.tabs').find('.tab-menu-form li').removeClass('active');
+        $(this).parent().addClass('active');
+
+        // $(this).closest('.tabs').find('.tab-item').hide().attr('disabled', 'disabled');
+        // $(tab_bl).fadeIn().removeAttr('disabled');
+        if ($(this).attr('href') == 'enrollment') {
+            $('#transactionmultiform-type').val('enrollment');
+            // $('.value-creator').css('display', 'none');
+            $('.value-creator input').val('');
+            $('#tr-form .value-price').removeClass('minus');
+        } else {
+            $('#transactionmultiform-type').val('charge');
+            // $('.value-creator').css('display', 'inline-block');
+            $('#tr-form .value-price').addClass('minus');
+        }
+        $(this).closest('form').toggleClass('charge');
+
+        return false;
+    });
+    // добавление полей транзакции
+    $('.add-more-btn').on('click', function(){
+        $('.glyphicon-plus').trigger('click');
+        return false;
+    });
     //datepicker AddTransaction
     if ($('#datepicker_inline').length) {
         $('#datepicker_inline').datepicker({
@@ -202,6 +259,11 @@ $(function () {
         });
     }
 
+    if ($('.datepicker').length) {
+        $(function () {
+            multiDataPicker();
+        });
+    }
     // автозаполнение
 
     $.widget("custom.combobox", {
@@ -300,38 +362,37 @@ $(function () {
             this.element.show();
         }
     });
-    $("#transactionform-project_id").combobox();
-    $("#transactionform-client_id").combobox({
+    $("select#transactionform-project_id").combobox();
+    $("select#transactionform-client_id").combobox({
         select: function (event, ui) {
-            console.log(ui.item.value);
-            $.ajax({
-                type: 'POST',
-                url: '/ajax/get-project',
-                data: 'client='+ui.item.value,
-                success: function (msg) {
-                    var projectsArr = JSON.parse(msg);
-                    $("#transactionform-project_id").html('');
-                    $("#transactionform-project_id").val('');
-                    $("#transactionform-project_id").combobox("destroy");
-                    $("#transactionform-project_id").append('<option value=""></option>');
-                    $.each(projectsArr, function(){
-                        $("#transactionform-project_id").append('<option value="'+$(this)[0].id+'">'+$(this)[0].name+'</option>');
-                    });
-                    $("#transactionform-project_id").combobox();
-                    //$("#transactionform-project_id").html(msg);
-                }
-            });
+            getProjectCombobox(ui.item.value,  $("#transactionform-project_id"));
         },
     });
+
+
+    //$(".combobox-multi").combobox();
+    $('.project-combobox-multi').combobox();
+    $(".client-combobox-multi").combobox({
+        select: function (event, ui) {
+            getProjectCombobox(ui.item.value, $(this).closest('.value-name').siblings('.value-job').children('select'));
+        },
+    });
+
 
     // окно транзакций на странице проекта
     /* Edit Client Popup */
     $('.add-price-btn').click(function () {
         if ($(this).hasClass('plus')){
-            $('#tr-form .tab-menu li:first a').trigger('click');
+            $('#tr-form-ajax .tab-menu-form li:first a').trigger('click');
         } else {
-            $('#tr-form .tab-menu li:last a').trigger('click');
+            $('#tr-form-ajax .tab-menu-form li:last a').trigger('click');
         }
+
+        $('#edit-client-popup #transactionform-client').val($(this).closest('tr').find('a.name').html());
+        $('#edit-client-popup #transactionform-client_id').val($(this).closest('tr').find('a.name').attr('client-id'));
+        $('#edit-client-popup #transactionform-project').val($(this).closest('tr').find('.del-name').html());
+        $('#edit-client-popup #transactionform-project_id').val($(this).closest('tr').find('.del-name').attr('object-id'));
+
         $('.overlay').fadeIn(250, function () {
             $('#edit-client-popup').animate({'top': $(window).scrollTop() + 100}, 500);
         });
@@ -342,6 +403,30 @@ $(function () {
         $('#edit-client-popup').animate({'top': '-3000px'}, 500, function () {
             $('.overlay').fadeOut(250);
         });
+        return false;
+    });
+
+    //добавление транзакции со страницы проектов
+    $('#edit-client-popup .submit-btn').on('click', function(){
+        var $yiiform = $(this).parents('form');
+        var dataForm = $yiiform.serializeArray();
+        // отправляем данные на сервер
+        $.ajax({
+            type: $yiiform.attr('method'),
+            url: $yiiform.attr('action'),
+            data: dataForm,
+            success: function (msg) {
+                var oMsg = JSON.parse(msg)
+                if (oMsg.add) {
+                    $('#edit-client-popup .message').addClass('green').html(oMsg.add);setTimeout(function() {
+                        window.location.reload();
+                    }, 1000);
+                } else  {
+                    $('#edit-client-popup .message').removeClass('green').html(oMsg['transactionform-price'].join(', '));
+                }
+            }
+        });
+
         return false;
     });
     /*END tin*/
@@ -393,7 +478,7 @@ $(function () {
 
     /* Form Styler */
     if ($('.styler').length) {
-        $('input.styler, select.styler').styler();
+        $('input.styler, select.styler, .styler input').styler();
     }
 
     /* slimScroll */
@@ -439,11 +524,6 @@ $(function () {
         }
     }
 
-    if ($('.datepicker').length) {
-        $(function () {
-            $('.datepicker').datepicker();
-        });
-    }
 
 
     /* Transactions Popup */

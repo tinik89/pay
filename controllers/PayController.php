@@ -11,6 +11,7 @@ namespace app\controllers;
 use app\models\Client;
 use app\models\forms\DeleteForm;
 use app\models\forms\TransactionForm;
+use app\models\forms\TransactionMultiForm;
 use app\models\Implementer;
 use Yii;
 use app\models\Transaction;
@@ -77,45 +78,96 @@ class PayController extends Controller
 
         $errorForm = '';
         $addForm = new TransactionForm();
-        $addForms = [new TransactionForm()];
-        if ($addForm->load(Yii::$app->request->post())) {
-            if (empty ($errorForm = ActiveForm::validate($addForm))) {
+        $addForms = new TransactionMultiForm();
 
-                $transaction = new Transaction();
-                $transaction->client_id = $addForm->client_id;
-                $transaction->project_id = $addForm->project_id;
-                $transaction->price = $addForm->price;
-                $transaction->cash = $addForm->cash;
-                $transaction->type = $addForm->type;
-                $transaction->date = $addForm->date;
-                $transaction->comment = $addForm->comment;
-                $transaction->manager_id = $addForm->manager_id;
-                $transaction->update_id = $addForm->update_id;
-                if (!empty($addForm->implementer_id) && isset($addForm->implementer_id)){
-                    $transaction->implementer = $addForm->implementer_id;
-                } elseif(!empty($addForm->implementer) && isset($addForm->implementer)) {
-                    $newImplementer = new Implementer();
-                    $newImplementer -> name = $addForm->implementer;
-                    if ($newImplementer->save()){// -------------------------------------------обработать случай если не прошел валидацию новый исполнитель
-                        $transaction->implementer = $newImplementer->id;
-                    } 
-                }
+        //var_dump(Yii::$app->request->post());
+        $formData = Yii::$app->request->post();
 
-                if ($transaction->save(false)) {
-                    Yii::$app->session->setFlash('success', 'Транзакция успешно добавлена.');
-                    $project = $transaction->project;
-                    if ( $transaction->type== 'charge' ){//списание
-                        $project -> debet = $project -> debet - $transaction->price;
-                        $project -> credit = $project -> credit + $transaction->price;
-                    } else {//поступление
-                        $project -> debet = $project -> debet + $transaction->price;
-                        $project -> credit = $project -> credit - $transaction->price;
+        if (isset($formData['TransactionMultiForm'])) {
+            if ($addForms->load(Yii::$app->request->post())) {
+                if (empty ($errorForm = ActiveForm::validate($addForms))) {
+
+                    foreach($addForms->schedule as $array){
+                        $transaction = new Transaction();
+
+                        $transaction->manager_id = $addForms->manager_id;
+                        $transaction->update_id = $addForms->update_id;
+                        $transaction->type = $addForms->type;
+
+                        $transaction->client_id = $array['client_id'];
+                        $transaction->project_id = $array['project_id'];
+                        $transaction->price = $array['price'];
+                        $transaction->cash = $array['cash'];
+                        $transaction->date = $array['date'];
+                        if (!empty($array['implementer_id']) && isset($array['implementer_id'])) {
+                            $transaction->implementer = $array['implementer_id'];
+                        } elseif (!empty($array['implementer']) && isset($array['implementer'])) {
+                            $newImplementer = new Implementer();
+                            $newImplementer->name = $array['implementer'];
+                            if ($newImplementer->save()) {// -------------------------------------------обработать случай если не прошел валидацию новый исполнитель
+                                $transaction->implementer = $newImplementer->id;
+                            }
+                        }
+
+                        if ($transaction->save(false)) {
+                            Yii::$app->session->setFlash('success', 'Транзакция успешно добавлена.');
+                            $project = $transaction->project;
+                            if ($transaction->type == 'charge') {//списание
+                                $project->debet = $project->debet - $transaction->price;
+                                $project->credit = $project->credit + $transaction->price;
+                            } else {//поступление
+                                $project->debet = $project->debet + $transaction->price;
+                                $project->credit = $project->credit - $transaction->price;
+                            }
+                            $project->date_update = time();
+                            $project->save();
+                           // return $this->refresh();
+                        }
                     }
-                    $project -> date_update = time();
-                    $project -> save();
-                    return $this->refresh();
+
+
                 }
-            } 
+            }
+        } else {
+            if ($addForm->load(Yii::$app->request->post())) {
+                if (empty ($errorForm = ActiveForm::validate($addForm))) {
+
+                    $transaction = new Transaction();
+                    $transaction->client_id = $addForm->client_id;
+                    $transaction->project_id = $addForm->project_id;
+                    $transaction->price = $addForm->price;
+                    $transaction->cash = $addForm->cash;
+                    $transaction->type = $addForm->type;
+                    $transaction->date = $addForm->date;
+                    $transaction->comment = $addForm->comment;
+                    $transaction->manager_id = $addForm->manager_id;
+                    $transaction->update_id = $addForm->update_id;
+                    if (!empty($addForm->implementer_id) && isset($addForm->implementer_id)) {
+                        $transaction->implementer = $addForm->implementer_id;
+                    } elseif (!empty($addForm->implementer) && isset($addForm->implementer)) {
+                        $newImplementer = new Implementer();
+                        $newImplementer->name = $addForm->implementer;
+                        if ($newImplementer->save()) {// -------------------------------------------обработать случай если не прошел валидацию новый исполнитель
+                            $transaction->implementer = $newImplementer->id;
+                        }
+                    }
+
+                    if ($transaction->save(false)) {
+                        Yii::$app->session->setFlash('success', 'Транзакция успешно добавлена.');
+                        $project = $transaction->project;
+                        if ($transaction->type == 'charge') {//списание
+                            $project->debet = $project->debet - $transaction->price;
+                            $project->credit = $project->credit + $transaction->price;
+                        } else {//поступление
+                            $project->debet = $project->debet + $transaction->price;
+                            $project->credit = $project->credit - $transaction->price;
+                        }
+                        $project->date_update = time();
+                        $project->save();
+                        return $this->refresh();
+                    }
+                }
+            }
         }
 
 //        Yii::$app->db->createCommand()->batchInsert('client', ['name'], [

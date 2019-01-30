@@ -11,7 +11,7 @@
 #login-form{
     text-align: center;
 }
-.help-block-error, #tr-form .help-block{
+.help-block-error, #tr-form .help-block, #tr-form-ajax .help-block{
     font-size: 12px;
     color: red;
     margin: 0;
@@ -72,7 +72,7 @@ a.add-client-btn, a.add-project-btn {
 #new-project-form .message.green {
     color:#7ED321;
 }
-#tr-form fieldset{
+#tr-form fieldset,#tr-form-ajax fieldset{
     border:none;
     padding: 0;
     margin: 0;
@@ -103,5 +103,18 @@ a.add-client-btn, a.add-project-btn {
     font-size: 20px;
     cursor: pointer;
     margin-left: 10px;
+}
+.add-multi-tr-form .charge .tr-form .field.value-creator {
+    display:inline-block;
+}
+.add-multi-tr-form .tr-form .field.value-creator {
+    display: none;
+    margin-right:0;
+}
+.multiple-input-list__item .radio-list .radio{
+    display: inline-block;
+}
+.ui-widget.ui-widget-content{
+    z-index: 999;
 }
 /*ENDtib*/

@@ -17,6 +17,8 @@ use yii\web\Controller;
 use yii\filters\AccessControl;
 use app\models\forms\ClientForm;
 use app\models\forms\ProjectForm;
+use app\models\forms\TransactionForm;
+use app\models\Implementer;
 
 class ProjectController extends Controller
 {
@@ -64,12 +66,16 @@ class ProjectController extends Controller
         $projects = Project::find()->with('transactions', 'clientinfo', 'taginfo')->all();
 
         $deleteForm = new DeleteForm();
+
+        $addTransactionForm = new TransactionForm();
         
         return $this->render('index', [
             'clientForm' => $clientForm,
             'projects' => $projects,
             'tags' => Tag::find()->asArray()->all(),
             'deleteForm' => $deleteForm,
+            'implementers' => Implementer::find()->asArray()->all(),
+            'addTransactionForm' => $addTransactionForm,
         ]);
     }
 
@@ -86,6 +92,8 @@ class ProjectController extends Controller
         $projects = Project::find()->with('transactions', 'clientinfo', 'taginfo')->where('client='.$clientID)->all();
         
         $deleteForm = new DeleteForm();
+
+        $addTransactionForm = new TransactionForm();
         
         return $this->render('show', [
             'projectForm'=>$projectForm,
@@ -93,6 +101,8 @@ class ProjectController extends Controller
             'projects' => $projects,
             'tags' => Tag::find()->asArray()->all(),
             'deleteForm' => $deleteForm,
+            'implementers' => Implementer::find()->asArray()->all(),
+            'addTransactionForm' => $addTransactionForm,
         ]);
     }
 }

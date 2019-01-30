@@ -66,52 +66,11 @@ use yii\helpers\Url;
                     <th></th>
                 </tr>
                 <?php foreach ($projects as $project):?>
+                    <?php echo $this->render('_oneProject', [
+                        'project' => $project,
+                    ]); ?>
 
 
-                <tr id="tr-id-<?=$project -> id?>">
-                    <td>
-                        <div class="service del-name" object-id="<?= $project->id ?>"><?=$project->name?></div>
-                        <a href="<?= Url::to(['project/show', 'id' => $project -> client])?>" class="name"><?= $project -> clientinfo -> name ?></a>
-                        <div class="category"><?= $project -> taginfo -> tag ?></div>
-                    </td>
-                    <td>
-                        <div class="price"> <?= $project -> price ?> </div>
-                        <div class="price minus"><span>Долг:</span> <?= $project -> credit ?> ₽</div>
-                        <div class="price plus"><span>Текущий баланс:</span> <?= $project -> debet ?> ₽ (<?= round($project -> debet / $project -> price *100, 1); ?>%)</div>
-                    </td>
-                    <?php
-                    $debetAll = 0;
-                    $debetString = '';
-                    $creditAll = 0;
-                    $creditString = '';
-                    foreach ($project -> transactions as $transaction):
-                        if ($transaction->type == 'enrollment'){
-                            $debetAll += $transaction->price;
-                            $debetString .= '<div class="price-detail-item"><span class="value">+'. $transaction->price .' ₽</span> <span class="date">'.date('d.m.Y', $transaction->date).'</span><span class="info" transactionid="' . $transaction->id . '"><span class="icon"></span><span class="content">' . $transaction->comment . '</span></span></div>';
-                        } else {
-                            $creditAll += $transaction->price;
-                            $creditString .= '<div class="price-detail-item"><span class="value">-'. $transaction->price .' ₽</span> <span class="date">'.date('d.m.Y', $transaction->date).'</span><span class="info" transactionid="' . $transaction->id . '"><span class="icon"></span><span class="content">' . $transaction->comment . '</span></span></div>';
-                        }
-                    endforeach;
-                    ?>
-                    <td>
-                        <div class="price plus"><?= $debetAll ?> ₽</div>
-                        <div class="price-detail-items"> <?= $debetString ?></div>
-                        <a href="#" class="add-price-btn plus">+ Поступление</a>
-                    </td>
-                    <td>
-                        <div class="price minus"><?= $creditAll ?> ₽</div>
-                        <div class="price-detail-items"><?= $creditString ?></div>
-                        <a href="#" class="add-price-btn minus">- Расход</a>
-                    </td>
-                    <td>
-                        <div class="clients-bts">
-                            <a href="#" class="clients-btn close">Закрыть</a>
-                            <a href="#" class="clients-btn edit">Изменить</a>
-                            <a href="#" class="clients-btn delete">Удалить</a>
-                        </div>
-                    </td>
-                </tr>
                 <?php endforeach; ?>
 
             </table>
@@ -180,91 +139,11 @@ use yii\helpers\Url;
 
 
     <!-- Edit Client Popup -->
-    <div class="nonebox" id="edit-client-popup">
-        <!-- edit client -->
-        <div class="add-tr-form white-box">
-            <form id="tr-form" method="post">
-                <div class="calendar">
-                    <div id="datepicker_inline"></div>
-                </div>
-                <div class="tr-tabs tabs">
-                    <div class="tr-tab-menu tab-menu">
-                        <ul>
-                            <li class="active"><a href="#tr_tab1">Поступление</a></li>
-                            <li><a href="#tr_tab2">Списание</a></li>
-                        </ul>
-                    </div>
-                    <div class="tr-tab-item tab-items">
-
-                        <div class="tr-tab-item tab-item" id="tr_tab1" style="display: block;">
-                            <div class="tr-form">
-                                <div class="group-col">
-                                    <div class="field value-price">
-                                        <input type="text" name="price" value="10000000" />
-                                    </div>
-                                    <div class="field">
-                                        <input type="text" name="name" placeholder="Название проекта" />
-                                    </div>
-                                    <div class="field">
-                                        <input type="text" name="work" placeholder="Работа проекта" />
-                                    </div>
-                                    <div class="radio-field">
-                                        <label><input type="radio" class="styler" name="nal" checked />Безнал</label>
-                                        <label><input type="radio" class="styler" name="nal" />Наличными</label>
-                                    </div>
-                                </div>
-                                <div class="group-col">
-                                    <div class="field">
-                                        <textarea name="message" placeholder="Комментарий"></textarea>
-                                    </div>
-                                </div>
-                                <div class="group-bts">
-                                    <input type="submit" class="submit-btn" value="Добавить" />
-                                    <a href="#" class="cancel-btn">Отмена</a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="tr-tab-item tab-item" id="tr_tab2" style="display: none;">
-                            <div class="tr-form">
-                                <div class="group-col">
-                                    <div class="field value-price">
-                                        <input type="text" name="price" value="10000000" />
-                                    </div>
-                                    <div class="field">
-                                        <input type="text" name="name" placeholder="Название проекта" />
-                                    </div>
-                                    <div class="field">
-                                        <input type="text" name="work" placeholder="Работа проекта" />
-                                    </div>
-                                    <div class="field">
-                                        <input type="text" name="emp" placeholder="Сотрудник" />
-                                    </div>
-                                    <div class="radio-field">
-                                        <label><input type="radio" class="styler" name="nal" checked />Безнал</label>
-                                        <label><input type="radio" class="styler" name="nal" />Наличными</label>
-                                    </div>
-                                </div>
-                                <div class="group-col">
-                                    <div class="field">
-                                        <textarea name="message" placeholder="Комментарий"></textarea>
-                                    </div>
-                                </div>
-                                <div class="group-bts">
-                                    <input type="submit" class="submit-btn" value="Добавить" />
-                                    <a href="#" class="cancel-btn">Отмена</a>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-                <div class="clear"></div>
-            </form>
-            <span class="close"></span>
-        </div>
-
-    </div>
+    <?php echo $this->render('_addTransaction', [
+        'model' => $addTransactionForm,
+        'implementers' => $implementers,
+    ]); ?>
+   
 
     <!-- Delete alert Popup -->
     <div class="nonebox add" id="del-client-popup">
