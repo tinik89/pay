@@ -39,7 +39,13 @@ use yii\helpers\Url;
     </td>
     <td>
         <div class="clients-bts">
-            <a href="#" class="clients-btn close">Закрыть</a>
+            <?php
+            if ($project -> status == 1){
+                echo '<a href="#" class="clients-btn close">Закрыть</a>';
+            } else{
+                echo '<a href="#" class="clients-btn close open">Открыть</a>';
+            }
+            ?>
             <a href="#" class="clients-btn edit">Изменить</a>
             <a href="#" class="clients-btn delete">Удалить</a>
         </div>

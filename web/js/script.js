@@ -429,6 +429,62 @@ $(function () {
 
         return false;
     });
+    
+    //редактирование проекта
+    $('.clients-btn.edit').on('click', function(){
+        var project = $(this).closest('tr').find('.del-name').attr('object-id');
+        $.ajax({
+            type: 'POST',
+            url: '/ajax/info-project',
+            data: 'project='+project,
+            success: function (msg) {
+                var projectArr = JSON.parse(msg);
+                // projectInput.html('');
+                // projectInput.val('');
+                // projectInput.combobox("destroy");
+                // projectInput.append('<option value=""></option>');
+                // $.each(projectsArr, function(){
+                //     projectInput.append('<option value="'+$(this)[0].id+'">'+$(this)[0].name+'</option>');
+                // });
+                // projectInput.combobox();
+            }
+        });
+        return false;
+    });
+
+    //открытие-закрытие проекта
+    $('.clients-btn.close').on('click', function(){
+        var button = $(this);
+        var project = $(this).closest('tr').find('.del-name').attr('object-id');
+        if (button.hasClass('open')){
+            var status = 1;
+        } else {
+            var status = 0;
+        }
+        $.ajax({
+            type: 'POST',
+            url: '/ajax/status-project',
+            data: 'project='+project+'&status='+status,
+            success: function (msg) {
+                var Arr = JSON.parse(msg);
+                console.log(Arr);
+                if (Arr.edit == 1){
+                    button.toggleClass('open');
+                }
+                button.html(Arr.msg);
+
+                // projectInput.html('');
+                // projectInput.val('');
+                // projectInput.combobox("destroy");
+                // projectInput.append('<option value=""></option>');
+                // $.each(projectsArr, function(){
+                //     projectInput.append('<option value="'+$(this)[0].id+'">'+$(this)[0].name+'</option>');
+                // });
+                // projectInput.combobox();
+            }
+        });
+        return false;
+    });
     /*END tin*/
     var width = $(window).width();
     var height = $(window).height();

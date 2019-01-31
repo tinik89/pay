@@ -171,6 +171,40 @@ class AjaxController extends Controller
 
     }
 
+    public function actionInfoProject(){
+        if (Yii::$app->request->isAjax) {
+            $request = Yii::$app->request;
+            $projects = Project::find()->where(['id' => $request->post('project')])->asArray()->all();
+            return json_encode($projects);
+        }
+        return false;
+    }
+
+    public function actionStatusProject(){
+        $outputArr['edit'] = -1; 
+        if (Yii::$app->request->isAjax) {
+            $request = Yii::$app->request;
+            $projects = Project::findOne($request->post('project'));
+            if ( $projects -> status != $request->post('status')){
+                $projects -> status = $request->post('status');
+                if($projects -> save()){
+                    $outputArr['edit'] = 1;
+                } else {
+                    $outputArr['edit'] = -1;
+                }
+                
+            } else {
+                $outputArr['edit'] = 0;
+            }
+            if ($projects -> status == 1){
+                $outputArr['msg']='Закрыть';
+            } else {
+                $outputArr['msg']='Открыть';
+            }
+        }
+        return json_encode($outputArr);
+    }
+
 //    public function actionRemoveProject () {
 //        $deleteForm = new DeleteForm();
 //        if (Yii::$app->request->isAjax && $deleteForm->load(Yii::$app->request->post())) {

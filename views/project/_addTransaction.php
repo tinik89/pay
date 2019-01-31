@@ -61,7 +61,9 @@ $this->registerJS($js);
             <div class="tr-tab-item tab-items">
 
                 <fieldset class="tr-tab-item tab-item" id="tr_tab1" style="display: block;">
-                    <div class="message"></div>
+                    <div class="message">
+<!--                        --><?//=Yii::$app->getSecurity()->generatePasswordHash('ryazan2019##');?>
+                    </div>
                     <?= $form->field($model, 'type')->input('hidden', ['value' => 'enrollment']) ?>
                     <div class="tr-form">
                         <div class="group-col">

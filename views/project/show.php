@@ -143,90 +143,12 @@ use yii\helpers\Url;
     <div class="overlay"></div>
 
     <!-- Edit Client Popup -->
-    <div class="nonebox" id="edit-client-popup">
-        <!-- edit client -->
-        <div class="add-tr-form white-box">
-            <form id="tr-form" method="post">
-                <div class="calendar">
-                    <div id="datepicker_inline"></div>
-                </div>
-                <div class="tr-tabs tabs">
-                    <div class="tr-tab-menu tab-menu">
-                        <ul>
-                            <li class="active"><a href="#tr_tab1">Поступление</a></li>
-                            <li><a href="#tr_tab2">Списание</a></li>
-                        </ul>
-                    </div>
-                    <div class="tr-tab-item tab-items">
-
-                        <div class="tr-tab-item tab-item" id="tr_tab1" style="display: block;">
-                            <div class="tr-form">
-                                <div class="group-col">
-                                    <div class="field value-price">
-                                        <input type="text" name="price" value="10000000" />
-                                    </div>
-                                    <div class="field">
-                                        <input type="text" name="name" placeholder="Название проекта" />
-                                    </div>
-                                    <div class="field">
-                                        <input type="text" name="work" placeholder="Работа проекта" />
-                                    </div>
-                                    <div class="radio-field">
-                                        <label><input type="radio" class="styler" name="nal" checked />Безнал</label>
-                                        <label><input type="radio" class="styler" name="nal" />Наличными</label>
-                                    </div>
-                                </div>
-                                <div class="group-col">
-                                    <div class="field">
-                                        <textarea name="message" placeholder="Комментарий"></textarea>
-                                    </div>
-                                </div>
-                                <div class="group-bts">
-                                    <input type="submit" class="submit-btn" value="Добавить" />
-                                    <a href="#" class="cancel-btn">Отмена</a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="tr-tab-item tab-item" id="tr_tab2" style="display: none;">
-                            <div class="tr-form">
-                                <div class="group-col">
-                                    <div class="field value-price">
-                                        <input type="text" name="price" value="10000000" />
-                                    </div>
-                                    <div class="field">
-                                        <input type="text" name="name" placeholder="Название проекта" />
-                                    </div>
-                                    <div class="field">
-                                        <input type="text" name="work" placeholder="Работа проекта" />
-                                    </div>
-                                    <div class="field">
-                                        <input type="text" name="emp" placeholder="Сотрудник" />
-                                    </div>
-                                    <div class="radio-field">
-                                        <label><input type="radio" class="styler" name="nal" checked />Безнал</label>
-                                        <label><input type="radio" class="styler" name="nal" />Наличными</label>
-                                    </div>
-                                </div>
-                                <div class="group-col">
-                                    <div class="field">
-                                        <textarea name="message" placeholder="Комментарий"></textarea>
-                                    </div>
-                                </div>
-                                <div class="group-bts">
-                                    <input type="submit" class="submit-btn" value="Добавить" />
-                                    <a href="#" class="cancel-btn">Отмена</a>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-                <div class="clear"></div>
-            </form>
-            <span class="close"></span>
-        </div>
-    </div>
+    <?php echo $this->render('_addTransaction', [
+        'model' => $addTransactionForm,
+        'implementers' => $implementers,
+    ]); ?>
+    
+    
     <!-- ADD Project Popup -->
     <div class="nonebox add" id="add-project-popup">
         <!-- edit client -->
@@ -281,34 +203,10 @@ use yii\helpers\Url;
 
     </div>
 
-    <!-- Delete alert Popup -->
-    <div class="nonebox add" id="del-client-popup">
-        <!-- edit client -->
-        <div class="add-tr-form white-box">
-            <?php $form = ActiveForm::begin([
-                'id' => 'del-form',
-                'action' => Url::to(['/ajax/remove-form']),
-                'fieldConfig' => [
-                    'template' => "<div class=\"field\">{input}{error}</div>",
-                ],
-            ]); ?>
-            <h2>Удалить проект <span></span>?</h2>
-            <div class="tr-form">
-                <?= $form->field($deleteForm, 'object')->input('hidden', ['value' => 'project']) ?>
-                <?= $form->field($deleteForm, 'id')->input('hidden', ['id' => 'id-del-object']) ?>
 
-                <div class="group-col">
-                    <?= Html::submitButton('Удалить', ['class' => 'add-submit-btn', 'name' => 'del-client-button']) ?>
-                    <?= Html::button('Отмена', ['class' => 'cancel-submit-btn', 'name' => 'cancel-client-button']) ?>
-                </div>
-
-            </div>
-            <div class="clear"></div>
-            <?php ActiveForm::end(); ?>
-            <span class="close"></span>
-        </div>
-
-    </div>
+    <?php echo $this->render('_delProject', [
+        'deleteForm' => $deleteForm,
+    ]); ?>
 
 
 
