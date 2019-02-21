@@ -24,26 +24,26 @@ use yii\helpers\Url;
     <?php //echo $this->render('_search', ['model' => $searchModel]); ?>
 
 
-<!--    --><?//= GridView::widget([
-//        'dataProvider' => $dataProvider,
-//        'filterModel' => $searchModel,
-//        'columns' => [
-//            ['class' => 'yii\grid\SerialColumn'],
-//
-//            //'id',
-//            //'client_id',
-//            'project_id',
-//            //'price',
-//            'date',
-//            'type',
-//            'implementer',
-//            //'comment',
-//            //'update_id',
-//            //'manager_id',
-//
-//            ['class' => 'yii\grid\ActionColumn'],
-//        ],
-//    ]); ?>
+    <!--    --><?//= GridView::widget([
+    //        'dataProvider' => $dataProvider,
+    //        'filterModel' => $searchModel,
+    //        'columns' => [
+    //            ['class' => 'yii\grid\SerialColumn'],
+    //
+    //            //'id',
+    //            //'client_id',
+    //            'project_id',
+    //            //'price',
+    //            'date',
+    //            'type',
+    //            'implementer',
+    //            //'comment',
+    //            //'update_id',
+    //            //'manager_id',
+    //
+    //            ['class' => 'yii\grid\ActionColumn'],
+    //        ],
+    //    ]); ?>
 
     <?php echo $this->render('_addOne', [
         'model' => $addForm,
@@ -125,10 +125,11 @@ use yii\helpers\Url;
                 </td>
                 <td>
                     <?php if ($transaction->type == 'enrollment') {
-                            echo '<div class="price del-name" object-id="' . $transaction->id . '">+'.$transaction->price .'₽ </div>';
-                        } else {
-                            echo '<div class="price minus del-name" object-id="' . $transaction->id . '">-'.$transaction->price .'₽ <p>'.$transaction->implementerinfo->name.'</p></div>';
-                        } ?>
+                        echo '<div class="price del-name" object-id="' . $transaction->id . '">+'.$transaction->price .'₽ </div>';
+                    } else {
+                        $implementer = (isset($transaction->implementerinfo))?$transaction->implementerinfo->name:'';
+                        echo '<div class="price minus del-name" object-id="' . $transaction->id . '">-'.$transaction->price .'₽ <p>'. $implementer .'</p></div>';
+                    } ?>
                 </td>
                 <td>
                     <div class="method"><?php if ($transaction->cash == 1) {

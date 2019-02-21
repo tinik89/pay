@@ -5,12 +5,24 @@ use yii\helpers\Url;
     <td>
         <div class="service del-name" object-id="<?= $project->id ?>"><?=$project->name?></div>
         <a href="<?= Url::to(['project/show', 'id' => $project -> client])?>" class="name" client-id="<?=$project -> client?>"><?= $project -> clientinfo -> name ?></a>
-        <div class="category"><?= $project -> taginfo -> tag ?></div>
+        <div class="category">
+            <?php
+            if (property_exists($project, 'taginfo')){
+                echo $project -> taginfo -> tag;
+            } else {
+                echo 'расходы фирмы';
+            } ?></div>
     </td>
     <td>
         <div class="price"> <?= $project -> price ?> </div>
         <div class="price minus"><span>Долг:</span> <?= $project -> credit ?> ₽</div>
-        <div class="price plus"><span>Текущий баланс:</span> <?= $project -> debet ?> ₽ (<?= round($project -> debet / $project -> price *100, 1); ?>%)</div>
+        <?php
+        if ($project -> price != 0){
+            $proc = round($project -> debet / $project -> price *100, 1);
+        } else {
+            $proc = 0;
+        }?>
+        <div class="price plus"><span>Текущий баланс:</span> <?= $project -> debet ?> ₽ (<?= $proc ?>%)</div>
     </td>
     <?php
     $debetAll = 0;
