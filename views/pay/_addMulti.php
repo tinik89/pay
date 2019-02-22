@@ -40,6 +40,9 @@ $this->registerJS($js);
 
         <?php $form = ActiveForm::begin([
             'id' => 'multi-tr-form',
+            'options' => [
+                'class' => 'charge'
+            ],
             'fieldConfig' => [
                 'template' => "{input}{error}",
             ],
@@ -62,14 +65,14 @@ $this->registerJS($js);
 
         <?= $form->field($models, 'update_id')->input('hidden', ['value' => time()]) ?>
         <?= $form->field($models, 'manager_id')->input('hidden', ['value' => Yii::$app->user->id]) ?>
-        <?= $form->field($models, 'type')->input('hidden', ['value' => 'enrollment']) ?>
+        <?= $form->field($models, 'type')->input('hidden', ['value' => 'charge']) ?>
 
 
         <div class="tr-tabs tabs">
             <div class="tr-tab-menu tab-menu-form multi">
                 <ul>
-                    <li class="active"><a href="enrollment">Поступление</a></li>
-                    <li><a href="charge">Списание</a></li>
+                    <li ><a href="enrollment">Поступление</a></li>
+                    <li class="active"><a href="charge">Списание</a></li>
                 </ul>
             </div>
             <?= $form->field($models, 'schedule')->widget(MultipleInput::className(), [
@@ -92,7 +95,7 @@ $this->registerJS($js);
                             1 => 'Наличными'
                         ],
                         'options' => [
-                            'class' => 'styler',
+                            'class' => 'styler ',
                         ]
 
                     ],
@@ -153,6 +156,10 @@ $this->registerJS($js);
                     [
                         'name' => 'implementer',
                         'title' => 'implementer',
+                        'options' => [
+                            'prompt' => 'Исполнитель',
+                            'placeholder' => 'Исполнитель'
+                        ],
                         'columnOptions' => [
                             'class' => 'field value-creator'
                         ],

@@ -91,7 +91,7 @@ $this->registerJS($js);
                         </div>
                         <div class="radio-field">
                             <?php
-                            $model->cash = 1;
+                            $model->cash = 0;
                             ?>
                             <?= $form->field($model, 'cash')->radioList(
                                 [
@@ -101,7 +101,7 @@ $this->registerJS($js);
                                 [
                                     'item' => function ($index, $label, $name, $checked, $value) {
                                         return
-                                            '<label>' . Html::radio($name, $checked, ['value' => $value, 'class' => 'styler']) . $label . '</label>';
+                                            '<label>' . Html::radio($name, $checked, ['value' => $value, 'class' => 'styler cash'.$value]) . $label . '</label>';
                                     },
                                 ]
                             )->label();

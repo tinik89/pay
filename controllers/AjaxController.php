@@ -62,8 +62,8 @@ class AjaxController extends Controller
             if (!empty ($errorForm = ActiveForm::validate($projectForm))) {
                 return json_encode(['error'=>$errorForm["projectform-name"][0]]);
             } else {
-                if (Project::find()->where(['name' => $projectForm->name])->exists()){
-                    return json_encode(['error'=>'Проект с таким названием уже существует']);
+                if (Project::find()->where(['name' => $projectForm->name,'client' => $projectForm->client])->exists()){
+                    return json_encode(['error'=>'У данного клиента уже существует, проект с таким названием ']);
                 } else {
                     $project = new Project();
                     $project->name = $projectForm->name;

@@ -211,17 +211,21 @@ $(function () {
             $('#transactionform-type').val('enrollment');
             $('.implementer').css('display', 'none');
             $('.implementer input').val('');
-            $('#tr-form .value-price').removeClass('minus');
+            $(this).parents('form').find('.value-price').removeClass('minus');
+            $(this).parents('form').find('.cash0').prop("checked", true).trigger('refresh');
+            $(this).parents('form').find('.cash1').prop("checked", false).trigger('refresh');
         } else {
             $('#transactionform-type').val('charge');
             $('.implementer').css('display', 'block');
-            $('#tr-form .value-price').addClass('minus');
+            $(this).parents('form').find('.value-price').addClass('minus');
+            $(this).parents('form').find('.cash1').prop("checked", true).trigger('refresh');
+            $(this).parents('form').find('.cash0').prop("checked", false).trigger('refresh');
         }
 
         return false;
     });
 
-    $('.tab-menu-form.multi a').click(function () {
+    $('.tab-menu-form.multi li:not(.active) a').click(function () {
         //var tab_bl = $(this).attr('href');
 
         $(this).closest('.tabs').find('.tab-menu-form li').removeClass('active');
@@ -233,19 +237,23 @@ $(function () {
             $('#transactionmultiform-type').val('enrollment');
             // $('.value-creator').css('display', 'none');
             $('.value-creator input').val('');
-            $('#tr-form .value-price').removeClass('minus');
+            $('#multi-tr-form .value-price').removeClass('minus');
         } else {
             $('#transactionmultiform-type').val('charge');
             // $('.value-creator').css('display', 'inline-block');
-            $('#tr-form .value-price').addClass('minus');
+            $('#multi-tr-form .value-price').addClass('minus');
         }
         $(this).closest('form').toggleClass('charge');
 
         return false;
     });
+
     // добавление полей транзакции
     $('.add-more-btn').on('click', function(){
         $('.glyphicon-plus').trigger('click');
+        if ($('.tab-menu-form.multi .active a').attr('href') == 'charge'){
+            $('#multi-tr-form .value-price').addClass('minus');
+        }
         return false;
     });
     //datepicker AddTransaction
@@ -260,6 +268,7 @@ $(function () {
     }
 
     if ($('.datepicker').length) {
+        $('.datepicker').attr('autocomplete', 'off');
         $(function () {
             multiDataPicker();
         });

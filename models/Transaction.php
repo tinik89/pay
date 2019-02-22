@@ -68,6 +68,6 @@ class Transaction extends \yii\db\ActiveRecord
         return $this->hasOne(Project::className(), ['id' => 'project_id']);
     }
     public function getImplementerinfo(){
-        return $this->hasOne(Implementer::className(), ['id' => 'project_id']);
+        return $this->hasOne(Implementer::className(), ['id' => 'implementer']);
     }
 }

@@ -7,14 +7,14 @@ use yii\helpers\Url;
         <a href="<?= Url::to(['project/show', 'id' => $project -> client])?>" class="name" client-id="<?=$project -> client?>"><?= $project -> clientinfo -> name ?></a>
         <div class="category">
             <?php
-            if (property_exists($project, 'taginfo')){
+            if (isset($project -> taginfo)){
                 echo $project -> taginfo -> tag;
             } else {
                 echo 'расходы фирмы';
             } ?></div>
     </td>
     <td>
-        <div class="price"> <?= $project -> price ?> </div>
+        <div class="price"> <?= $project -> price ?> ₽</div>
         <div class="price minus"><span>Долг:</span> <?= $project -> credit ?> ₽</div>
         <?php
         if ($project -> price != 0){

@@ -142,9 +142,7 @@ use yii\helpers\Url;
                     <div class="info"><?php
                         if (!empty($transaction->comment)){
                             echo $transaction->comment;
-                        } else {
-                            echo '*Комментарий отсутствует';
-                        }?>
+                        } ?>
                     </div>
                 </td>
 

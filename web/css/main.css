@@ -117,4 +117,8 @@ a.add-client-btn, a.add-project-btn {
 .ui-widget.ui-widget-content{
     z-index: 999;
 }
+.add-multi-tr-form .tr-form .field.value-price.minus::before {
+    content: '-';
+    color: #FF455C;
+}
 /*ENDtib*/
