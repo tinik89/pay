@@ -70,6 +70,7 @@ use yii\helpers\Url;
 
                     <?php echo $this->render('_oneProject', [
                         'project' => $project,
+                        'implementers' => array_column($implementers, 'name', 'id')
                     ]); ?>
 
                 <?php endforeach; ?>

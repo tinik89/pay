@@ -119,7 +119,7 @@ $this->registerJS($js);
                         'name' => 'price',
                         'title' => 'price',
                         'columnOptions' => [
-                            'class' => 'field value-price'
+                            'class' => 'field value-price minus'
                         ],
                         'options' => [
                             'placeholder' => 'Сумма'

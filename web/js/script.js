@@ -225,7 +225,7 @@ $(function () {
         return false;
     });
 
-    $('.tab-menu-form.multi li:not(.active) a').click(function () {
+    $('.tab-menu-form.multi li a').click(function () {
         //var tab_bl = $(this).attr('href');
 
         $(this).closest('.tabs').find('.tab-menu-form li').removeClass('active');
@@ -387,9 +387,12 @@ $(function () {
         },
     });
 
+    $(document).on('focus', '.ui-autocomplete-input', function(){
+        $(this).autocomplete( "search", "" );
+    });
 
-    // окно транзакций на странице проекта
-    /* Edit Client Popup */
+
+    // окно добавления транзакций на странице проекта
     $('.add-price-btn').click(function () {
         if ($(this).hasClass('plus')){
             $('#tr-form-ajax .tab-menu-form li:first a').trigger('click');
@@ -401,6 +404,7 @@ $(function () {
         $('#edit-client-popup #transactionform-client_id').val($(this).closest('tr').find('a.name').attr('client-id'));
         $('#edit-client-popup #transactionform-project').val($(this).closest('tr').find('.del-name').html());
         $('#edit-client-popup #transactionform-project_id').val($(this).closest('tr').find('.del-name').attr('object-id'));
+        $('#edit-client-popup .submit-btn').html('Добавить');
 
         $('.overlay').fadeIn(250, function () {
             $('#edit-client-popup').animate({'top': $(window).scrollTop() + 100}, 500);
@@ -408,6 +412,39 @@ $(function () {
         return false;
     });
 
+    // окно редактирования транзакций на странице проекта
+    $('.price-detail-item .info').click(function () {
+
+        if ($(this).closest('.price-detail-items').next('.add-price-btn').hasClass('minus') != ''){
+            $('#tr-form-ajax .tab-menu-form li:last a').trigger('click');
+            $('#edit-client-popup #transactionform-implementer_id').val($(this).attr('implementerid'));
+            $('#edit-client-popup #transactionform-implementer').val($(this).attr('implementername'));
+        } else {
+            $('#tr-form-ajax .tab-menu-form li:first a').trigger('click');
+        }
+
+
+
+        $( "#datepicker_inline" ).datepicker( "setDate", new Date(parseInt($(this).siblings('.date').attr('date'))*1000) );
+        $('#edit-client-popup #transactionform-price').val($(this).siblings('.value').attr('price'));
+        $('#edit-client-popup #transactionform-date').val($(this).siblings('.date').attr('date'));
+        $('#edit-client-popup #transactionform-comment').val($(this).children('.content').html());
+        $('#edit-client-popup #transactionform-transaction_id').val($(this).attr('transactionid'));
+        $('#edit-client-popup #transactionform-client').val($(this).closest('tr').find('a.name').html());
+        $('#edit-client-popup #transactionform-client_id').val($(this).closest('tr').find('a.name').attr('client-id'));
+        $('#edit-client-popup #transactionform-project').val($(this).closest('tr').find('.del-name').html());
+        $('#edit-client-popup #transactionform-project_id').val($(this).closest('tr').find('.del-name').attr('object-id'));
+        $('#edit-client-popup .submit-btn').html('Обновить');
+
+
+
+        $('.overlay').fadeIn(250, function () {
+            $('#edit-client-popup').animate({'top': $(window).scrollTop() + 100}, 500);
+        });
+        return false;
+    });
+
+    // закрытие окна транзакций на странице проекта
     $('.overlay, #edit-client-popup .cancel-btn, #edit-client-popup .close').click(function () {
         $('#edit-client-popup').animate({'top': '-3000px'}, 500, function () {
             $('.overlay').fadeOut(250);
@@ -427,10 +464,16 @@ $(function () {
             success: function (msg) {
                 var oMsg = JSON.parse(msg)
                 if (oMsg.add) {
-                    $('#edit-client-popup .message').addClass('green').html(oMsg.add);setTimeout(function() {
+                    $('#edit-client-popup .message').addClass('green').html(oMsg.add);
+                    setTimeout(function() {
                         window.location.reload();
                     }, 1000);
-                } else  {
+                } else if (oMsg.edit) {
+                    $('#edit-client-popup .message').addClass('green').html(oMsg.edit);
+                    setTimeout(function() {
+                        window.location.reload();
+                    }, 1000);
+                } else {
                     $('#edit-client-popup .message').removeClass('green').html(oMsg['transactionform-price'].join(', '));
                 }
             }

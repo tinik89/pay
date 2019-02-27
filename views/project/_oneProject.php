@@ -1,6 +1,7 @@
 <?php
 use yii\helpers\Url;
 ?>
+
 <tr id="tr-id-<?=$project -> id?>">
     <td>
         <div class="service del-name" object-id="<?= $project->id ?>"><?=$project->name?></div>
@@ -32,10 +33,10 @@ use yii\helpers\Url;
     foreach ($project -> transactions as $transaction):
         if ($transaction->type == 'enrollment'){
             $debetAll += $transaction->price;
-            $debetString .= '<div class="price-detail-item"><span class="value">+'. $transaction->price .' ₽</span> <span class="date">'.date('d.m.Y', $transaction->date).'</span><span class="info" transactionid="' . $transaction->id . '"><span class="icon"></span><span class="content">' . $transaction->comment . '</span></span></div>';
+            $debetString .= '<div class="price-detail-item"><span class="value" price="'. $transaction->price .'">+'. $transaction->price .' ₽</span> <span class="date" date="'. $transaction->date .'">'.date('d.m.Y', $transaction->date).'</span><span class="info" transactionid="' . $transaction->id . '" ><span class="icon"></span><span class="content">' . $transaction->comment . '</span></span></div>';
         } else {
             $creditAll += $transaction->price;
-            $creditString .= '<div class="price-detail-item"><span class="value">-'. $transaction->price .' ₽</span> <span class="date">'.date('d.m.Y', $transaction->date).'</span><span class="info" transactionid="' . $transaction->id . '"><span class="icon"></span><span class="content">' . $transaction->comment . '</span></span></div>';
+            $creditString .= '<div class="price-detail-item"><span class="value" price="'. $transaction->price .'">-'. $transaction->price .' ₽</span> <span class="date" date="'. $transaction->date .'">'.date('d.m.Y', $transaction->date).'</span><span class="info" transactionid="' . $transaction->id . '" implementerid="'. $transaction->implementer .'" implementername="'. $implementers[$transaction->implementer] .'"><span class="icon"></span><span class="content">' . $transaction->comment . '</span></span></div>';
         }
     endforeach;
     ?>

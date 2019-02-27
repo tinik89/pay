@@ -128,7 +128,16 @@ class AjaxController extends Controller
         if (Yii::$app->request->isAjax && $addForm->load(Yii::$app->request->post())) {
             if (empty ($errorForm = ActiveForm::validate($addForm))) {
 
-                    $transaction = new Transaction();
+                    if (isset($addForm->transaction_id) && !empty($addForm->transaction_id)){
+                        $transaction = Transaction::findOne($addForm->transaction_id);
+                        $successArr = ['edit' => 'Транзакция обнавлена'];
+                        $oldPrice = $transaction->price;
+                        $oldType = $transaction->type;
+                    } else {
+                        $transaction = new Transaction();
+                        $successArr = ['add' => 'Транзакция добавлена'];
+                    }
+
                     $transaction->client_id = $addForm->client_id;
                     $transaction->project_id = $addForm->project_id;
                     $transaction->price = $addForm->price;
@@ -137,7 +146,7 @@ class AjaxController extends Controller
                     $transaction->date = $addForm->date;
                     $transaction->comment = $addForm->comment;
                     $transaction->manager_id = $addForm->manager_id;
-                    $transaction->update_id = $addForm->update_id;
+                    //$transaction->update_id = $addForm->update_id;
                     if (!empty($addForm->implementer_id) && isset($addForm->implementer_id)) {
                         $transaction->implementer = $addForm->implementer_id;
                     } elseif (!empty($addForm->implementer) && isset($addForm->implementer)) {
@@ -148,8 +157,19 @@ class AjaxController extends Controller
                         }
                     }
 
+
+
                     if ($transaction->save(false)) {
                         $project = $transaction->project;
+                        if (isset($addForm->transaction_id) && !empty($addForm->transaction_id)){ // если транзакция обнавляется - откатываем старую
+                            if ($oldType == 'charge') {
+                                $project->debet = $project->debet + $oldPrice;
+                                //$project->credit = $project->credit + $transaction->price; списания не должны учитываться в долге
+                            } else {//поступление
+                                $project->debet = $project->debet - $oldPrice;
+                                $project->credit = $project->credit + $oldPrice;
+                            }
+                        }
                         if ($transaction->type == 'charge') {//списание
                             $project->debet = $project->debet - $transaction->price;
                             //$project->credit = $project->credit + $transaction->price; списания не должны учитываться в долге
@@ -157,9 +177,10 @@ class AjaxController extends Controller
                             $project->debet = $project->debet + $transaction->price;
                             $project->credit = $project->credit - $transaction->price;
                         }
+
                         $project->date_update = time();
                         $project->save();
-                        return json_encode(['add' => 'Транзакция добавлена']);
+                        return json_encode($successArr);
                     }
 
 

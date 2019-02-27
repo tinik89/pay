@@ -26,12 +26,13 @@ class TransactionForm extends Model
     public $comment;
     public $implementer;
     public $implementer_id;
+    public $transaction_id;
 
     public function rules()
     {
         return [
             [['client_id', 'project_id', 'price', 'cash', 'date', 'type', 'manager_id'], 'required'],
-            [['client_id', 'project_id', 'cash', 'date', 'implementer_id', 'update_id', 'manager_id'], 'integer'],
+            [['client_id', 'project_id', 'cash', 'date', 'implementer_id', 'update_id', 'manager_id', 'transaction_id'], 'integer'],
             [['price'], 'number'],
             [['type', 'comment', 'implementer', 'client', 'project'], 'string', 'max' => 255],
             ];
