@@ -76,7 +76,8 @@ class PayController extends Controller
         $searchModel = new TransactionSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        $errorForm = '';
+        $errorFormMulti = '';
+        $errorFormOne = '';
         $addForm = new TransactionForm();
         $addForms = new TransactionMultiForm();
 
@@ -85,7 +86,7 @@ class PayController extends Controller
 
         if (isset($formData['TransactionMultiForm'])) {
             if ($addForms->load(Yii::$app->request->post())) {
-                if (empty ($errorForm = ActiveForm::validate($addForms))) {
+                if (empty ($errorFormMulti = ActiveForm::validate($addForms))) {
 
                     foreach($addForms->schedule as $array){
                         $transaction = new Transaction();
@@ -126,11 +127,11 @@ class PayController extends Controller
                     }
 
 
-                }
+                } 
             }
         } else {
             if ($addForm->load(Yii::$app->request->post())) {
-                if (empty ($errorForm = ActiveForm::validate($addForm))) {
+                if (empty ($errorFormOne = ActiveForm::validate($addForm))) {
 
                     $transaction = new Transaction();
                     $transaction->client_id = $addForm->client_id;
@@ -187,7 +188,8 @@ class PayController extends Controller
             'dataProvider' => $dataProvider,
             'addForm' => $addForm,
             'addForms' => $addForms,
-            'errorForm' => $errorForm,
+            'errorFormMulti' => $errorFormMulti,
+            'errorFormOne' => $errorFormOne,
             'clients' => Client::find()->asArray()->all(),
             'implementers' => Implementer::find()->asArray()->all(),
             'transaction' => $transaction,

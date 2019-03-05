@@ -2,6 +2,7 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Url;
+use app\components\DeleteWidget;
 ?>
 
 
@@ -146,10 +147,10 @@ use yii\helpers\Url;
         'model' => $addTransactionForm,
         'implementers' => $implementers,
     ]); ?>
-    
-    <?php echo $this->render('_delProject', [
-        'deleteForm' => $deleteForm,
-    ]); ?>
+
+    <?php
+    echo DeleteWidget::widget(['deleteForm' => $deleteForm]);
+    ?>
    
 
    

@@ -2,6 +2,7 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Url;
+use app\components\DeleteWidget;
 ?>
 
 <!-- wrapper -->
@@ -205,9 +206,9 @@ use yii\helpers\Url;
     </div>
 
 
-    <?php echo $this->render('_delProject', [
-        'deleteForm' => $deleteForm,
-    ]); ?>
+    <?php
+    echo DeleteWidget::widget(['deleteForm' => $deleteForm]);
+    ?>
 
 
 

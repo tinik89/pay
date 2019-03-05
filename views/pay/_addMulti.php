@@ -35,7 +35,9 @@ js;
 $this->registerJS($js);
 ?>
     <!-- add multi transactions -->
-    <div class="add-multi-tr-form white-box" style="display: none;">
+    <div class="add-multi-tr-form white-box" <?php if (empty($errorForm)) {
+        echo 'style="display: none;"';
+    } ?> >
 
 
         <?php $form = ActiveForm::begin([
@@ -76,7 +78,7 @@ $this->registerJS($js);
                 </ul>
             </div>
             <?= $form->field($models, 'schedule')->widget(MultipleInput::className(), [
-                'max' => 4,
+                'max' => 15,
                 'rendererClass' => 'unclead\multipleinput\renderers\CustomRenderer',
                 'removeButtonOptions' => [
                     'class' => 'delete'
@@ -95,7 +97,7 @@ $this->registerJS($js);
                             1 => 'Наличными'
                         ],
                         'options' => [
-                            'class' => 'styler ',
+                            'class' => 'styler',
                         ]
 
                     ],
@@ -103,6 +105,9 @@ $this->registerJS($js);
                         'name' => 'date',
                         'title' => 'date',
                         'type' => MultipleInputColumn::TYPE_HIDDEN_INPUT,
+                        'options' => [
+                            'class' => 'trigger-date',
+                        ]
                     ],
                     [
                         'name' => 'datevisible',
@@ -111,7 +116,7 @@ $this->registerJS($js);
                             'class' => 'field value-date calendar'
                         ],
                         'options' => [
-                            'class' => 'datepicker',
+                            'class' => 'datepicker trigger-datevisible',
                             'placeholder' => 'Дата'
                         ]
                     ],
@@ -158,7 +163,8 @@ $this->registerJS($js);
                         'title' => 'implementer',
                         'options' => [
                             'prompt' => 'Исполнитель',
-                            'placeholder' => 'Исполнитель'
+                            'placeholder' => 'Исполнитель',
+                            'class' => 'trigger-implementer'
                         ],
                         'columnOptions' => [
                             'class' => 'field value-creator'
@@ -169,7 +175,7 @@ $this->registerJS($js);
                         'title' => 'implementer_id',
                         'type' => MultipleInputColumn::TYPE_HIDDEN_INPUT,
                         'options' => [
-                            'class' => 'field id-creator'
+                            'class' => 'field id-creator trigger-implementer-id'
                         ],
                     ],
                 ]

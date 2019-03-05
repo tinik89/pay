@@ -63,7 +63,7 @@ class ProjectController extends Controller
         
         $clientForm = new ClientForm();
 
-        $projects = Project::find()->with('transactions', 'clientinfo', 'taginfo')->all();
+        $projects = Project::find()->with('transactions', 'clientinfo', 'taginfo')->orderBy('date_update DESC')->all();
 
         $deleteForm = new DeleteForm();
 
@@ -89,7 +89,7 @@ class ProjectController extends Controller
 
         $projectForm = new ProjectForm();
 
-        $projects = Project::find()->with('transactions', 'clientinfo', 'taginfo')->where('client='.$clientID)->all();
+        $projects = Project::find()->with('transactions', 'clientinfo', 'taginfo')->where('client='.$clientID)->orderBy('date_update DESC')->all();
         
         $deleteForm = new DeleteForm();
 

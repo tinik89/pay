@@ -48,10 +48,19 @@ class TransactionMultiForm extends Model
     public function scheduleValidate($attribute, $params)
     {
         foreach ($this->schedule as $array) {
-
-            if (!is_numeric($array['price'])) {
-                $this->addError($attribute, 'Одна из сумм не является числом!');
+            if (empty($array['date'])) {
+                $this->addError($attribute, 'Не заполнена одна из дат!Мне очень жаль но теперь нужно заново заполнить всех клиентов и проекты)Впреть будьте внимательнее;)');
             };
+            if (!is_numeric($array['price'])) {
+                $this->addError($attribute, 'Одна из сумм не является числом!Мне очень жаль но теперь нужно заново заполнить всех клиентов и проекты)Впреть будьте внимательнее;)');
+            };
+            if (empty($array['client_id'])) {
+                $this->addError($attribute, 'Один из клиентов не заполнен, либо заполнен некорректно!Мне очень жаль но теперь нужно заново заполнить всех клиентов и проекты)Впреть будьте внимательнее;)');
+            };
+            if (empty($array['project_id'])) {
+                $this->addError($attribute, 'Один из проектов не заполнен, либо заполнен некорректно!Мне очень жаль но теперь нужно заново заполнить всех клиентов и проекты)Впреть будьте внимательнее;)');
+            };
+
         }
     }
 }

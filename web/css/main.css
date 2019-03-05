@@ -121,4 +121,24 @@ a.add-client-btn, a.add-project-btn {
     content: '-';
     color: #FF455C;
 }
+.add-multi-tr-form  .help-block{
+    margin-bottom: 10px;
+    text-align: center;
+    color: #FF455C;
+    font-weight: bold;
+}
+#tr-form-ajax .clients-btn.delete.form-del{
+    margin-top: 10px;
+    display: none;
+    vertical-align: top;
+    width: 100%;
+    height: auto;
+    line-height: 22px;
+    background: none;
+    color: #FF455C;
+    border-radius: 0px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+}
 /*ENDtib*/

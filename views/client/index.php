@@ -2,6 +2,7 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Url;
+use app\components\DeleteWidget;
 
 ?>
 
@@ -57,7 +58,7 @@ use yii\helpers\Url;
                         <td>
                             <div class="price minus"><?= $creditAll ?> ₽</div>
                         </td>
-                        <td><a href="#" class="clients-btn delete">Удалить</a></td>
+                        <td><a href="#" class="clients-btn delete"  object-type="client">Удалить</a></td>
                     </tr>
                 <?php endforeach; ?>
 
@@ -194,32 +195,8 @@ use yii\helpers\Url;
     </div>
 
     <!-- Delete alert Popup -->
-    <div class="nonebox add" id="del-client-popup">
-        <!-- edit client -->
-        <div class="add-tr-form white-box">
-            <?php $form = ActiveForm::begin([
-                'id' => 'del-form',
-                'action' => Url::to(['/ajax/remove-form']),
-                'fieldConfig' => [
-                    'template' => "<div class=\"field\">{input}{error}</div>",
-                ],
-            ]); ?>
-            <h2>Удалить клиента <span></span>?</h2>
-            <div class="tr-form">
-                <?= $form->field($deleteForm, 'object')->input('hidden', ['value' => 'client']) ?>
-                <?= $form->field($deleteForm, 'id')->input('hidden', ['id' => 'id-del-object']) ?>
-
-                <div class="group-col">
-                    <?= Html::submitButton('Удалить', ['class' => 'add-submit-btn', 'name' => 'del-client-button']) ?>
-                    <?= Html::button('Отмена', ['class' => 'cancel-submit-btn', 'name' => 'cancel-client-button']) ?>
-                </div>
-
-            </div>
-            <div class="clear"></div>
-            <?php ActiveForm::end(); ?>
-            <span class="close"></span>
-        </div>
-
-    </div>
+    <?php
+    echo DeleteWidget::widget(['deleteForm' => $deleteForm]);
+    ?>
 
 </div>

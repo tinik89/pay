@@ -36,7 +36,14 @@ use yii\helpers\Url;
             $debetString .= '<div class="price-detail-item"><span class="value" price="'. $transaction->price .'">+'. $transaction->price .' ₽</span> <span class="date" date="'. $transaction->date .'">'.date('d.m.Y', $transaction->date).'</span><span class="info" transactionid="' . $transaction->id . '" ><span class="icon"></span><span class="content">' . $transaction->comment . '</span></span></div>';
         } else {
             $creditAll += $transaction->price;
-            $creditString .= '<div class="price-detail-item"><span class="value" price="'. $transaction->price .'">-'. $transaction->price .' ₽</span> <span class="date" date="'. $transaction->date .'">'.date('d.m.Y', $transaction->date).'</span><span class="info" transactionid="' . $transaction->id . '" implementerid="'. $transaction->implementer .'" implementername="'. $implementers[$transaction->implementer] .'"><span class="icon"></span><span class="content">' . $transaction->comment . '</span></span></div>';
+            if (isset($transaction->implementer) && !empty($transaction->implementer)){
+                $transactionImplementerId = $transaction->implementer;
+                $transactionImplementerName = $implementers[$transaction->implementer];
+            } else {
+                $transactionImplementerId = '';
+                $transactionImplementerName = '';
+            }
+            $creditString .= '<div class="price-detail-item"><span class="value" price="'. $transaction->price .'">-'. $transaction->price .' ₽</span> <span class="date" date="'. $transaction->date .'">'.date('d.m.Y', $transaction->date).'</span><span class="info" transactionid="' . $transaction->id . '" implementerid="'. $transactionImplementerId .'" implementername="'. $transactionImplementerName .'"><span class="icon"></span><span class="content">' . $transaction->comment . '</span></span></div>';
         }
     endforeach;
     ?>
@@ -60,7 +67,7 @@ use yii\helpers\Url;
             }
             ?>
             <a href="#" class="clients-btn edit">Изменить</a>
-            <a href="#" class="clients-btn delete">Удалить</a>
+            <a href="#" class="clients-btn delete"   object-type="project">Удалить</a>
         </div>
     </td>
 </tr>

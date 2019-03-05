@@ -81,8 +81,22 @@ $(function () {
     /*tin*/
     // POPUP удалить запись
     $('.clients-btn.delete').on('click', function () {
-        $('#del-form input#id-del-object').val($(this).closest('tr').find('.del-name').attr('object-id'));
-        $('#del-form h2 span').text($(this).closest('tr').find('.del-name').text());
+        if ($(this).hasClass('form-del')) {
+            $('#del-form input#id-del-object').val($(this).closest('form').find('#transactionform-transaction_id').val());
+            $('#del-form h2 span').text($(this).closest('form').find('#transactionform-price').val() + ' ' + $(this).closest('form').find('#transactionform-implementer').val());
+            $('#del-form .add-submit-btn').addClass('reload');
+            $('#edit-client-popup').animate({'top': '-3000px'}, 500);
+        } else {
+            $('#del-form input#id-del-object').val($(this).closest('tr').find('.del-name').attr('object-id'));
+            $('#del-form h2 span').text($(this).closest('tr').find('.del-name').text());
+            $('#del-form .add-submit-btn').removeClass('reload');
+        }
+
+        var objectType = $(this).attr('object-type');
+        var objectTitle = '.' + objectType;
+        $('#del-form input#type-del-object').val(objectType);
+        $('h2.title').css('display', 'none');
+        $(objectTitle).css('display', 'inline');
         $('.overlay').fadeIn(250, function () {
             $('#del-client-popup').animate({'top': $(window).scrollTop() + 100}, 500);
         });
@@ -98,6 +112,12 @@ $(function () {
     $('#del-form .add-submit-btn').on('click', function(){
         var $yiiform = $(this).parents('form');
         var dataForm = $yiiform.serializeArray();
+        var trId = '#tr-id-' + $yiiform.find('#id-del-object').val();
+        if ($(this).hasClass('reload')){
+            var reload = true;
+        } else {
+            var reload = false;
+        }
         // отправляем данные на сервер
         $.ajax({
             type: $yiiform.attr('method'),
@@ -105,9 +125,12 @@ $(function () {
             data: dataForm,
             success: function (msg) {
                 if (msg){
-                    var trId = '#tr-id-' + $yiiform.find('#id-del-object').val();
-                    $(trId).remove();
-                    $('#del-client-popup .close').trigger('click');
+                    if (reload){
+                        window.location.reload();
+                    }else {
+                        $(trId).remove();
+                        $('#del-client-popup .close').trigger('click');
+                    }
                 } else {
                     alert('Ошибка!!!');
                 }
@@ -254,6 +277,12 @@ $(function () {
         if ($('.tab-menu-form.multi .active a').attr('href') == 'charge'){
             $('#multi-tr-form .value-price').addClass('minus');
         }
+        var lastGroup = $('.multiple-input-list__item.group-col').eq($('.multiple-input-list__item.group-col').length - 2);
+        var newGroup = $('.multiple-input-list__item.group-col').eq($('.multiple-input-list__item.group-col').length - 1);
+        newGroup.find('.trigger-date').val(lastGroup.find('.trigger-date').val());
+        newGroup.find('.trigger-datevisible').val(lastGroup.find('.trigger-datevisible').val());
+        newGroup.find('.trigger-implementer').val(lastGroup.find('.trigger-implementer').val());
+        newGroup.find('.trigger-implementer-id').val(lastGroup.find('.trigger-implementer-id').val());
         return false;
     });
     //datepicker AddTransaction
@@ -404,7 +433,15 @@ $(function () {
         $('#edit-client-popup #transactionform-client_id').val($(this).closest('tr').find('a.name').attr('client-id'));
         $('#edit-client-popup #transactionform-project').val($(this).closest('tr').find('.del-name').html());
         $('#edit-client-popup #transactionform-project_id').val($(this).closest('tr').find('.del-name').attr('object-id'));
+        $('#edit-client-popup #transactionform-price').val('');
+        $('#edit-client-popup #transactionform-date').val(parseInt(new Date()/1000));
+        $('#edit-client-popup #transactionform-comment').val('');
+        $('#edit-client-popup #transactionform-transaction_id').val('');
+        $('#edit-client-popup #transactionform-implementer_id').val('');
+        $('#edit-client-popup #transactionform-implementer').val('');
+        $( '#datepicker_inline').datepicker( "setDate", new Date());
         $('#edit-client-popup .submit-btn').html('Добавить');
+        $('#edit-client-popup .form-del').css('display', 'none');
 
         $('.overlay').fadeIn(250, function () {
             $('#edit-client-popup').animate({'top': $(window).scrollTop() + 100}, 500);
@@ -435,6 +472,8 @@ $(function () {
         $('#edit-client-popup #transactionform-project').val($(this).closest('tr').find('.del-name').html());
         $('#edit-client-popup #transactionform-project_id').val($(this).closest('tr').find('.del-name').attr('object-id'));
         $('#edit-client-popup .submit-btn').html('Обновить');
+        $('#edit-client-popup .form-del').css('display', 'inline-block');
+
 
 
 

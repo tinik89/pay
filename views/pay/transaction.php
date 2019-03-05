@@ -3,6 +3,7 @@ use yii\grid\GridView;
 use yii\widgets\ActiveForm;
 use yii\helpers\Html;
 use yii\helpers\Url;
+use app\components\DeleteWidget;
 
 ?>
 
@@ -47,14 +48,14 @@ use yii\helpers\Url;
 
     <?php echo $this->render('_addOne', [
         'model' => $addForm,
-        'errorForm' => $errorForm,
+        'errorForm' => $errorFormOne,
         'clients' => $clients,
         'implementers' => $implementers,
     ]); ?>
 
     <?php echo $this->render('_addMulti', [
         'models' => $addForms,
-        'errorForm' => $errorForm,
+        'errorForm' => $errorFormMulti,
         'clients' => $clients,
         'implementers' => $implementers,
     ]); ?>
@@ -146,7 +147,7 @@ use yii\helpers\Url;
                     </div>
                 </td>
 
-                <td><a href="#" class="clients-btn delete">Удалить</a></td>
+                <td><a href="#" class="clients-btn delete" object-type="transaction">Удалить</a></td>
             </tr>
         <?php endforeach; ?>
         <?php $endTable = '</table></div> </div>'; ?>
@@ -253,32 +254,7 @@ use yii\helpers\Url;
     </div>
 
     <!-- Delete alert Popup -->
-    <div class="nonebox add" id="del-client-popup">
-        <!-- edit client -->
-        <div class="add-tr-form white-box">
-            <?php $form = ActiveForm::begin([
-                'id' => 'del-form',
-                'action' => Url::to(['/ajax/remove-form']),
-                'fieldConfig' => [
-                    'template' => "<div class=\"field\">{input}{error}</div>",
-                ],
-            ]); ?>
-            <h2>Удалить транзакцию <span></span>?</h2>
-            <div class="tr-form">
-                <?= $form->field($deleteForm, 'object')->input('hidden', ['value' => 'transaction']) ?>
-                <?= $form->field($deleteForm, 'id')->input('hidden', ['id' => 'id-del-object']) ?>
-
-                <div class="group-col">
-                    <?= Html::submitButton('Удалить', ['class' => 'add-submit-btn', 'name' => 'del-client-button']) ?>
-                    <?= Html::button('Отмена', ['class' => 'cancel-submit-btn', 'name' => 'cancel-client-button']) ?>
-                </div>
-
-            </div>
-            <div class="clear"></div>
-            <?php ActiveForm::end(); ?>
-            <span class="close"></span>
-        </div>
-
-    </div>
-
+    <?php
+    echo DeleteWidget::widget(['deleteForm' => $deleteForm]);
+    ?>
 </div>

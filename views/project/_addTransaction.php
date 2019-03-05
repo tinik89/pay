@@ -113,6 +113,7 @@ $this->registerJS($js);
                         <div class="group-bts">
                             <?= Html::submitButton('Добавить', ['class' => 'submit-btn']) ?>
                             <a href="#" class="cancel-btn">Отмена</a>
+                            <a href="#" class="clients-btn delete form-del" object-type="transaction">Удалить</a>
                         </div>
                     </div>
                 </fieldset>
