@@ -65,6 +65,10 @@ class ProjectController extends Controller
 
         $projects = Project::find()->with('transactions', 'clientinfo', 'taginfo')->orderBy('date_update DESC')->all();
 
+
+        $projectsOpen = Project::find()->where('status=1')->count();
+        $summTags = Project::find()->with('taginfo')->select('tag, SUM(price) as sumPrice, SUM(debet) as sumDebet')->groupBy('tag')->all();
+
         $deleteForm = new DeleteForm();
 
         $addTransactionForm = new TransactionForm();
@@ -76,6 +80,8 @@ class ProjectController extends Controller
             'deleteForm' => $deleteForm,
             'implementers' => Implementer::find()->asArray()->all(),
             'addTransactionForm' => $addTransactionForm,
+            'projectsOpen' => $projectsOpen,
+            'summTags' => $summTags,
         ]);
     }
 
@@ -90,6 +96,11 @@ class ProjectController extends Controller
         $projectForm = new ProjectForm();
 
         $projects = Project::find()->with('transactions', 'clientinfo', 'taginfo')->where('client='.$clientID)->orderBy('date_update DESC')->all();
+
+        
+        $projectsOpen = Project::find()->where('client='.$clientID.' AND status=1')->count();
+        $summTags = Project::find()->with('taginfo')->select('tag, SUM(price) as sumPrice, SUM(debet) as sumDebet')->where('client='.$clientID)->groupBy('tag')->all();
+
         
         $deleteForm = new DeleteForm();
 
@@ -103,6 +114,8 @@ class ProjectController extends Controller
             'deleteForm' => $deleteForm,
             'implementers' => Implementer::find()->asArray()->all(),
             'addTransactionForm' => $addTransactionForm,
+            'projectsOpen' => $projectsOpen,
+            'summTags' => $summTags,
         ]);
     }
 }

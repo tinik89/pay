@@ -18,6 +18,8 @@ use Yii;
  */
 class Project extends \yii\db\ActiveRecord
 {
+    public $sumPrice;
+    public $sumDebet;
     /**
      * {@inheritdoc}
      */

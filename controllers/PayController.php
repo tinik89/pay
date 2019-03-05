@@ -115,7 +115,7 @@ class PayController extends Controller
                             $project = $transaction->project;
                             if ($transaction->type == 'charge') {//списание
                                 $project->debet = $project->debet - $transaction->price;
-                                $project->credit = $project->credit + $transaction->price;
+                               // $project->credit = $project->credit + $transaction->price; списания не должны учитываться в долге
                             } else {//поступление
                                 $project->debet = $project->debet + $transaction->price;
                                 $project->credit = $project->credit - $transaction->price;
@@ -158,7 +158,7 @@ class PayController extends Controller
                         $project = $transaction->project;
                         if ($transaction->type == 'charge') {//списание
                             $project->debet = $project->debet - $transaction->price;
-                            $project->credit = $project->credit + $transaction->price;
+                           // $project->credit = $project->credit + $transaction->price; списания не должны учитываться в долге
                         } else {//поступление
                             $project->debet = $project->debet + $transaction->price;
                             $project->credit = $project->credit - $transaction->price;

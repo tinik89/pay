@@ -99,7 +99,7 @@ class AjaxController extends Controller
                         $project = Project::findOne($modelDel->project_id);
                         if ($modelDel->type == 'charge') {//списание
                             $project->debet = $project->debet + $modelDel->price;
-                            $project->credit = $project->credit - $modelDel->price;
+                            //$project->credit = $project->credit - $modelDel->price; списания не должны учитываться в долге
                         } else {//поступление
                             $project->debet = $project->debet - $modelDel->price;
                             $project->credit = $project->credit + $modelDel->price;

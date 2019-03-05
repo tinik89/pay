@@ -67,6 +67,11 @@ use app\components\DeleteWidget;
                     <th></th>
                 </tr>
                 <?php foreach ($projects as $project):?>
+                    <?php
+                    $clientCredit += $project->credit;
+                    $clientDebet += $project->debet;
+                    $clientPrice += $project->price;
+                    ?>
                     <?php echo $this->render('_oneProject', [
                         'project' => $project,
                         'implementers' => array_column($implementers, 'name', 'id')
@@ -79,51 +84,15 @@ use app\components\DeleteWidget;
         </div>
 
         <!-- projects popup -->
-        <div class="projects-overlay"></div>
-        <div class="projects-popup">
-            <div class="projects-items">
-
-                <div class="projects-col">
-                    <div class="projects-item">
-                        <div class="title">Всего проектов:</div>
-                        <div class="count">125 <span>(7 долгов)</span></div>
-                        <div class="all-price minus"><span>Общий долг:</span> - 700 000 ₽</div>
-                        <div class="all-price plus"><span>Общий баланс:</span> + 7 000 000 ₽</div>
-                        <div class="list">
-                            <ul>
-                                <li>
-                                    <strong>Маркетинг:</strong>
-                                    <span class="value">1 000 000 ₽ <span class="percent">(100%)</span></span>
-                                </li>
-                                <li>
-                                    <strong>Контекст:</strong>
-                                    <span class="value">500 000 ₽ <span class="percent">(100%)</span></span>
-                                </li>
-                                <li>
-                                    <strong>Дизайн:</strong>
-                                    <span class="value">1 000 ₽ <span class="percent">(100%)</span></span>
-                                </li>
-                                <li>
-                                    <strong>Сайт:</strong>
-                                    <span class="value">1 000 000 ₽ <span class="percent">(100%)</span></span>
-                                </li>
-                                <li>
-                                    <strong>SMM:</strong>
-                                    <span class="value">1 000 000 ₽ <span class="percent">(100%)</span></span>
-                                </li>
-                                <li>
-                                    <strong>SEO:</strong>
-                                    <span class="value">1 000 ₽ <span class="percent">(100%)</span></span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                
-
-            </div>
-        </div>
+        <?php echo $this->render('_statistik', [
+            'clientCredit' => $clientCredit,
+            'clientDebet' => $clientDebet,
+            'clientPrice' => $clientPrice,
+            'clientName' => 'Все проекты',
+            'projectsOpen' => $projectsOpen,
+            'projectsCount' => count($projects),
+            'summTags' => $summTags,
+        ]); ?>
 
     </div>
 
