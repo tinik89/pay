@@ -6,7 +6,7 @@ use yii\helpers\Url;
     <td>
         <div class="service del-name" object-id="<?= $project->id ?>"><?=$project->name?></div>
         <a href="<?= Url::to(['project/show', 'id' => $project -> client])?>" class="name" client-id="<?=$project -> client?>"><?= $project -> clientinfo -> name ?></a>
-        <div class="category">
+        <div class="category" tag-id="<?=$project -> tag?>">
             <?php
             if (isset($project -> taginfo)){
                 echo $project -> taginfo -> tag;
@@ -15,15 +15,15 @@ use yii\helpers\Url;
             } ?></div>
     </td>
     <td>
-        <div class="price"> <?= $project -> price ?> ₽</div>
-        <div class="price minus"><span>Долг:</span> <?= $project -> credit ?> ₽</div>
+        <div class="price" price-val="<?=$project -> price?>"> <?= number_format($project -> price, 2, ',', ' ') ?> ₽</div>
+        <div class="price minus"><span>Долг:</span> <?= number_format($project -> credit, 2, ',', ' ') ?> ₽</div>
         <?php
         if ($project -> price != 0){
             $proc = round($project -> debet / $project -> price *100, 1);
         } else {
             $proc = 0;
         }?>
-        <div class="price plus"><span>Текущий баланс:</span> <?= $project -> debet ?> ₽ (<?= $proc ?>%)</div>
+        <div class="price plus"><span>Текущий баланс:</span> <?= number_format($project -> debet, 2, ',', ' ') ?> ₽ (<?= $proc ?>%)</div>
     </td>
     <?php
     $debetAll = 0;

@@ -63,6 +63,8 @@ class ProjectController extends Controller
         
         $clientForm = new ClientForm();
 
+        $projectForm = new ProjectForm();
+
         $projects = Project::find()->with('transactions', 'clientinfo', 'taginfo')->orderBy('date_update DESC')->all();
 
 
@@ -74,6 +76,7 @@ class ProjectController extends Controller
         $addTransactionForm = new TransactionForm();
         
         return $this->render('index', [
+            'projectForm'=>$projectForm,
             'clientForm' => $clientForm,
             'projects' => $projects,
             'tags' => Tag::find()->asArray()->all(),

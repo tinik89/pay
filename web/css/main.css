@@ -67,7 +67,7 @@ a.add-client-btn, a.add-project-btn {
     color: red;
     margin: 0 0 10px 0;
     display: block;
-    height: 12px;
+    /*height: 12px; не влазили ошибки в форме добавления проекта*/
 }
 #new-project-form .message.green {
     color:#7ED321;
@@ -140,5 +140,15 @@ a.add-client-btn, a.add-project-btn {
     font-size: 16px;
     font-weight: bold;
     text-align: center;
+}
+
+#new-project-form .show-edit {
+    display:none;
+}
+#new-project-form.edit .show-edit {
+    display:inline;
+}
+#new-project-form.edit .hidden-edit {
+    display:none;
 }
 /*ENDtib*/

@@ -25,6 +25,7 @@ class ProjectForm extends Model
     public $price;
     public $date_start;
     public $client;
+    public $project_id;
     /**
      * {@inheritdoc}
      */
@@ -40,7 +41,7 @@ class ProjectForm extends Model
     {
         return [
             [['name', 'tag', 'price', 'date_start', 'client'], 'required'],
-            [['tag', 'client'], 'integer'],
+            [['tag', 'client', 'project_id'], 'integer'],
             [['price'], 'number'],
             [['name'], 'string', 'max' => 255],
         ];

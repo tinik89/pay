@@ -156,6 +156,31 @@ $(function () {
 
     // POPUP новый проект
     $('.add-project-btn').on('click', function () {
+
+        $('#new-project-form').removeClass('edit');
+        $('#new-project-form .message').html('');
+        $('#new-project-form #projectform-name').val('');
+        $('#new-project-form #projectform-tag').val('').trigger('refresh');
+        $('#new-project-form #projectform-price').val('');
+        $('#new-project-form #projectform-project_id').val('');
+        $('#new-project-form #projectform-date_start').val('');
+        $('.overlay').fadeIn(250, function () {
+            $('#add-project-popup').animate({'top': $(window).scrollTop() + 100}, 500);
+        });
+        return false;
+    });
+
+    // POPUP редактировать проект
+    $('.clients-btn.edit').on('click', function () {
+        $('#new-project-form').addClass('edit');
+        $('#new-project-form .message').html('');
+        $('#new-project-form #projectform-name').val($(this).closest('tr').find('.del-name').text());
+        $('#new-project-form #projectform-tag').val($(this).closest('tr').find('.category').attr('tag-id')).trigger('refresh');
+        $('#new-project-form #projectform-price').val($(this).closest('tr').find('.price').attr('price-val'));
+        $('#new-project-form #projectform-project_id').val($(this).closest('tr').find('.del-name').attr('object-id'));
+        $('#new-project-form #projectform-date_start').val('1');
+
+
         $('.overlay').fadeIn(250, function () {
             $('#add-project-popup').animate({'top': $(window).scrollTop() + 100}, 500);
         });
@@ -213,7 +238,17 @@ $(function () {
                         window.location.reload();
                     }, 1000);
                 } else if (oMsg.error) {
-                    $('#new-project-form .message').removeClass('green').html(oMsg.error);
+                    var errMess = '';
+                    $.each(oMsg.error, function(el,i){
+
+                        errMess = errMess + i[0] + '<br/>';
+                    });
+                    $('#new-project-form .message').removeClass('green').html(errMess);
+                } else  if (oMsg.edit) {
+                    $('#new-project-form .message').addClass('green').html(oMsg.edit);
+                    setTimeout(function() {
+                        window.location.reload();
+                    }, 1000);
                 }
             }
         });
@@ -520,28 +555,10 @@ $(function () {
 
         return false;
     });
+
     
-    //редактирование проекта
-    $('.clients-btn.edit').on('click', function(){
-        var project = $(this).closest('tr').find('.del-name').attr('object-id');
-        $.ajax({
-            type: 'POST',
-            url: '/ajax/info-project',
-            data: 'project='+project,
-            success: function (msg) {
-                var projectArr = JSON.parse(msg);
-                // projectInput.html('');
-                // projectInput.val('');
-                // projectInput.combobox("destroy");
-                // projectInput.append('<option value=""></option>');
-                // $.each(projectsArr, function(){
-                //     projectInput.append('<option value="'+$(this)[0].id+'">'+$(this)[0].name+'</option>');
-                // });
-                // projectInput.combobox();
-            }
-        });
-        return false;
-    });
+
+
 
     //открытие-закрытие проекта
     $('.clients-btn.close').on('click', function(){
@@ -563,15 +580,6 @@ $(function () {
                     button.toggleClass('open');
                 }
                 button.html(Arr.msg);
-
-                // projectInput.html('');
-                // projectInput.val('');
-                // projectInput.combobox("destroy");
-                // projectInput.append('<option value=""></option>');
-                // $.each(projectsArr, function(){
-                //     projectInput.append('<option value="'+$(this)[0].id+'">'+$(this)[0].name+'</option>');
-                // });
-                // projectInput.combobox();
             }
         });
         return false;

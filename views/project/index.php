@@ -66,6 +66,11 @@ use app\components\DeleteWidget;
                     <th>Расходы</th>
                     <th></th>
                 </tr>
+                <?php
+                $clientCredit = 0;
+                $clientDebet = 0;
+                $clientPrice = 0;
+                ?>
                 <?php foreach ($projects as $project):?>
                     <?php
                     $clientCredit += $project->credit;
@@ -117,6 +122,11 @@ use app\components\DeleteWidget;
         'implementers' => $implementers,
     ]); ?>
 
+    <!-- ADD Project Popup -->
+    <?php echo $this->render('_addClient', [
+        'projectForm' => $projectForm,
+        'tags' => $tags,
+    ]); ?>
     <?php
     echo DeleteWidget::widget(['deleteForm' => $deleteForm]);
     ?>

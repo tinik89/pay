@@ -60,24 +60,34 @@ class AjaxController extends Controller
         $projectForm = new ProjectForm();
         if (Yii::$app->request->isAjax && $projectForm->load(Yii::$app->request->post())) {
             if (!empty ($errorForm = ActiveForm::validate($projectForm))) {
-                return json_encode(['error'=>$errorForm["projectform-name"][0]]);
+                //return json_encode(['error'=>$errorForm["projectform-name"][0]]);
+                return json_encode(['error'=>$errorForm]);
             } else {
-                if (Project::find()->where(['name' => $projectForm->name,'client' => $projectForm->client])->exists()){
+                if(isset($projectForm->project_id) && !empty($projectForm->project_id)){
+                    $project = Project::findOne($projectForm->project_id);
+                    $project->credit = $project->credit - ($project->price - $projectForm->price);
+                    $successArr = ['edit' => 'Транзакция обнавлена'];
+                } elseif(Project::find()->where(['name' => $projectForm->name,'client' => $projectForm->client])->exists()){
                     return json_encode(['error'=>'У данного клиента уже существует, проект с таким названием ']);
                 } else {
                     $project = new Project();
-                    $project->name = $projectForm->name;
-                    $project->tag = $projectForm->tag;
-                    $project->price = $projectForm->price;
-                    $project->date_start = strtotime($projectForm->date_start);
-                    $project->date_update = time();
-                    $project->client = $projectForm->client;
                     $project->debet = 0;
                     $project->status = 1;
                     $project->credit = $projectForm->price;
-                    $project->save(false);
-                    return json_encode(['add' => 'Проект добавлен', 'id' =>  $project->id]);
+                    $successArr = ['add' => 'Проект добавлен'];
                 }
+                
+                $project->name = $projectForm->name;
+                $project->tag = $projectForm->tag;
+                $project->price = $projectForm->price;
+                $project->date_start = strtotime($projectForm->date_start);
+                $project->date_update = time();
+                $project->client = $projectForm->client;
+
+
+                $project->save(false);
+                return json_encode($successArr);
+                
             }
         }
         return false;
