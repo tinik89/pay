@@ -15,15 +15,15 @@ use yii\helpers\Url;
             } ?></div>
     </td>
     <td>
-        <div class="price" price-val="<?=$project -> price?>"> <?= number_format($project -> price, 2, ',', ' ') ?> ₽</div>
-        <div class="price minus"><span>Долг:</span> <?= number_format($project -> credit, 2, ',', ' ') ?> ₽</div>
+        <div class="price" price-val="<?=$project -> price?>"> <?= number_format($project -> price, 0, ',', ' ') ?> ₽</div>
+        <div class="price minus"><span>Долг:</span> <?= number_format($project -> credit, 0, ',', ' ') ?> ₽</div>
         <?php
         if ($project -> price != 0){
             $proc = round($project -> debet / $project -> price *100, 1);
         } else {
             $proc = 0;
         }?>
-        <div class="price plus"><span>Текущий баланс:</span> <?= number_format($project -> debet, 2, ',', ' ') ?> ₽ (<?= $proc ?>%)</div>
+        <div class="price plus"><span>Текущий баланс:</span> <?= number_format($project -> debet, 0, ',', ' ') ?> ₽ (<?= $proc ?>%)</div>
     </td>
     <?php
     $debetAll = 0;
@@ -33,7 +33,13 @@ use yii\helpers\Url;
     foreach ($project -> transactions as $transaction):
         if ($transaction->type == 'enrollment'){
             $debetAll += $transaction->price;
-            $debetString .= '<div class="price-detail-item"><span class="value" price="'. $transaction->price .'">+'. $transaction->price .' ₽</span> <span class="date" date="'. $transaction->date .'">'.date('d.m.Y', $transaction->date).'</span><span class="info" transactionid="' . $transaction->id . '" ><span class="icon"></span><span class="content">' . $transaction->comment . '</span></span></div>';
+            $debetString .= '<div class="price-detail-item">'.
+                '<span class="value" price="'. $transaction->price .'">+'. number_format($transaction->price, 0, ',', ' ') .' ₽</span>'.
+                '<span class="date" date="'. $transaction->date .'">'.date('d.m.Y', $transaction->date).'</span>'.
+                '<span class="info" transactionid="' . $transaction->id . '" >'.
+                    '<span class="icon"></span>'.
+                    '<span class="content">' . $transaction->comment . '</span>'.
+                '</span></div>';
         } else {
             $creditAll += $transaction->price;
             if (isset($transaction->implementer) && !empty($transaction->implementer)){
@@ -43,17 +49,23 @@ use yii\helpers\Url;
                 $transactionImplementerId = '';
                 $transactionImplementerName = '';
             }
-            $creditString .= '<div class="price-detail-item"><span class="value" price="'. $transaction->price .'">-'. $transaction->price .' ₽</span> <span class="date" date="'. $transaction->date .'">'.date('d.m.Y', $transaction->date).'</span><span class="info" transactionid="' . $transaction->id . '" implementerid="'. $transactionImplementerId .'" implementername="'. $transactionImplementerName .'"><span class="icon"></span><span class="content">' . $transaction->comment . '</span></span></div>';
+            $creditString .= '<div class="price-detail-item">'.
+                '<span class="value" price="'. $transaction->price .'">-'. number_format($transaction->price, 0, ',', ' ') .' ₽</span>'.
+                '<span class="date" date="'. $transaction->date .'">'.date('d.m.Y', $transaction->date).'</span>'.
+                '<span class="info" transactionid="' . $transaction->id . '" implementerid="'. $transactionImplementerId .'" implementername="'. $transactionImplementerName .'">'.
+                    '<span class="icon"></span>'.
+                    '<span class="content">' . $transaction->comment . '</span>'.
+                '</span></div>';
         }
     endforeach;
     ?>
     <td>
-        <div class="price plus"><?= $debetAll ?> ₽</div>
+        <div class="price plus"><?= number_format($debetAll, 0, ',', ' ') ?> ₽</div>
         <div class="price-detail-items"> <?= $debetString ?></div>
         <a href="#" class="add-price-btn plus">+ Поступление</a>
     </td>
     <td>
-        <div class="price minus"><?= $creditAll ?> ₽</div>
+        <div class="price minus"><?= number_format($creditAll, 0, ',', ' ') ?> ₽</div>
         <div class="price-detail-items"><?= $creditString ?></div>
         <a href="#" class="add-price-btn minus">- Расход</a>
     </td>

@@ -15,8 +15,8 @@
                 <div class="count">
                     <?= $projectsOpen; ?> открыто /<?php echo $projectsCount - $projectsOpen; ?> закрыто
                 </div>
-                <div class="all-price minus"><span>Общий долг:</span> - <?= $clientCredit ?> ₽</div>
-                <div class="all-price plus"><span>Общий баланс:</span> + <?= $clientDebet ?>
+                <div class="all-price minus"><span>Общий долг:</span> - <?= number_format($clientCredit, 0, ',', ' ') ?> ₽</div>
+                <div class="all-price plus"><span>Общий баланс:</span> + <?= number_format($clientDebet, 0, ',', ' ') ?>
                     ₽(<?= $clientProc ?>%)
                 </div>
                 <div class="list">
@@ -36,7 +36,7 @@
                             ?>
                             <li>
                                 <strong><?= $tagname ?>:</strong>
-                                            <span class="value"><?= $arr->sumDebet ?> ₽
+                                            <span class="value"><?= number_format($arr->sumDebet, 0, ',', ' ') ?> ₽
                                                 <span class="percent">(<?= $tagProc ?>%)</span>
                                             </span>
                             </li>

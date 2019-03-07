@@ -53,10 +53,10 @@ use app\components\DeleteWidget;
                         endforeach;
                         ?>
                         <td>
-                            <div class="price plus"><?= $debetAll ?> ₽</div>
+                            <div class="price plus"><?= number_format($debetAll, 0, ',', ' ') ?> ₽</div>
                         </td>
                         <td>
-                            <div class="price minus"><?= $creditAll ?> ₽</div>
+                            <div class="price minus"><?= number_format($creditAll, 0, ',', ' ') ?> ₽</div>
                         </td>
                         <td><a href="#" class="clients-btn delete"  object-type="client">Удалить</a></td>
                     </tr>

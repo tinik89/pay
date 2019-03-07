@@ -126,10 +126,10 @@ use app\components\DeleteWidget;
                 </td>
                 <td>
                     <?php if ($transaction->type == 'enrollment') {
-                        echo '<div class="price del-name" object-id="' . $transaction->id . '">+'.$transaction->price .'₽ </div>';
+                        echo '<div class="price del-name" object-id="' . $transaction->id . '">+'. number_format($transaction->price, 0, ',', ' ') .'₽ </div>';
                     } else {
                         $implementer = (isset($transaction->implementerinfo))?$transaction->implementerinfo->name:'';
-                        echo '<div class="price minus del-name" object-id="' . $transaction->id . '">-'.$transaction->price .'₽ <p>'. $implementer .'</p></div>';
+                        echo '<div class="price minus del-name" object-id="' . $transaction->id . '">-'.number_format($transaction->price, 0, ',', ' ') .'₽ <p>'. $implementer .'</p></div>';
                     } ?>
                 </td>
                 <td>

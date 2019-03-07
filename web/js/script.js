@@ -177,6 +177,7 @@ $(function () {
         $('#new-project-form #projectform-name').val($(this).closest('tr').find('.del-name').text());
         $('#new-project-form #projectform-tag').val($(this).closest('tr').find('.category').attr('tag-id')).trigger('refresh');
         $('#new-project-form #projectform-price').val($(this).closest('tr').find('.price').attr('price-val'));
+        $('#new-project-form #projectform-client').val($(this).closest('tr').find('.name').attr('client-id'));
         $('#new-project-form #projectform-project_id').val($(this).closest('tr').find('.del-name').attr('object-id'));
         $('#new-project-form #projectform-date_start').val('1');
 
