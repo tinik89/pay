@@ -19,8 +19,8 @@ IeAsset::register($this);
 
 
         <!-- Favicon -->
-        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-        <link rel="icon" href="favicon.ico" type="image/x-icon">
+        <link rel="shortcut icon" href="<?php echo Yii::$app->getHomeUrl();?>web/images/favicon.ico?v=2" type="image/x-icon">
+        <link rel="icon" href="<?php echo Yii::$app->getHomeUrl();?>web/images/favicon.ico?v=2" type="image/x-icon">
 
         <?php $this->head() ?>
     </head>

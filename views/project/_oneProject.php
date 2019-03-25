@@ -3,7 +3,9 @@ use yii\helpers\Url;
 ?>
 
 <tr id="tr-id-<?=$project -> id?>">
+
     <td>
+        <div class="project-open-date" date-start="<?=date('d/m/Y', $project->date_start)?>"><?php if (!empty($project->date_start)) echo date('d.m.Y', $project->date_start);?></div>
         <div class="service del-name" object-id="<?= $project->id ?>"><?=$project->name?></div>
         <a href="<?= Url::to(['project/show', 'id' => $project -> client])?>" class="name" client-id="<?=$project -> client?>"><?= $project -> clientinfo -> name ?></a>
         <div class="category" tag-id="<?=$project -> tag?>">
@@ -55,7 +57,9 @@ use yii\helpers\Url;
                 '<span class="info" transactionid="' . $transaction->id . '" implementerid="'. $transactionImplementerId .'" implementername="'. $transactionImplementerName .'">'.
                     '<span class="icon"></span>'.
                     '<span class="content">' . $transaction->comment . '</span>'.
-                '</span></div>';
+                '</span>'.
+                '<span class="mplementer-name">'.$transactionImplementerName.'</span>'.
+                '</div>';
         }
     endforeach;
     ?>

@@ -151,4 +151,42 @@ a.add-client-btn, a.add-project-btn {
 #new-project-form.edit .hidden-edit {
     display:none;
 }
+.projects-items .projects-col{
+    margin-right:45px;
+}
+.projects-popup{
+    left:-320px;
+    width: auto;
+}
+.clients-filter .checkbox-items{
+    padding: 20px 10px;
+    margin-right:10px;
+}
+.clients-filter .jq-checkbox{
+    margin-right:3px;
+}
+.clients-filter .status-bts{
+    padding-right:0;
+}
+.clients-filter .checkbox-items .checkbox-item{
+    margin-left:15px;
+}
+.clients-item table tr td .clients-btn.open{
+    color: #FF455C;
+    background: #FFC7CE;
+}
+.mplementer-name{
+    margin-bottom: 0;
+    font-size: 12px;
+    text-align: center;
+    color: #FF455C;
+    line-height: 22px;
+    margin-left: 5px;
+}
+.clients-item table tr td{
+    padding: 35px 20px;
+}
+.clients-item table tr td .price-detail-items{
+    width: 330px;
+}
 /*ENDtib*/

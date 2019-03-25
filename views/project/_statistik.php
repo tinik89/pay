@@ -1,6 +1,6 @@
 <!-- projects popup -->
 <div class="projects-overlay"></div>
-<div class="projects-popup">
+<div class="projects-popup" style="display:block">
     <div class="projects-items">
 
         <div class="projects-col">

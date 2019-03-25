@@ -40,7 +40,7 @@ use yii\helpers\Html;
             <div class="group-col">
                 <?= $form->field($projectForm, 'price')->textInput(['placeholder' => 'Цена']) ?>
             </div>
-            <div class="group-col hidden-edit">
+            <div class="group-col">
                 <?= $form->field($projectForm, 'date_start')->textInput(['placeholder' => 'Дата начала', 'class' => 'datepicker']) ?>
             </div>
             <div class="group-col">

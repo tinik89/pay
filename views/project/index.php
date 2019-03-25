@@ -55,7 +55,7 @@ use app\components\DeleteWidget;
     <!-- clients items -->
     <div class="clients-items">
 
-        <a href="#" class="clients-menu"></a>
+        <a href="#" class="clients-menu active"></a>
 
         <div class="clients-item">
             <table>
