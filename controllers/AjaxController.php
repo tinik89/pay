@@ -66,7 +66,7 @@ class AjaxController extends Controller
                 if(isset($projectForm->project_id) && !empty($projectForm->project_id)){
                     $project = Project::findOne($projectForm->project_id);
                     $project->credit = $project->credit - ($project->price - $projectForm->price);
-                    $successArr = ['edit' => 'Транзакция обнавлена'];
+                    $successArr = ['edit' => 'Проект обнавлен'];
                 } elseif(Project::find()->where(['name' => $projectForm->name,'client' => $projectForm->client])->exists()){
                     return json_encode(['error'=>'У данного клиента уже существует, проект с таким названием ']);
                 } else {
@@ -76,11 +76,12 @@ class AjaxController extends Controller
                     $project->credit = $projectForm->price;
                     $successArr = ['add' => 'Проект добавлен'];
                 }
-                
+
+                $dateArr = explode('/', $projectForm->date_start);
+                $project->date_start = strtotime($dateArr[1].'/'.$dateArr[0].'/'.$dateArr[2]);
                 $project->name = $projectForm->name;
                 $project->tag = $projectForm->tag;
                 $project->price = $projectForm->price;
-                $project->date_start = strtotime($projectForm->date_start);
                 $project->date_update = time();
                 $project->client = $projectForm->client;
 
@@ -159,7 +160,7 @@ class AjaxController extends Controller
                     //$transaction->update_id = $addForm->update_id;
                     if (!empty($addForm->implementer_id) && isset($addForm->implementer_id)) {
                         $transaction->implementer = $addForm->implementer_id;
-                    } elseif (!empty($addForm->implementer) && isset($addForm->implementer)) {
+                    } elseif (!empty($addForm->implementer) && isset($addForm->implementer) && $addForm->implementer != '|-') {
                         $newImplementer = new Implementer();
                         $newImplementer->name = $addForm->implementer;
                         if ($newImplementer->save()) {// -------------------------------------------обработать случай если не прошел валидацию новый исполнитель

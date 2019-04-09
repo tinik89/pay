@@ -236,7 +236,7 @@ $(function () {
                         //var curUrlArr = window.location.href.split('#');
                         //window.location.href = curUrlArr[0] + '#tr-id-' + oMsg.id;
                         //window.location.reload(true);
-                        window.location.reload();
+                        //window.location.reload();
                     }, 1000);
                 } else if (oMsg.error) {
                     var errMess = '';
@@ -248,7 +248,7 @@ $(function () {
                 } else  if (oMsg.edit) {
                     $('#new-project-form .message').addClass('green').html(oMsg.edit);
                     setTimeout(function() {
-                        window.location.reload();
+                        //window.location.reload();
                     }, 1000);
                 }
             }
@@ -269,13 +269,15 @@ $(function () {
         if ($(this).attr('href') == 'enrollment') {
             $('#transactionform-type').val('enrollment');
             $('.implementer').css('display', 'none');
-            $('.implementer input').val('');
+            $('#transactionform-implementer').val('|-');
+            $('#transactionform-implementer_id').val('');
             $(this).parents('form').find('.value-price').removeClass('minus');
             $(this).parents('form').find('.cash0').prop("checked", true).trigger('refresh');
             $(this).parents('form').find('.cash1').prop("checked", false).trigger('refresh');
         } else {
             $('#transactionform-type').val('charge');
             $('.implementer').css('display', 'block');
+            $('.implementer input').val('');
             $(this).parents('form').find('.value-price').addClass('minus');
             $(this).parents('form').find('.cash1').prop("checked", true).trigger('refresh');
             $(this).parents('form').find('.cash0').prop("checked", false).trigger('refresh');
@@ -290,16 +292,17 @@ $(function () {
         $(this).closest('.tabs').find('.tab-menu-form li').removeClass('active');
         $(this).parent().addClass('active');
 
-        // $(this).closest('.tabs').find('.tab-item').hide().attr('disabled', 'disabled');
-        // $(tab_bl).fadeIn().removeAttr('disabled');
         if ($(this).attr('href') == 'enrollment') {
             $('#transactionmultiform-type').val('enrollment');
-            // $('.value-creator').css('display', 'none');
-            $('.value-creator input').val('');
+            $('.value-creator .trigger-implementer').val('|-');
+            $('.value-creator .trigger-implementer').attr('value','|-');
+            $('.trigger-implementer-id').val('');
+            $('.trigger-implementer-id').attr('value', '');
             $('#multi-tr-form .value-price').removeClass('minus');
         } else {
             $('#transactionmultiform-type').val('charge');
-            // $('.value-creator').css('display', 'inline-block');
+            $('.value-creator .trigger-implementer').val('');
+            $('.value-creator .trigger-implementer').attr('value','');
             $('#multi-tr-form .value-price').addClass('minus');
         }
         $(this).closest('form').toggleClass('charge');
@@ -474,7 +477,7 @@ $(function () {
         $('#edit-client-popup #transactionform-comment').val('');
         $('#edit-client-popup #transactionform-transaction_id').val('');
         $('#edit-client-popup #transactionform-implementer_id').val('');
-        $('#edit-client-popup #transactionform-implementer').val('');
+        //$('#edit-client-popup #transactionform-implementer').val('');
         $( '#datepicker_inline').datepicker( "setDate", new Date());
         $('#edit-client-popup .submit-btn').html('Добавить');
         $('#edit-client-popup .form-del').css('display', 'none');
@@ -529,6 +532,7 @@ $(function () {
 
     //добавление транзакции со страницы проектов
     $('#edit-client-popup .submit-btn').on('click', function(){
+
         var $yiiform = $(this).parents('form');
         var dataForm = $yiiform.serializeArray();
         // отправляем данные на сервер
@@ -585,6 +589,7 @@ $(function () {
         });
         return false;
     });
+
     /*END tin*/
     var width = $(window).width();
     var height = $(window).height();

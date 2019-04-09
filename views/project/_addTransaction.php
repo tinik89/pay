@@ -15,6 +15,7 @@ $js = <<<js
     var availableTags = $implementersJson;
     $( "#transactionform-implementer" ).autocomplete({
         source: availableTags,
+        minLength : 0,
         change: function( event, ui){
             if (ui.item){
                 $('#transactionform-implementer_id').val(ui.item.id);
@@ -25,6 +26,9 @@ $js = <<<js
         }, 
     });
     
+    $('#transactionform-implementer').on('focus', function(){
+        $(this).autocomplete( "search", "");
+    });
        
 js;
 

@@ -31,7 +31,7 @@ class TransactionForm extends Model
     public function rules()
     {
         return [
-            [['client_id', 'project_id', 'price', 'cash', 'date', 'type', 'manager_id'], 'required'],
+            [['client_id', 'project_id', 'price', 'cash', 'date', 'type', 'manager_id', 'implementer'], 'required'],
             [['client_id', 'project_id', 'cash', 'date', 'implementer_id', 'update_id', 'manager_id', 'transaction_id'], 'integer'],
             [['price'], 'number'],
             [['type', 'comment', 'implementer', 'client', 'project'], 'string', 'max' => 255],

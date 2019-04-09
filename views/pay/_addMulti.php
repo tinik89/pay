@@ -17,6 +17,7 @@ function implementersCombo (inputCombo) {
    var availableTags = $implementersJson;
     inputCombo.autocomplete({
         source: availableTags,
+        minLength : 0,
         change: function( event, ui){
             if (ui.item){
                 $(this).parent(".value-creator").siblings(".id-creator").val(ui.item.id);
@@ -30,6 +31,9 @@ function implementersCombo (inputCombo) {
 
 implementersCombo($( ".value-creator input" ));    
        
+    $('#transactionform-implementer').on('focus', function(){
+        $(this).autocomplete( "search", "");
+    });   
 js;
 
 $this->registerJS($js);
@@ -107,7 +111,7 @@ $this->registerJS($js);
                         'type' => MultipleInputColumn::TYPE_HIDDEN_INPUT,
                         'options' => [
                             'class' => 'trigger-date',
-                        ]
+                        ],
                     ],
                     [
                         'name' => 'datevisible',
@@ -117,7 +121,8 @@ $this->registerJS($js);
                         ],
                         'options' => [
                             'class' => 'datepicker trigger-datevisible',
-                            'placeholder' => 'Дата'
+                            'placeholder' => 'Дата',
+                            'required' => 'required',
                         ]
                     ],
                     [
@@ -127,7 +132,8 @@ $this->registerJS($js);
                             'class' => 'field value-price minus'
                         ],
                         'options' => [
-                            'placeholder' => 'Сумма'
+                            'placeholder' => 'Сумма',
+                            'required' => 'required',
                         ]
                     ],
                     [
@@ -141,7 +147,8 @@ $this->registerJS($js);
                         'options' => [
                             'class' => 'client-combobox-multi',
                             'prompt' => 'Выберите клиента',
-                            'placeholder' => 'Выберите клиента'
+                            'placeholder' => 'Выберите клиента',
+                            'required' => 'required',
                         ]
                     ],
                     [
@@ -155,7 +162,8 @@ $this->registerJS($js);
                         'options' => [
                             'class' => 'project-combobox-multi',
                             'prompt' => 'Выберите проект',
-                            'placeholder' => 'Выберите проект'
+                            'placeholder' => 'Выберите проект',
+                            'required' => 'required',
                         ]
                     ],
                     [
@@ -164,7 +172,8 @@ $this->registerJS($js);
                         'options' => [
                             'prompt' => 'Исполнитель',
                             'placeholder' => 'Исполнитель',
-                            'class' => 'trigger-implementer'
+                            'class' => 'trigger-implementer',
+                            'required' => 'required',
                         ],
                         'columnOptions' => [
                             'class' => 'field value-creator'

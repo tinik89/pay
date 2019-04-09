@@ -102,7 +102,7 @@ class PayController extends Controller
                         $transaction->date = $array['date'];
                         if (!empty($array['implementer_id']) && isset($array['implementer_id'])) {
                             $transaction->implementer = $array['implementer_id'];
-                        } elseif (!empty($array['implementer']) && isset($array['implementer'])) {
+                        } elseif (!empty($array['implementer']) && isset($array['implementer']) && $array['implementer'] != '|-') {
                             $newImplementer = new Implementer();
                             $newImplementer->name = $array['implementer'];
                             if ($newImplementer->save()) {// -------------------------------------------обработать случай если не прошел валидацию новый исполнитель
@@ -145,7 +145,7 @@ class PayController extends Controller
                     $transaction->update_id = $addForm->update_id;
                     if (!empty($addForm->implementer_id) && isset($addForm->implementer_id)) {
                         $transaction->implementer = $addForm->implementer_id;
-                    } elseif (!empty($addForm->implementer) && isset($addForm->implementer)) {
+                    } elseif (!empty($addForm->implementer) && isset($addForm->implementer) && $addForm->implementer != '|-') {
                         $newImplementer = new Implementer();
                         $newImplementer->name = $addForm->implementer;
                         if ($newImplementer->save()) {// -------------------------------------------обработать случай если не прошел валидацию новый исполнитель
