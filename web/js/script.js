@@ -590,6 +590,20 @@ $(function () {
         return false;
     });
 
+    // фильтрация проектов
+    $('.status-btn').on('click', function(){
+        if (!($(this).hasClass('active'))){
+           $('#projectsearch-status').val($(this).attr('status'));
+            $('#filtering-project-form-id').submit();
+        }
+        return false;
+    });
+
+    // сортировка проектов
+    $('#select-sort-id').on('change', function(){
+        $('#project-sort-id').val($(this).val());
+        $('#filtering-project-form-id').submit();
+    });
     /*END tin*/
     var width = $(window).width();
     var height = $(window).height();

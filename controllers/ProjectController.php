@@ -11,6 +11,7 @@ namespace app\controllers;
 use app\models\Client;
 use app\models\forms\DeleteForm;
 use app\models\Project;
+use app\models\ProjectSearch;
 use app\models\Tag;
 use Yii;
 use yii\web\Controller;
@@ -60,7 +61,11 @@ class ProjectController extends Controller
     {
         $this->view->title = 'ПРОЕКТЫ | Платежка';
         $this->view->registerMetaTag(['name'=>'description', 'content'=>'']);
-        
+
+        $searchModel = new ProjectSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+
         $clientForm = new ClientForm();
 
         $projectForm = new ProjectForm();
@@ -76,6 +81,8 @@ class ProjectController extends Controller
         $addTransactionForm = new TransactionForm();
         
         return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
             'projectForm'=>$projectForm,
             'clientForm' => $clientForm,
             'projects' => $projects,

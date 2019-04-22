@@ -20,6 +20,7 @@ use Yii;
  */
 class Transaction extends \yii\db\ActiveRecord
 {
+    public static $beginOfDay=0;
     /**
      * {@inheritdoc}
      */

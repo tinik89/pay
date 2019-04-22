@@ -17,6 +17,7 @@ return array(
     'unclead\\multipleinput\\examples\\' => array($vendorDir . '/unclead/yii2-multiple-input/examples'),
     'unclead\\multipleinput\\' => array($vendorDir . '/unclead/yii2-multiple-input/src'),
     'phpDocumentor\\Reflection\\' => array($vendorDir . '/phpdocumentor/reflection-common/src', $vendorDir . '/phpdocumentor/reflection-docblock/src', $vendorDir . '/phpdocumentor/type-resolver/src'),
+    'kop\\y2sp\\' => array($vendorDir . '/kop/yii2-scroll-pager'),
     'cebe\\markdown\\' => array($vendorDir . '/cebe/markdown'),
     'Webmozart\\Assert\\' => array($vendorDir . '/webmozart/assert/src'),
     'Symfony\\Polyfill\\Mbstring\\' => array($vendorDir . '/symfony/polyfill-mbstring'),

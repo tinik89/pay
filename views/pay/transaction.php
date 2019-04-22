@@ -4,6 +4,8 @@ use yii\widgets\ActiveForm;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use app\components\DeleteWidget;
+use yii\widgets\ListView;
+use kop\y2sp\ScrollPager;
 
 ?>
 
@@ -67,7 +69,7 @@ use app\components\DeleteWidget;
 
         <!-- title -->
         <div class="m-title">Последние транзакции</div>
-
+        <?php echo $this->render('_search', ['model' => $searchModel]); ?>
         <!-- transactions group -->
         <div class="tr-filter-group">
 
@@ -95,10 +97,42 @@ use app\components\DeleteWidget;
 
     <!-- transactions items -->
     <div class="trans-items">
+
+
+        <?php
+        $outputTransactionArr = array();
+       $wrapList =  ListView::widget([
+        'dataProvider' => $dataProvider,
+//            'itemView' => '_item_view'
+            'itemView' => function ($model, $key, $index, $widget) use (&$outputTransactionArr){
+                $outputTransactionArr[]=$model;
+//                var_dump($dataProvider->pagination->pagesize);
+             //echo '<p>$model->id'.$model->client->name.'<br/><p>$key'.$key.'<br/><p>$index'.$index.'<br/><hr></p>';
+            },
+           'itemOptions' => [
+
+               'tag' => false
+
+           ],
+           'options' => [
+
+
+               'tag' => false
+
+           ],
+           'summary' => false,
+//     'itemOptions' => ['class' => 'item'],
+    // 'pager' => ['class' => \kop\y2sp\ScrollPager::className()]
+        ]);
+//        var_dump(count($outputTransactionArr));
+        ?>
+
         <?php
         $beginOfDay = 0;
 
-        foreach ($transaction as $transaction):
+       // foreach ($transaction as $transaction):
+//        foreach ($dataProvider->getModels() as $transaction):
+        foreach ($outputTransactionArr as $transaction):
 
             $curDate = Yii::$app->formatter->asDate($transaction->date, 'd MMMM');
             $curDay = Yii::$app->formatter->asDate($transaction->date, 'EEEE');
@@ -153,7 +187,7 @@ use app\components\DeleteWidget;
         <?php $endTable = '</table></div> </div>'; ?>
         <?= $endTable ?>
 
-
+<?= $wrapList;?>
     </div>
 
 </div>

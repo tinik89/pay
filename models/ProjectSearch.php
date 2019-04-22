@@ -4,20 +4,23 @@ namespace app\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Transaction;
+use app\models\Project;
 
 /**
- * TransactionSearch represents the model behind the search form of `app\models\Transaction`.
+ * ProjectSearch represents the model behind the search form of `app\models\Project`.
  */
-class TransactionSearch extends Transaction
+class ProjectSearch extends Project
 {
+    public $sort;
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['client_id', 'project_id', 'date'], 'integer'],
+            [['id', 'tag', 'date_start', 'client', 'date_update', 'status'], 'integer'],
+            [['name'], 'safe'],
+            [['price', 'debet', 'credit'], 'number'],
         ];
     }
 
@@ -39,17 +42,16 @@ class TransactionSearch extends Transaction
      */
     public function search($params)
     {
-        $query = Transaction::find();
+        $query = Project::find();
 
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination' => [ 'pageSize' => 100 ],
+            'pagination' => [ 'pageSize' => 50 ],
         ]);
 
-        $dataProvider->sort->defaultOrder['date'] = SORT_DESC;
-
+        $dataProvider->sort->defaultOrder['date_update'] = SORT_DESC;
         $this->load($params);
 
         if (!$this->validate()) {
@@ -57,14 +59,20 @@ class TransactionSearch extends Transaction
             // $query->where('0=1');
             return $dataProvider;
         }
-
         // grid filtering conditions
         $query->andFilterWhere([
-            'client_id' => $this->client_id,
-            'project_id' => $this->project_id,
-            'date' => $this->date,
+            'id' => $this->id,
+            'tag' => $this->tag,
+            'price' => $this->price,
+            'date_start' => $this->date_start,
+            'client' => $this->client,
+            'debet' => $this->debet,
+            'credit' => $this->credit,
+            'date_update' => $this->date_update,
+            'status' => isset($this->status)?$this->status:1,
         ]);
 
+        $query->andFilterWhere(['like', 'name', $this->name]);
 
         return $dataProvider;
     }

@@ -59,11 +59,11 @@ class Project extends \yii\db\ActiveRecord
             'status' => 'Status',
         ];
     }
-    
+
     public function getTransactions(){
         return $this->hasMany(Transaction::className(), ['project_id' => 'id']);
     }
-    
+
     public function getClientinfo(){
         return $this->hasOne(Client::className(),['id' => 'client']);
     }
