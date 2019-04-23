@@ -107,7 +107,7 @@ $request = Yii::$app->request;
 
     <?php // echo $form->field($model, 'date_update') ?>
 
-    <?php echo $form->field($model, 'status')->input('hidden'); ?>
+    <?php echo $form->field($model, 'status')->input('hidden', ['value'=>$request->get('sort')]); ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

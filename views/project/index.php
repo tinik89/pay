@@ -27,7 +27,11 @@ use yii\widgets\Pjax;
                     'dataProvider' => $dataProvider,
                     'itemOptions' => ['class' => 'item', 'tag' => 'tr'],
                     'itemView' => '_oneProjectList',
-                    'pager' => ['class' => \kop\y2sp\ScrollPager::className()],
+                    'pager' => ['class' => \kop\y2sp\ScrollPager::className(),
+                        'item' => 'tr',
+                        'triggerTemplate' => '<tr class="ias-trigger"><td colspan="100%" style="text-align: center"><a href="#">{text}</a></td></tr>',
+                        'noneLeftTemplate' => '<tr class="ias-trigger"><td colspan="100%" style="text-align: center">{text}</td></tr>'
+                    ],
 //                  'itemOptions' => [ ],
                     'options' => [
 

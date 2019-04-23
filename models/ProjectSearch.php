@@ -48,7 +48,7 @@ class ProjectSearch extends Project
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination' => [ 'pageSize' => 50 ],
+            'pagination' => [ 'pageSize' => 100 ],
         ]);
 
         $dataProvider->sort->defaultOrder['date_update'] = SORT_DESC;

@@ -189,4 +189,35 @@ a.add-client-btn, a.add-project-btn {
 .clients-item table tr td .price-detail-items{
     width: 330px;
 }
-/*ENDtib*/
+ul.pagination{
+    list-style: none;
+    text-align: center;
+}
+ul.pagination li{
+    display: inline-block;
+    padding: 5px 10px;
+    margin: 0px;
+    border-radius: 14px;
+}
+ul.pagination li a{
+    color:#FF455C;
+}
+ul.pagination li.active{
+    background: #FF455C;
+}
+ul.pagination li.active a{
+    color: #fff;
+}
+.clients-item table tr.ias-trigger td{
+    background: none;
+}
+.clients-item table tr.ias-trigger td a{
+    cursor: pointer;
+    color: #fff;
+    background: #FF455C;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 10px;
+    border-radius: 3px;
+}
+/*ENDtin*/

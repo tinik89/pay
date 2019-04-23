@@ -236,7 +236,7 @@ $(function () {
                         //var curUrlArr = window.location.href.split('#');
                         //window.location.href = curUrlArr[0] + '#tr-id-' + oMsg.id;
                         //window.location.reload(true);
-                        //window.location.reload();
+                        window.location.reload();
                     }, 1000);
                 } else if (oMsg.error) {
                     var errMess = '';
@@ -248,7 +248,7 @@ $(function () {
                 } else  if (oMsg.edit) {
                     $('#new-project-form .message').addClass('green').html(oMsg.edit);
                     setTimeout(function() {
-                        //window.location.reload();
+                        window.location.reload();
                     }, 1000);
                 }
             }
