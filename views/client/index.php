@@ -1,15 +1,22 @@
 <?php
+
 use yii\helpers\Html;
+use yii\widgets\ListView;
+use yii\widgets\Pjax;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Url;
 use app\components\DeleteWidget;
 
-?>
+/* @var $this yii\web\View */
+/* @var $searchModel app\models\ClientSearch */
+/* @var $dataProvider yii\data\ActiveDataProvider */
 
+?>
 
 <!-- wrapper -->
 <div class="wrapper">
 
+    <?php Pjax::begin(); ?>
     <!-- clients titles -->
     <div class="clients-titles">
 
@@ -17,58 +24,46 @@ use app\components\DeleteWidget;
         <div class="m-title">Клиенты</div>
         <a href="#" class="add-client-btn">Добавить клиента</a>
         <!-- search -->
-        <div class="search">
-            <input type="text" placeholder="Поиск по клиентам"/>
-            <button class="search-btn">Поиск</button>
-        </div>
-
+       
+        <?php echo $this->render('_search', [
+            'model' => $searchModel,
+            'clients' => $clients
+        ]); ?>
     </div>
+    
 
-
+    
     <!-- clients items -->
     <div class="clients-items">
 
         <div class="clients-item">
-            <table>
-                <tr>
-                    <th>Клиент</th>
-                    <th>Баланс</th>
-                    <th>Долг</th>
-                    <th></th>
-                </tr>
-                <?php foreach ($clients as $client): ?>
+            <?php
+            echo ListView::widget([
+                'dataProvider' => $dataProvider,
+                'itemOptions' => ['tag' => false],
+                'itemView' => '_oneClientList',
+//                  'itemOptions' => [ ],
+                'options' => [
 
+//                        'tag' => 'table',
+//                        'class' => 'list-view'
+                    'tag' => false
 
-                    <tr id="tr-id-<?= $client->id ?>">
-                        <td>
-                            <a href="<?= Url::to(['project/show', 'id' => $client->id]) ?>" class="name del-name"
-                               object-id="<?= $client->id ?>"><?= $client->name ?></a>
-                        </td>
-                        <?php
-                        $debetAll = 0;
-                        $creditAll = 0;
-                        foreach ($client->projects as $project):
-                            $debetAll += $project->debet;
-                            $creditAll += $project->credit;
-                        endforeach;
-                        ?>
-                        <td>
-                            <div class="price plus"><?= number_format($debetAll, 0, ',', ' ') ?> ₽</div>
-                        </td>
-                        <td>
-                            <div class="price minus"><?= number_format($creditAll, 0, ',', ' ') ?> ₽</div>
-                        </td>
-                        <td><a href="#" class="clients-btn delete"  object-type="client">Удалить</a></td>
-                    </tr>
-                <?php endforeach; ?>
+                ],
+                'summary' => false,
+                'layout' => '<table class="list-view"><tr><th>Клиент</th><th>Баланс</th><th>Долг</th><th></th></tr>{items}</table>{pager}',
+//        'viewParams' => [
+//            'implementers' => array_column($implementers, 'name', 'id'),
+//        ]
 
-            </table>
+            ]);
+
+            ?>
+
+            <?php Pjax::end(); ?>
         </div>
-
     </div>
-
 </div>
-
 <!-- Footer -->
 <div class="footer">
 
@@ -79,92 +74,6 @@ use app\components\DeleteWidget;
     <div class="overlay"></div>
 
 
-    <!-- Edit Client Popup -->
-    <div class="nonebox" id="edit-client-popup">
-        <!-- edit client -->
-        <div class="add-tr-form white-box">
-            <form id="tr-form" method="post">
-                <div class="calendar">
-                    <div id="datepicker_inline"></div>
-                </div>
-                <div class="tr-tabs tabs">
-                    <div class="tr-tab-menu tab-menu">
-                        <ul>
-                            <li class="active"><a href="#tr_tab1">Поступление</a></li>
-                            <li><a href="#tr_tab2">Списание</a></li>
-                        </ul>
-                    </div>
-                    <div class="tr-tab-item tab-items">
-
-                        <div class="tr-tab-item tab-item" id="tr_tab1" style="display: block;">
-                            <div class="tr-form">
-                                <div class="group-col">
-                                    <div class="field value-price">
-                                        <input type="text" name="price" value="10000000"/>
-                                    </div>
-                                    <div class="field">
-                                        <input type="text" name="name" placeholder="Название проекта"/>
-                                    </div>
-                                    <div class="field">
-                                        <input type="text" name="work" placeholder="Работа проекта"/>
-                                    </div>
-                                    <div class="radio-field">
-                                        <label><input type="radio" class="styler" name="nal" checked/>Безнал</label>
-                                        <label><input type="radio" class="styler" name="nal"/>Наличными</label>
-                                    </div>
-                                </div>
-                                <div class="group-col">
-                                    <div class="field">
-                                        <textarea name="message" placeholder="Комментарий"></textarea>
-                                    </div>
-                                </div>
-                                <div class="group-bts">
-                                    <input type="submit" class="submit-btn" value="Добавить"/>
-                                    <a href="#" class="cancel-btn">Отмена</a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="tr-tab-item tab-item" id="tr_tab2" style="display: none;">
-                            <div class="tr-form">
-                                <div class="group-col">
-                                    <div class="field value-price">
-                                        <input type="text" name="price" value="10000000"/>
-                                    </div>
-                                    <div class="field">
-                                        <input type="text" name="name" placeholder="Название проекта"/>
-                                    </div>
-                                    <div class="field">
-                                        <input type="text" name="work" placeholder="Работа проекта"/>
-                                    </div>
-                                    <div class="field">
-                                        <input type="text" name="emp" placeholder="Сотрудник"/>
-                                    </div>
-                                    <div class="radio-field">
-                                        <label><input type="radio" class="styler" name="nal" checked/>Безнал</label>
-                                        <label><input type="radio" class="styler" name="nal"/>Наличными</label>
-                                    </div>
-                                </div>
-                                <div class="group-col">
-                                    <div class="field">
-                                        <textarea name="message" placeholder="Комментарий"></textarea>
-                                    </div>
-                                </div>
-                                <div class="group-bts">
-                                    <input type="submit" class="submit-btn" value="Добавить"/>
-                                    <a href="#" class="cancel-btn">Отмена</a>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-                <div class="clear"></div>
-            </form>
-            <span class="close"></span>
-        </div>
-
-    </div>
     <!-- ADD Client Popup -->
     <div class="nonebox add" id="add-client-popup">
         <!-- edit client -->
@@ -200,3 +109,5 @@ use app\components\DeleteWidget;
     ?>
 
 </div>
+
+

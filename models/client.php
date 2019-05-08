@@ -19,6 +19,7 @@ class Client extends ActiveRecord
     {
         return [
             [['name'], 'required'],
+            [['status'], 'integer'],
         ];
     }
 
@@ -28,6 +29,7 @@ class Client extends ActiveRecord
             'name' => 'Клиент',
         ];
     }
+    
 
     public function getProjects(){
         return $this -> hasMany(Project::className(), ['client' => 'id']);

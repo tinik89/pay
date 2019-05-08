@@ -591,10 +591,10 @@ $(function () {
     });
 
     // фильтрация проектов
-    $('.status-btn').on('click', function(){
+    $('.project .status-btn').on('click', function(){
         if (!($(this).hasClass('active'))){
            $('#projectsearch-status').val($(this).attr('status'));
-            $('#filtering-project-form-id').submit();
+           $('#filtering-project-form-id').submit();
         }
         return false;
     });
@@ -603,6 +603,16 @@ $(function () {
     $('#select-sort-id').on('change', function(){
         $('#project-sort-id').val($(this).val());
         $('#filtering-project-form-id').submit();
+    });
+
+
+    // фильтрация клиентов
+    $('.wrapper').on('click', '.client .status-btn', function(){
+        if (!($(this).hasClass('active'))){
+            $('#clientsearch-status').val($(this).attr('status'));
+            $('#filtering-client-form-id').submit();
+        }
+        return false;
     });
     /*END tin*/
     var width = $(window).width();

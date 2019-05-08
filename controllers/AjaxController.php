@@ -36,6 +36,7 @@ class AjaxController extends Controller
                 } else {
                     $client = new Client();
                     $client->name = $clientForm->name;
+                    $client->status = 0;
                     $client->save(false);
                     return json_encode(['add' => $client -> id]);
                 }
@@ -45,10 +46,10 @@ class AjaxController extends Controller
 
     }
     
-    public function actionGetProject () {
+    public function actionGetProject () {// получение проектов в выпадающие списки
         if (Yii::$app->request->isAjax) {
             $request = Yii::$app->request;
-            $projects = Project::find()->where(['client' => $request->post('client')])->asArray()->all();
+            $projects = Project::find()->where(['client' => $request->post('client'), 'status' => '1'])->asArray()->all();
 
             return json_encode($projects);
         }
@@ -85,8 +86,13 @@ class AjaxController extends Controller
                 $project->date_update = time();
                 $project->client = $projectForm->client;
 
-
-                $project->save(false);
+                if ($project->save(false)){
+                    $client = Client::findOne($project -> client);
+                    if( $client ->status != 1){
+                        $client ->status = 1;
+                        $client -> save();
+                    }
+                }
                 return json_encode($successArr);
                 
             }
@@ -216,10 +222,10 @@ class AjaxController extends Controller
         $outputArr['edit'] = -1; 
         if (Yii::$app->request->isAjax) {
             $request = Yii::$app->request;
-            $projects = Project::findOne($request->post('project'));
-            if ( $projects -> status != $request->post('status')){
-                $projects -> status = $request->post('status');
-                if($projects -> save()){
+            $project = Project::findOne($request->post('project'));
+            if ( $project -> status != $request->post('status')){
+                $project -> status = $request->post('status');
+                if($project -> save()){
                     $outputArr['edit'] = 1;
                 } else {
                     $outputArr['edit'] = -1;
@@ -228,11 +234,24 @@ class AjaxController extends Controller
             } else {
                 $outputArr['edit'] = 0;
             }
-            if ($projects -> status == 1){
+
+            $client = Client::findOne($project -> client);
+
+            if ($project -> status == 1){
                 $outputArr['msg']='Закрыть';
+                if ($client->status != 1) {
+                    $client->status = 1;
+                    $client->save();
+                }
             } else {
                 $outputArr['msg']='Открыть';
+                $projectsClient = Project::find()->where(['client' => $project -> client, 'status' => 1])->asArray()->all();
+                if (empty($projectsClient)){
+                    $client->status = 0;
+                    $client -> save();
+                }
             }
+
         }
         return json_encode($outputArr);
     }

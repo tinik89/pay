@@ -11,12 +11,14 @@ use yii\widgets\ActiveForm;
 $request = Yii::$app->request;
 
 ?>
-
 <!-- clients titles -->
 <div class="clients-titles">
 
     <!-- title -->
-    <div class="m-title">Проекты</div>
+    <div class="m-title">Проекты <?= $clientName ?></div>
+    <?php 
+    if ($showAddProject) echo '<a href="#" class="add-project-btn">Добавить проект</a>';
+    ?>
     <!-- search -->
     <div class="search">
         <input type="text" placeholder="Поиск по проектам"/>
@@ -29,15 +31,17 @@ $request = Yii::$app->request;
 <div class="clients-filter">
 
     <!-- status bts -->
-    <div class="status-bts">
+    <div class="status-bts project">
         <?php
         $closeClass  = '';
         $openClass = '';
         $filterData = $request->get('ProjectSearch');
         if (isset($filterData['status']) && $filterData['status'] == 0){
             $closeClass = 'active';
+            $status=0;
         } else {
             $openClass = 'active';
+            $status=1;
         }
         ?>
         <a href="#" class="status-btn <?=$openClass?>" status="1"><span>Активные</span></a>
@@ -73,11 +77,11 @@ $request = Yii::$app->request;
 
 
 </div>
-
 <div class="project-search" style="display:none">
 
     <?php $form = ActiveForm::begin([
-        'action' => ['index'],
+        //'action' => ['index'],
+        //'action' => yii\helpers\Url::current([], true),
         'method' => 'get',
         'options' => [
             'id' => 'filtering-project-form-id'
@@ -106,8 +110,7 @@ $request = Yii::$app->request;
     <?php // echo $form->field($model, 'credit') ?>
 
     <?php // echo $form->field($model, 'date_update') ?>
-
-    <?php echo $form->field($model, 'status')->input('hidden', ['value'=>$request->get('sort')]); ?>
+    <?php echo $form->field($model, 'status')->input('hidden', ['value'=>$status]); ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

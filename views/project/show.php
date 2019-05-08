@@ -3,94 +3,67 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Url;
 use app\components\DeleteWidget;
+use yii\widgets\ListView;
 
 ?>
 
 <!-- wrapper -->
 <div class="wrapper">
+    <?php
+    echo $this->render('_search', ['model' => $searchModel, 'dataProvider'=>$dataProvider, 'tags'=>$tags, 'clientName'=>$clientName, 'showAddProject'=> true]); ?>
 
-    <!-- clients titles -->
-    <div class="clients-titles">
-
-        <!-- title -->
-        <div class="m-title">Проекты <?= $clientName ?></div>
-        <a href="#" class="add-project-btn">Добавить проект</a>
-
-        <!-- search -->
-        <div class="search">
-            <input type="text" placeholder="Поиск по проектам"/>
-            <button class="search-btn">Поиск</button>
-        </div>
-
-    </div>
     <?php if (!empty($projects)) { ?>
-        <!-- clients filter -->
-        <div class="clients-filter">
-
-            <!-- status bts -->
-            <div class="status-bts">
-                <a href="#" class="status-btn active"><span>Активные</span></a>
-                <a href="#" class="status-btn"><span>Закрытые</span></a>
-            </div>
-
-            <!-- check items -->
-            <div class="checkbox-items">
-                <?php
-                foreach ($tags as $tag) {
-                    echo '<div class="checkbox-item"><label><input type="checkbox" class="styler" value="' . $tag['id'] . '" checked="checked"/>' . $tag['tag'] . '</label></div>';
-                }
-                ?>
-            </div>
-
-            <!-- date select -->
-            <div class="date-select">
-                <div class="label">Сортировать:</div>
-                <select class="styler">
-                    <option>По дате</option>
-                    <option>По цене</option>
-                    <option>По названию</option>
-                </select>
-            </div>
-
-        </div>
-
         <!-- clients items -->
         <div class="clients-items">
 
             <a href="#" class="clients-menu active"></a>
 
             <div class="clients-item">
-                <table>
-                    <tr>
-                        <th>Название проекта</th>
-                        <th>Общие цифры</th>
-                        <th>Оплатили</th>
-                        <th>Расходы</th>
-                        <th></th>
-                    </tr>
-                    <?php
-                    $clientCredit = 0;
-                    $clientDebet = 0;
-                    $clientPrice = 0;
-                    ?>
-                    <?php foreach ($projects as $project): ?>
-                        <?php
-                        $clientCredit += $project->credit;
-                        $clientDebet += $project->debet;
-                        $clientPrice += $project->price;
-                        ?>
-                        <?php echo $this->render('_oneProject', [
-                            'project' => $project,
-                            'implementers' => array_column($implementers, 'name', 'id')
-                        ]); ?>
+                <?php
+                echo  ListView::widget([
+                    'dataProvider' => $dataProvider,
+                    'itemOptions' => ['class' => 'item', 'tag' => 'tr'],
+                    'itemView' => '_oneProjectList',
+                    'pager' => ['class' => \kop\y2sp\ScrollPager::className(),
+                        'item' => 'tr',
+                        'triggerTemplate' => '<tr class="ias-trigger"><td colspan="100%" style="text-align: center"><a href="#">{text}</a></td></tr>',
+                        'noneLeftTemplate' => '<tr class="ias-trigger"><td colspan="100%" style="text-align: center">{text}</td></tr>'
+                    ],
+//                  'itemOptions' => [ ],
+                    'options' => [
 
-                    <?php endforeach; ?>
+//                        'tag' => 'table',
+//                        'class' => 'list-view'
+                        'tag' => false
 
-                </table>
+                    ],
+                    'summary' => false,
+                    'layout' => '<table class="list-view"><tr><th>Название проекта</th><th>Общие цифры</th><th>Оплатили</th><th>Расходы</th> <th></th></tr>{items} </table>{pager}',
+                    'viewParams' => [
+                        'implementers' => array_column($implementers, 'name', 'id'),
+                    ]
+
+                ]);
+
+                ?>
+
+
+
+
             </div>
 
+            <?php
+            $clientCredit = 0;
+            $clientDebet = 0;
+            $clientPrice = 0;
+            foreach ($projects as $project) {
 
-            <?php echo $this->render('_statistik', [
+                $clientCredit += $project->credit;
+                $clientDebet += $project->debet;
+                $clientPrice += $project->price;
+            }
+
+             echo $this->render('_statistik', [
                 'clientCredit' => $clientCredit,
                 'clientDebet' => $clientDebet,
                 'clientPrice' => $clientPrice,

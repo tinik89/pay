@@ -71,4 +71,5 @@ class Project extends \yii\db\ActiveRecord
     public function getTaginfo(){
         return $this->hasOne(Tag::className(),['id' => 'tag']);
     }
+    
 }

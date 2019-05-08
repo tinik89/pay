@@ -8,7 +8,7 @@
         <div class="heading-group">
 
             <!-- titles -->
-            <div class="m-title align-left">График</div>
+            <div class="m-title align-left">График  <?= Yii::$app->getSecurity()->generatePasswordHash('182129042019');?></div>
 
             <!-- date select -->
             <div class="date-select">

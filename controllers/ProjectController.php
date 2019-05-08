@@ -70,11 +70,13 @@ class ProjectController extends Controller
 
         $projectForm = new ProjectForm();
 
-        $projects = Project::find()->with('transactions', 'clientinfo', 'taginfo')->orderBy('date_update DESC')->all();
+        //$projects = Project::find()->with('transactions', 'clientinfo', 'taginfo')->orderBy('date_update DESC')->all();после добавления пагинации и фильтров не актуальный вариант
+        $projects = Project::find()->all();
 
 
         $projectsOpen = Project::find()->where('status=1')->count();
         $summTags = Project::find()->with('taginfo')->select('tag, SUM(price) as sumPrice, SUM(debet) as sumDebet')->groupBy('tag')->all();
+
 
         $deleteForm = new DeleteForm();
 
@@ -103,10 +105,16 @@ class ProjectController extends Controller
         $this->view->title = 'ПРОЕКТЫ '.$clientName.' | Платежка';
         $this->view->registerMetaTag(['name'=>'description', 'content'=>'']);
 
+
+        $queryParams = Yii::$app->request->queryParams;
+        $queryParams['ProjectSearch']['client'] = $clientID;
+        $searchModel = new ProjectSearch();
+        $dataProvider = $searchModel->search($queryParams);
+        
         $projectForm = new ProjectForm();
 
-        $projects = Project::find()->with('transactions', 'clientinfo', 'taginfo')->where('client='.$clientID)->orderBy('date_update DESC')->all();
-
+//        $projects = Project::find()->with('transactions', 'clientinfo', 'taginfo')->where('client='.$clientID)->orderBy('date_update DESC')->all();
+        $projects = Project::find()->where('client='.$clientID)->all();
         
         $projectsOpen = Project::find()->where('client='.$clientID.' AND status=1')->count();
         $summTags = Project::find()->with('taginfo')->select('tag, SUM(price) as sumPrice, SUM(debet) as sumDebet')->where('client='.$clientID)->groupBy('tag')->all();
@@ -117,6 +125,8 @@ class ProjectController extends Controller
         $addTransactionForm = new TransactionForm();
         
         return $this->render('show', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
             'projectForm'=>$projectForm,
             'clientName' => $clientName,
             'projects' => $projects,
