@@ -7,27 +7,59 @@ use yii\widgets\ActiveForm;
 /* @var $model app\models\TransactionSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
+<div class="transaction-search tr-filter-group" <!--style="display:block;"-->>
 
-<div class="transaction-search" style="display:none;">
+<?php $form = ActiveForm::begin([
+    'action' => ['transactions'],
+    'method' => 'get',
+    'fieldConfig' => [
+        'template' => "{input}",
+        'options' => [
+            'class' => 'field'
+        ]
+    ],
+]); ?>
+<div class="field">
+<?//= Html::input('text', 'date_from_visible', '', ['placeholder' => 'дата от', 'class' => 'datepicker_filter'])?>
+<?= Html::activeTextInput($model, 'date_from_visible', ['type' => 'text', 'tag' => false,'placeholder' => 'дата от', 'class' => 'datepicker_filter']); ?>
+<?= Html::activeTextInput($model, 'date_from', ['type' => 'hidden', 'tag' => false]); ?>
+</div>
 
-    <?php $form = ActiveForm::begin([
-        'action' => ['transactions'],
-        'method' => 'get',
+
+<div class="field">
+<!--    --><?//= Html::input('text', 'date_to_visible', '', ['placeholder' => 'дата до', 'class' => 'datepicker_filter'])?>
+    <?= Html::activeTextInput($model, 'date_to_visible', ['type' => 'text', 'tag' => false, 'placeholder' => 'дата до', 'class' => 'datepicker_filter to']); ?>
+    <?= Html::activeTextInput($model, 'date_to', ['type' => 'hidden', 'tag' => false]); ?>
+</div>
+
+
+<?= $form->field($model, 'client_id')->dropDownList($clientList,
+    [
+        'prompt' => 'Выберите клиента',
+        'placeholder' => 'Выберите клиента',
+    ]); ?>
+
+<?= $form->field($model, 'implementer')->dropDownList($implementerList,
+    [
+        'prompt' => 'Выберите исполнителя',
+        'placeholder' => 'Выберите исполнителя',
     ]); ?>
 
 
-    <?= $form->field($model, 'client_id') ?>
 
-    <?= $form->field($model, 'project_id') ?>
+<?= $form->field($model, 'type')->dropDownList([
+    'enrollment' => 'Поступления',
+    'charge' => 'Cписания',
+],
+    [
+        'prompt' => 'Пост./Спис.',
+        'placeholder' => 'Пост./Спис.',
+        'class' => 'styler'
+    ]); ?>
 
-    <?= $form->field($model, 'date') ?>
+    <?= Html::submitButton('Применить', ['class' => 'submit-btn']) ?>
 
 
-    <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
-    </div>
-
-    <?php ActiveForm::end(); ?>
+<?php ActiveForm::end(); ?>
 
 </div>

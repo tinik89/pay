@@ -28,8 +28,21 @@ $request = Yii::$app->request;
 </div>
 
 <!-- clients filter -->
-<div class="clients-filter">
-
+<div class="clients-filter project-search">
+    <?php $form = ActiveForm::begin([
+        'action' => '?',
+        'method' => 'get',
+        'options' => [
+            'data-pjax' => 1,
+            'id' => 'filtering-project-form-id'
+        ],
+        'fieldConfig' => [
+            'template' => "{input}{error}",
+            'options' => [
+                'tag' => false,
+            ],
+        ]
+    ]); ?>
     <!-- status bts -->
     <div class="status-bts project">
         <?php
@@ -50,11 +63,26 @@ $request = Yii::$app->request;
 
     <!-- check items -->
     <div class="checkbox-items">
+
         <?php
+        $inputListBox = [];
         foreach ($tags as $tag) {
-            echo '<div class="checkbox-item"><label><input type="checkbox" class="styler" value="' . $tag['id'] . '" checked="checked"/>' . $tag['tag'] . '</label></div>';
+            $inputListBox[$tag['id']]=$tag['tag'];
         }
+        //echo '<div class="checkbox-item"><label>' . $form->field($model, 'tag[]')->checkboxlist($inputListBox).'</label></div>';
         ?>
+
+
+        <?= $form->field($model, 'tag')->checkboxList($inputListBox, [
+            'item' => function($index, $label, $name, $checked, $value) {
+                if($checked == 1){
+                    $checked = 'checked="$checked"';
+                }
+                return "<div class='checkbox-item' checked='{$checked}'><label ><input type='checkbox' class='styler' {$checked} name='{$name}' value='{$value}'>{$label}</label></div>";
+            },
+            'tag' => false
+        ]); ?>
+        <?= Html::submitButton('Фильтр', ['class' => 'search-btn']) ?>
     </div>
 
     <!-- date select -->
@@ -75,48 +103,13 @@ $request = Yii::$app->request;
         </select>
     </div>
 
-
-</div>
-<div class="project-search" style="display:none">
-
-    <?php $form = ActiveForm::begin([
-        //'action' => ['index'],
-        //'action' => yii\helpers\Url::current([], true),
-        'method' => 'get',
-        'options' => [
-            'id' => 'filtering-project-form-id'
-        ],
-        'fieldConfig' => [
-            'template' => "{input}{error}",
-        ]
-    ]); ?>
-
-    <!--    --><? //= $form->field($model, 'id') ?>
-    <!---->
     <?= Html::input('hidden', 'sort', $request->get('sort'), [
         'id' => 'project-sort-id'
     ]) ?>
-    <!---->
-    <?= $form->field($model, 'tag') ?>
-    <!---->
-    <!--    --><? //= $form->field($model, 'price') ?>
-    <!---->
-    <!--    --><? //= $form->field($model, 'date_start') ?>
 
-    <?php // echo $form->field($model, 'client') ?>
 
-    <?php // echo $form->field($model, 'debet') ?>
-
-    <?php // echo $form->field($model, 'credit') ?>
-
-    <?php // echo $form->field($model, 'date_update') ?>
     <?php echo $form->field($model, 'status')->input('hidden', ['value'=>$status]); ?>
 
-    <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
-    </div>
 
     <?php ActiveForm::end(); ?>
-
 </div>

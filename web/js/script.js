@@ -341,6 +341,24 @@ $(function () {
             multiDataPicker();
         });
     }
+    if ($('.datepicker_filter').length) {
+        
+        $('.datepicker_filter').datepicker({
+            dateFormat: "dd/mm/yy",
+            onSelect: function (date, inst) {
+                var dateArr = date.split('/');
+                var selDate = new Date(Date.UTC(dateArr[2] + '-' + dateArr[1] + '-' + dateArr[0]));
+                console.log(selDate);
+                var curTimeUnix = selDate.getTime() / 1000;
+                if ($(this).hasClass('to')){
+                    $(this).next('input[type=hidden]').val(curTimeUnix + 86399);
+                    $(this).next('input[type=hidden]').attr('date', curTimeUnix);
+                } else {
+                    $(this).next('input[type=hidden]').val(curTimeUnix);
+                }
+            }
+        });
+    }
     // автозаполнение
 
     $.widget("custom.combobox", {
@@ -445,6 +463,9 @@ $(function () {
             getProjectCombobox(ui.item.value,  $("#transactionform-project_id"));
         },
     });
+
+    $("select#transactionsearch-client_id").combobox();
+    $("select#transactionsearch-implementer").combobox();
 
 
     //$(".combobox-multi").combobox();

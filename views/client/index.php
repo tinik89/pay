@@ -60,9 +60,10 @@ use app\components\DeleteWidget;
 
             ?>
 
-            <?php Pjax::end(); ?>
+            
         </div>
     </div>
+    <?php Pjax::end(); ?>
 </div>
 <!-- Footer -->
 <div class="footer">

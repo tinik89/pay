@@ -18,8 +18,8 @@ class ProjectSearch extends Project
     public function rules()
     {
         return [
-            [['id', 'tag', 'date_start', 'client', 'date_update', 'status'], 'integer'],
-            [['name'], 'safe'],
+            [['id', 'date_start', 'client', 'date_update', 'status'], 'integer'],
+            [['name', 'tag'], 'safe'],
             [['price', 'debet', 'credit'], 'number'],
         ];
     }
@@ -61,18 +61,19 @@ class ProjectSearch extends Project
         }
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'tag' => $this->tag,
-            'price' => $this->price,
-            'date_start' => $this->date_start,
-            'client' => $this->client,
-            'debet' => $this->debet,
-            'credit' => $this->credit,
-            'date_update' => $this->date_update,
+//            'id' => $this->id,
+//            'tag' => $this->tag,
+//            'price' => $this->price,
+//            'date_start' => $this->date_start,
+//            'client' => $this->client,
+//            'debet' => $this->debet,
+//            'credit' => $this->credit,
+//            'date_update' => $this->date_update,
             'status' => isset($this->status)?$this->status:1,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name]);
+        $query->andFilterWhere(['like', 'name', $this->name])
+            ->andFilterWhere(['in', 'tag', $this->tag]);
 
         return $dataProvider;
     }

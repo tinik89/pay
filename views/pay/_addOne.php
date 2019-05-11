@@ -67,13 +67,8 @@ $this->registerJS($js);
                         </div>
 
                         <div class="field">
-                            <?php
-                            $list = array();
-                            foreach ($clients as $client) {
-                                $list[$client['id']] = $client['name'];
-                            }
-                            ?>
-                            <?= $form->field($model, 'client_id')->dropDownList($list,
+                            
+                            <?= $form->field($model, 'client_id')->dropDownList($clientList,
                                 [
                                     'prompt' => 'Выберите клиента',
                                     'placeholder' => 'Выберите клиента'

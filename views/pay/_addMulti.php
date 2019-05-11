@@ -62,12 +62,7 @@ $this->registerJS($js);
 
         //
         ?>
-        <?php
-        $list = array();
-        foreach ($clients as $client) {
-            $list[$client['id']] = $client['name'];
-        }
-        ?>
+       
 
         <?= $form->field($models, 'update_id')->input('hidden', ['value' => time()]) ?>
         <?= $form->field($models, 'manager_id')->input('hidden', ['value' => Yii::$app->user->id]) ?>
@@ -143,7 +138,7 @@ $this->registerJS($js);
                         'columnOptions' => [
                             'class' => 'field value-name'
                         ],
-                        'items' => $list,
+                        'items' => $clientList,
                         'options' => [
                             'class' => 'client-combobox-multi',
                             'prompt' => 'Выберите клиента',

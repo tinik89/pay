@@ -7,13 +7,14 @@ use yii\widgets\ListView;
 use yii\widgets\Pjax;
 ?>
 
-
+<?php //Pjax::begin(); ?>
 <!-- wrapper -->
 <div class="wrapper">
 
-    
-    <?php
-    echo $this->render('_search', ['model' => $searchModel, 'dataProvider'=>$dataProvider, 'tags'=>$tags, 'clientName'=>$clientName, 'showAddProject'=> false]); ?>
+
+
+
+    <?php echo $this->render('_search', ['model' => $searchModel, 'dataProvider'=>$dataProvider, 'tags'=>$tags, 'clientName'=>$clientName, 'showAddProject'=> false]); ?>
     <!-- clients items -->
     <div class="clients-items">
 
@@ -111,3 +112,5 @@ use yii\widgets\Pjax;
 
 
 </div>
+
+<?php //Pjax::end(); ?>

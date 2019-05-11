@@ -48,17 +48,28 @@ use kop\y2sp\ScrollPager;
     //        ],
     //    ]); ?>
 
+    <?php
+    $clientList = array();
+    foreach ($clients as $client) {
+        $clientList[$client['id']] = $client['name'];
+    }
+    $implementerList = array();
+    foreach ($implementers as $implementer) {
+        $implementerList[$implementer['id']] = $implementer['name'];
+    }
+    ?>
+
     <?php echo $this->render('_addOne', [
         'model' => $addForm,
         'errorForm' => $errorFormOne,
-        'clients' => $clients,
+        'clientList' => $clientList,
         'implementers' => $implementers,
     ]); ?>
 
     <?php echo $this->render('_addMulti', [
         'models' => $addForms,
         'errorForm' => $errorFormMulti,
-        'clients' => $clients,
+        'clientList' => $clientList,
         'implementers' => $implementers,
     ]); ?>
 
@@ -69,29 +80,9 @@ use kop\y2sp\ScrollPager;
 
         <!-- title -->
         <div class="m-title">Последние транзакции</div>
-        <?php echo $this->render('_search', ['model' => $searchModel]); ?>
+        <?php echo $this->render('_search', ['model' => $searchModel,'implementerList' => $implementerList,'clientList'=>$clientList]); ?>
         <!-- transactions group -->
-        <div class="tr-filter-group">
-
-            <div class="field">
-                <input type="text" class="datepicker" placeholder="Дата"/>
-            </div>
-
-            <div class="field">
-                <input type="text" placeholder="Поиск по проектам"/>
-            </div>
-
-            <div class="field">
-                <input type="text" placeholder="Поступления/списания"/>
-            </div>
-
-            <div class="field">
-                <input type="text" placeholder="Поиск по людям"/>
-            </div>
-
-            <button class="submit-btn">Применить</button>
-
-        </div>
+        
 
     </div>
 

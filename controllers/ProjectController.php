@@ -62,6 +62,7 @@ class ProjectController extends Controller
         $this->view->title = 'ПРОЕКТЫ | Платежка';
         $this->view->registerMetaTag(['name'=>'description', 'content'=>'']);
 
+
         $searchModel = new ProjectSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 

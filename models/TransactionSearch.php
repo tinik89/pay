@@ -11,13 +11,18 @@ use app\models\Transaction;
  */
 class TransactionSearch extends Transaction
 {
+    public $date_from;
+    public $date_from_visible;
+    public $date_to;
+    public $date_to_visible;
     /**
      * {@inheritdoc}
      */
     public function rules()
     {
         return [
-            [['client_id', 'project_id', 'date'], 'integer'],
+            [['client_id', 'date_from', 'date_to', 'implementer'], 'integer'],
+            [['type', 'date_from_visible', 'date_to_visible'], 'safe'],
         ];
     }
 
@@ -61,10 +66,12 @@ class TransactionSearch extends Transaction
         // grid filtering conditions
         $query->andFilterWhere([
             'client_id' => $this->client_id,
-            'project_id' => $this->project_id,
-            'date' => $this->date,
+            'implementer' => $this->implementer,
+            'type' => $this->type,
         ]);
 
+        $query->andFilterWhere(['>=', 'date', $this->date_from])
+            ->andFilterWhere(['<=', 'date', $this->date_to]);
 
         return $dataProvider;
     }
